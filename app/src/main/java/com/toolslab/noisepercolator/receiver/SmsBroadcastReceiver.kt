@@ -15,8 +15,9 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private val tag = "SmsBroadcastReceiver"
 
     override fun onReceive(context: Context, intent: Intent) {
-        val messagesAsString = extractMessagesToListCompat(intent)
-        messagesAsString.forEach { Log.d(tag, it) }
+        val messagesList = extractMessagesToListCompat(intent)
+        messagesList.forEach { Log.d(tag, it) }
+        TODO("notify running application from broadcast receiver")
     }
 
     private fun extractMessagesToListCompat(intent: Intent): MutableList<String> {
