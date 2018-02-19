@@ -15,12 +15,18 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     private val tag = "SmsBroadcastReceiver"
 
     override fun onReceive(context: Context, intent: Intent) {
-        val messagesList = extractMessagesToListCompat(intent)
-        messagesList.forEach { Log.d(tag, it) }
-        TODO("notify running application from broadcast receiver")
+        Log.d(tag, "Received intent: " + intent.action)
+
+        val smsMessages = extractMessagesToListCompat(intent)
+
+        val customFilter = CustomFilter()
+        val notifier = Notifier(context)
+        smsMessages
+                .filter { customFilter.shouldNotify(it) }
+                .forEach { notifier.notifyWith(it) }
     }
 
-    private fun extractMessagesToListCompat(intent: Intent): MutableList<String> {
+    private fun extractMessagesToListCompat(intent: Intent): MutableList<SmsMessage> {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             extractMessagesToList(intent)
         } else {
@@ -29,35 +35,25 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
     }
 
     @TargetApi(Build.VERSION_CODES.KITKAT)
-    private fun extractMessagesToList(intent: Intent): MutableList<String> {
-        val messagesAsString = mutableListOf<String>()
-
+    private fun extractMessagesToList(intent: Intent): MutableList<SmsMessage> {
+        val smsMessages = mutableListOf<SmsMessage>()
         val messages = Telephony.Sms.Intents.getMessagesFromIntent(intent)
-        messages.mapTo(messagesAsString) { createMessageAsString(it) }
-        return messagesAsString
+        messages.mapTo(smsMessages) { it }
+        return smsMessages
     }
 
     @Suppress("DEPRECATION")
-    private fun extractMessagesToListForDevicesOlderThanKitkat(intent: Intent): MutableList<String> {
-        val messagesAsString = mutableListOf<String>()
-
-        val extras = intent.extras
-        if (extras != null) {
-            val messages = extras.get("pdus") as Array<*>
+    private fun extractMessagesToListForDevicesOlderThanKitkat(intent: Intent): MutableList<SmsMessage> {
+        val smsMessages = mutableListOf<SmsMessage>()
+        if (intent.extras != null) {
+            val messages = intent.extras.get("pdus") as Array<*>
             messages
                     .map { SmsMessage.createFromPdu(it as ByteArray) }
-                    .mapTo(messagesAsString) { createMessageAsString(it) }
+                    .mapTo(smsMessages) { it }
         } else {
             Log.e(tag, "No extras in intent")
         }
-        return messagesAsString
-    }
-
-    private fun createMessageAsString(message: SmsMessage): String {
-        val smsBody = message.messageBody
-        val address = message.originatingAddress
-
-        return "SMS From: " + address + "\n" + smsBody
+        return smsMessages
     }
 
 }
