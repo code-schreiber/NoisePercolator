@@ -14,7 +14,7 @@ android:
     - platform-tools
 
     # SDK version to compile project
-    - android-27
+    - android-26
 
 script: ./deploy.sh
 
