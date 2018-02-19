@@ -7,12 +7,12 @@ buildscript {
                 versionName      : "0.0.1",
 
                 minSdkVersion    : 16,
-                targetSdkVersion : 27,
-                compileSdkVersion: 27
+                targetSdkVersion : 26,
+                compileSdkVersion: 26
         ]
 
         versions = [
-                googleSupport: "27.0.2",
+                googleSupport: "26.1.0",
                 kotlin       : "1.1.51"
         ]
     }
