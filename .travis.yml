@@ -1,0 +1,27 @@
+language: android
+
+install: true
+
+sudo: true
+
+notifications:
+  email: false
+
+android:
+  components:
+    # use the latest revision of Android SDK Tools
+    - tools
+    - platform-tools
+
+    # SDK version to compile project
+    - android-27
+
+script: ./deploy.sh
+
+cache:
+  directories:
+    - '$HOME/.m2'
+    - '$HOME/.m2/repository'
+    - '$HOME/.sonar/cache'
+    - '$HOME/.gradle'
+    - '.gradle'
