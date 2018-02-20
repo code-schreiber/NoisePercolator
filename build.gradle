@@ -12,8 +12,13 @@ buildscript {
         ]
 
         versions = [
-                googleSupport: "26.1.0",
-                kotlin       : "1.1.51"
+                kotlin          : "1.1.51",
+
+                googleSupport   : "27.0.2",
+                constraintLayout: "1.0.2",
+
+                junit           : "4.12",
+                mockito         : "2.9.0",
         ]
     }
 
