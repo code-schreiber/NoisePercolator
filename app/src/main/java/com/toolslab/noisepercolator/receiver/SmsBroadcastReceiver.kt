@@ -8,6 +8,8 @@ import android.os.Build
 import android.provider.Telephony
 import android.telephony.SmsMessage
 import android.util.Log
+import com.toolslab.noisepercolator.notification.Notifier
+import com.toolslab.noisepercolator.notification.SmsReceivedNotifier
 
 
 class SmsBroadcastReceiver : BroadcastReceiver() {
@@ -20,10 +22,10 @@ class SmsBroadcastReceiver : BroadcastReceiver() {
         val smsMessages = extractMessagesToListCompat(intent)
 
         val customFilter = CustomFilter()
-        val notifier = Notifier(context)
+        val notifier = SmsReceivedNotifier(Notifier(context))
         smsMessages
                 .filter { customFilter.shouldNotify(it) }
-                .forEach { notifier.notifyWith(it) }
+                .forEach { notifier.postNotification(it) }
     }
 
     private fun extractMessagesToListCompat(intent: Intent): MutableList<SmsMessage> {

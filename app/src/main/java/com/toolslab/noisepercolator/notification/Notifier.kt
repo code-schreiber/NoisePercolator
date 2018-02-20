@@ -1,4 +1,4 @@
-package com.toolslab.noisepercolator.receiver
+package com.toolslab.noisepercolator.notification
 
 import android.annotation.TargetApi
 import android.app.Notification
@@ -7,14 +7,13 @@ import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
 import android.support.v4.app.NotificationCompat
-import android.telephony.SmsMessage
 import com.toolslab.noisepercolator.R
 
 class Notifier(private val context: Context) {
 
     private val channelId = "channel_01"
 
-    fun notifyWith(smsMessage: SmsMessage) {
+    fun postNotification(notificationId: Int, title: String, text: String) {
         val notificationManager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -24,20 +23,15 @@ class Notifier(private val context: Context) {
             createNotificationChannel(notificationManager)
         }
 
-        val notificationId = smsMessage.hashCode()
-        val notification = createNotificationFromSms(smsMessage)
-
+        val notification = createNotification(title, text)
         notificationManager.notify(notificationId, notification)
     }
 
-    private fun createNotificationFromSms(smsMessage: SmsMessage): Notification {
-        val address = smsMessage.originatingAddress
-        val smsBody = smsMessage.messageBody
-
+    private fun createNotification(title: String, text: String): Notification {
         return NotificationCompat.Builder(context, channelId)
                 .setSmallIcon(R.drawable.ic_launcher_foreground)
-                .setContentTitle(address)
-                .setContentText(smsBody)
+                .setContentTitle(title)
+                .setContentText(text)
                 .build()
     }
 
