@@ -16,8 +16,8 @@ echo "deploy.sh: Running gradle build"
 ./gradlew build
 #echo "deploy.sh: Running gradle sonarqube"
 #./gradlew sonarqube
-echo "deploy.sh: mobile/build/outputs/apk/release now contains:"
-ls -l mobile/build/outputs/apk/release
+echo "deploy.sh: app/build/outputs/apk/release now contains:"
+ls -l app/build/outputs/apk/release
 #echo "deploy.sh: Running gradle printStatsFromThisVersion"
 #./gradlew printStatsFromThisVersion
 #echo "deploy.sh: Running gradle printVersion"
