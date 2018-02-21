@@ -17,7 +17,7 @@ class SmsReceivedNotifierTest {
     @Test
     fun postNotification() {
         val expectedNotificationId = 123
-        val expectedTitle = "123"
+        val expectedTitle = "test will fail"
         val expectedText = "expected text"
         whenever(mockSmsMessage.originatingAddress).thenReturn(expectedTitle)
         whenever(mockSmsMessage.messageBody).thenReturn(expectedText)
