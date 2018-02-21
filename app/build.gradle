@@ -29,4 +29,6 @@ dependencies {
 
     testImplementation "junit:junit:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
+    testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"
+    testImplementation "com.nhaarman:mockito-kotlin-kt1.1:$versions.mockitoKotlin"
 }
