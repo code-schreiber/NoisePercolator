@@ -27,6 +27,9 @@ dependencies {
     implementation "com.android.support:appcompat-v7:$versions.googleSupport"
     implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
 
+    implementation "com.jakewharton.timber:timber:$versions.timber"
+
+    // Tests
     testImplementation "junit:junit:$versions.junit"
     testImplementation "org.mockito:mockito-core:$versions.mockito"
     testImplementation "org.jetbrains.kotlin:kotlin-test-junit:$versions.kotlin"

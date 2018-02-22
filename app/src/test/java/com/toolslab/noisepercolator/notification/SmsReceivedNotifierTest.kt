@@ -8,9 +8,8 @@ import org.mockito.Mockito.verify
 
 class SmsReceivedNotifierTest {
 
-    private val mockNotifier: Notifier = mock()
-
     private val mockSmsMessage: SmsMessage = mock()
+    private val mockNotifier: Notifier = mock()
 
     private val underTest: SmsReceivedNotifier = SmsReceivedNotifier(mockNotifier)
 

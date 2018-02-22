@@ -10,7 +10,7 @@ class SmsBroadcastReceiver(private val smsExtractor: SmsExtractor = SmsExtractor
     : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Timber.d("Received intent: %s", intent.action)
+        Timber.d("Received intent: $intent.action")
 
         val smsMessages = smsExtractor.extractFrom(intent)
         if (smsMessages.isNotEmpty()) {
