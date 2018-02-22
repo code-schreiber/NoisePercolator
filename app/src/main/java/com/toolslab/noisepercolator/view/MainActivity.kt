@@ -6,16 +6,18 @@ import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.Telephony
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
-import android.util.Log
 import android.widget.TextView
 import android.widget.Toast
 import com.toolslab.noisepercolator.R
+import com.toolslab.noisepercolator.db.Persister
+import com.toolslab.noisepercolator.util.device.SdkChecker
+import com.toolslab.noisepercolator.util.packagemanager.OtherAppHandler
+import timber.log.Timber
 
 
 class MainActivity : AppCompatActivity() {
@@ -24,12 +26,16 @@ class MainActivity : AppCompatActivity() {
         private const val READ_SMS_PERMISSIONS_REQUEST = 112233
     }
 
+    private val sdkChecker = SdkChecker()
+    private val persister: Persister = Persister()
+    private val otherAppHandler: OtherAppHandler = OtherAppHandler()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         if (noPermission()) {
-            getPermissionToReadSMS()
+            maybeShowPermissionExplanation()
         } else {
             refreshSmsInbox()
         }
@@ -48,13 +54,13 @@ class MainActivity : AppCompatActivity() {
                 return
             }
             else -> {
-                Log.e("MainActivity", "Unknown RequestPermissionsResult: " + requestCode)
+                Timber.e("Unknown RequestPermissionsResult: $requestCode")
                 super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             }
         }
     }
 
-    private fun getPermissionToReadSMS() {
+    private fun maybeShowPermissionExplanation() {
         if (noPermission()) {
             if (shouldShowRequestPermission()) {
                 showPermissionExplanation()
@@ -65,13 +71,11 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-
     private fun refreshSmsInbox() {
         val smsUri = getSmsUri()
         val cursor = contentResolver.query(smsUri, null, null, null, null)
         if (cursor.moveToFirst()) {
             var smsAsString = cursor.count.toString() + " sms in " + smsUri + "\n"
-
 
             val messageId = cursor.getString(cursor.getColumnIndex("_id"))
             val values = ContentValues()
@@ -81,31 +85,36 @@ class MainActivity : AppCompatActivity() {
 
             smsAsString += packageName + " is this package" + "\n"
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                smsAsString += extractSmsAsString(cursor)
+            smsAsString += if (sdkChecker.deviceIsKitkatOrAbove()) {
+                extractSmsAsString(cursor)
             } else {
-                smsAsString += extractSmsAsStringForDevicesOlderThanKitkat(cursor)
+                extractSmsAsStringLegacy(cursor)
             }
 
             this.findViewById<TextView>(R.id.activity_main_textdummy).text = smsAsString
         } else {
             this.findViewById<TextView>(R.id.activity_main_textdummy).text = "Empty inbox, no SMS"
         }
+        this.findViewById<TextView>(R.id.activity_main_number_of_filtered_messages).text = "{$persister.getNumberOfMessages()} filtered messages"
         cursor.close()
     }
 
-    private fun getSmsUri(): Uri? {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+    private fun getSmsUri(): Uri {
+        return if (sdkChecker.deviceIsKitkatOrAbove()) { // TODO extract to IntentToSmsMessageConverter and rename class
             Telephony.Sms.CONTENT_URI
         } else {
             Uri.parse("content://sms/inbox") // undocumented content provider (maybe use Telephony.Sms.CONTENT_URI also?)
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @TargetApi(SdkChecker.KITKAT)
     private fun extractSmsAsString(cursor: Cursor): String {
+        this.findViewById<TextView>(R.id.activity_main_button).text = "Open sms app: " + otherAppHandler.getDefaultSmsAppName()
+        this.findViewById<TextView>(R.id.activity_main_button).setOnClickListener({
+            otherAppHandler.launchDefaultSmsApp()
+        })
+
         var smsAsString = ""
-        smsAsString += Telephony.Sms.getDefaultSmsPackage(this) + " is DefaultSmsPackage" + "\n\n"
 
         do {
             val date = cursor.getString(cursor.getColumnIndexOrThrow(Telephony.Sms.DATE))
@@ -140,7 +149,7 @@ class MainActivity : AppCompatActivity() {
         return smsAsString
     }
 
-    private fun extractSmsAsStringForDevicesOlderThanKitkat(cursor: Cursor): String {
+    private fun extractSmsAsStringLegacy(cursor: Cursor): String {
         var smsAsString = ""
         do {
             for (i in 0 until cursor.columnCount) {

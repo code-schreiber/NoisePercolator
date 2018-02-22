@@ -1,6 +1,7 @@
 package com.toolslab.noisepercolator.receiver
 
 import android.annotation.TargetApi
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.provider.Telephony
@@ -26,6 +27,11 @@ class IntentToSmsMessageConverter {
                 .map { SmsMessage.createFromPdu(it as ByteArray) }
                 .mapTo(smsMessages) { it }
         return smsMessages.toList()
+    }
+
+    @TargetApi(SdkChecker.KITKAT)
+    fun getDefaultSmsPackage(context: Context): String {
+        return Telephony.Sms.getDefaultSmsPackage(context)
     }
 
 }

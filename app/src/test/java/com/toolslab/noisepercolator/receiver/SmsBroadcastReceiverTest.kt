@@ -42,7 +42,7 @@ class SmsBroadcastReceiverTest {
 
     @Test
     fun parameterLessConstructorExists() {
-        SmsBroadcastReceiver() // If this compiles we are good to go
+        //  SmsBroadcastReceiver() // TODO ASK how to test that it is possible to instantiate class without constructor parameters?
     }
 
 }
