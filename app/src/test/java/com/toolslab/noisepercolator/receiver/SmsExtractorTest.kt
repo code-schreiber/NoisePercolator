@@ -6,8 +6,7 @@ import android.telephony.SmsMessage
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
+import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class SmsExtractorTest {
@@ -29,7 +28,7 @@ class SmsExtractorTest {
 
         val result = underTest.extractFrom(mockIntent)
 
-        assertThat(result, `is`(expected)) // TODO use other annotation instead of is
+        result shouldEqual expected
     }
 
     @Test
@@ -39,9 +38,8 @@ class SmsExtractorTest {
 
         val result = underTest.extractFrom(mockIntent)
 
-        assertThat(result, `is`(emptyList()))
+        result shouldEqual emptyList()
     }
-
 
     @Test
     fun extractFromLegacy() {
@@ -53,7 +51,7 @@ class SmsExtractorTest {
 
         val result = underTest.extractFrom(mockIntent)
 
-        assertThat(result, `is`(expected))
+        result shouldEqual expected
     }
 
     @Test
@@ -64,7 +62,7 @@ class SmsExtractorTest {
 
         val result = underTest.extractFrom(mockIntent)
 
-        assertThat(result, `is`(emptyList()))
+        result shouldEqual emptyList()
     }
 
     @Test
@@ -75,7 +73,7 @@ class SmsExtractorTest {
         val result = underTest.extractFrom(mockIntent)
 
         verifyZeroInteractions(mockIntentToSmsMessageConverter)
-        assertThat(result, `is`(emptyList()))
+        result shouldEqual emptyList()
     }
 
 }

@@ -3,8 +3,7 @@ package com.toolslab.noisepercolator.filter
 import android.telephony.SmsMessage
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import org.hamcrest.CoreMatchers.`is`
-import org.junit.Assert.assertThat
+import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class CustomFilterTest {
@@ -19,7 +18,7 @@ class CustomFilterTest {
 
         val result = underTest.shouldNotify(mockSmsMessage)
 
-        assertThat(result, `is`(true))
+        result shouldEqual true
     }
 
     @Test
@@ -28,7 +27,7 @@ class CustomFilterTest {
 
         val result = underTest.shouldNotify(mockSmsMessage)
 
-        assertThat(result, `is`(false))
+        result shouldEqual false
     }
 
 }
