@@ -1,4 +1,4 @@
-package com.toolslab.noisepercolator.receiver
+package com.toolslab.noisepercolator.filter
 
 import android.telephony.SmsMessage
 
