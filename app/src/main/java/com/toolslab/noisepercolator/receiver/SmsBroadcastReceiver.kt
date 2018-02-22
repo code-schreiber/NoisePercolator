@@ -3,23 +3,20 @@ package com.toolslab.noisepercolator.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.util.Log
+import timber.log.Timber
 
-class SmsBroadcastReceiver : BroadcastReceiver() {
-
-    private val tag = "SmsBroadcastReceiver"
-
-    var smsExtracter = SmsExtracter() // TODO make inmutable, but how to test that way?
-    var incomingSmsNotifier = IncomingSmsNotifier()
+class SmsBroadcastReceiver(private val smsExtractor: SmsExtractor = SmsExtractor(),
+                           private var incomingSmsNotifier: IncomingSmsNotifier = IncomingSmsNotifier())
+    : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Log.d(tag, "Received intent: " + intent.action)
+        Timber.d("Received intent: %s", intent.action);
 
-        val smsMessages = smsExtracter.extractFrom(intent)
+        val smsMessages = smsExtractor.extractFrom(intent)
         if (smsMessages.isNotEmpty()) {
-            incomingSmsNotifier.maybeNotify(context, smsMessages)
+            incomingSmsNotifier.maybeNotify(smsMessages)
         } else {
-            Log.e(tag, "No messages in intent")
+            Timber.e("No messages in intent")
         }
     }
 
