@@ -26,7 +26,7 @@ class IncomingSmsNotifier(private val customFilter: CustomFilter = CustomFilter(
     private fun saveInfosAboutFilteredOutMessages(smsMessages: List<SmsMessage>) {
         smsMessages.filter { !customFilter.shouldNotify(it) }
                 .forEach {
-                    filteredOutSmsSaver.saveInfosAbout(it)
+                    filteredOutSmsSaver.saveFilteredOutSmsMessage(it)
                 }
     }
 

@@ -39,7 +39,7 @@ class IncomingSmsNotifierTest {
         underTest.maybeNotify(smsMessages)
 
         verifyZeroInteractions(mockSmsReceivedNotifier)
-        verify(mockFilteredOutSmsSaver).saveInfosAbout(mockSmsMessage)
+        verify(mockFilteredOutSmsSaver).saveFilteredOutSmsMessage(mockSmsMessage)
     }
 
     @Test
