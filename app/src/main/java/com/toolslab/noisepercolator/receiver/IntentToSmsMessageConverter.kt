@@ -2,10 +2,10 @@ package com.toolslab.noisepercolator.receiver
 
 import android.annotation.TargetApi
 import android.content.Intent
-import android.os.Build
 import android.os.Bundle
 import android.provider.Telephony
 import android.telephony.SmsMessage
+import com.toolslab.noisepercolator.util.device.SdkChecker
 
 class IntentToSmsMessageConverter {
 
@@ -13,7 +13,7 @@ class IntentToSmsMessageConverter {
         private const val PDUS_KEY = "pdus"
     }
 
-    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @TargetApi(SdkChecker.KITKAT)
     fun convert(intent: Intent): List<SmsMessage> {
         return Telephony.Sms.Intents.getMessagesFromIntent(intent).toList()
     }

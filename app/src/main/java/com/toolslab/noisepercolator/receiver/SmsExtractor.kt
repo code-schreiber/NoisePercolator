@@ -2,6 +2,7 @@ package com.toolslab.noisepercolator.receiver
 
 import android.content.Intent
 import android.telephony.SmsMessage
+import com.toolslab.noisepercolator.util.device.SdkChecker
 import timber.log.Timber
 
 class SmsExtractor(private val intentToSmsMessageConverter: IntentToSmsMessageConverter = IntentToSmsMessageConverter(),
