@@ -2,7 +2,6 @@ package com.toolslab.noisepercolator.view
 
 import android.Manifest
 import android.annotation.TargetApi
-import android.content.ContentValues
 import android.content.pm.PackageManager
 import android.database.Cursor
 import android.net.Uri
@@ -16,7 +15,7 @@ import android.widget.Toast
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.db.Persister
 import com.toolslab.noisepercolator.util.device.SdkChecker
-import com.toolslab.noisepercolator.util.packagemanager.OtherAppHandler
+import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 import timber.log.Timber
 
 
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
 
     private val sdkChecker = SdkChecker()
     private val persister: Persister = Persister()
-    private val otherAppHandler: OtherAppHandler = OtherAppHandler()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,14 +75,6 @@ class MainActivity : AppCompatActivity() {
         if (cursor.moveToFirst()) {
             var smsAsString = cursor.count.toString() + " sms in " + smsUri + "\n"
 
-            val messageId = cursor.getString(cursor.getColumnIndex("_id"))
-            val values = ContentValues()
-            values.put("read", true)
-            val rowsUpdated = contentResolver.update(smsUri, values, "_id" + "=" + messageId, null)
-            smsAsString += rowsUpdated.toString() + " rows updated" + "\n"
-
-            smsAsString += packageName + " is this package" + "\n"
-
             smsAsString += if (sdkChecker.deviceIsKitkatOrAbove()) {
                 extractSmsAsString(cursor)
             } else {
@@ -95,7 +85,8 @@ class MainActivity : AppCompatActivity() {
         } else {
             this.findViewById<TextView>(R.id.activity_main_textdummy).text = "Empty inbox, no SMS"
         }
-        this.findViewById<TextView>(R.id.activity_main_number_of_filtered_messages).text = "{$persister.getNumberOfMessages()} filtered messages"
+        val numberOfFilteredMessages = persister.getNumberOfMessages()
+        this.findViewById<TextView>(R.id.activity_main_number_of_filtered_messages).text = "$numberOfFilteredMessages filtered messages"
         cursor.close()
     }
 
@@ -109,6 +100,7 @@ class MainActivity : AppCompatActivity() {
 
     @TargetApi(SdkChecker.KITKAT)
     private fun extractSmsAsString(cursor: Cursor): String {
+        val otherAppHandler = PackageManagerUtil()
         this.findViewById<TextView>(R.id.activity_main_button).text = "Open sms app: " + otherAppHandler.getDefaultSmsAppName()
         this.findViewById<TextView>(R.id.activity_main_button).setOnClickListener({
             otherAppHandler.launchDefaultSmsApp()
