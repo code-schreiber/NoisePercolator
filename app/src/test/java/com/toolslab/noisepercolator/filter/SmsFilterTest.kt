@@ -6,11 +6,11 @@ import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
-class CustomFilterTest {
+class SmsFilterTest {
 
     private val mockSmsMessage: SmsMessage = mock()
 
-    private val underTest: CustomFilter = CustomFilter()
+    private val underTest: SmsFilter = SmsFilter()
 
     @Test
     fun shouldNotify() {
