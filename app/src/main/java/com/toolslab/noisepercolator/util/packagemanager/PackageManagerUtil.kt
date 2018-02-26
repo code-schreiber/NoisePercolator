@@ -1,15 +1,13 @@
 package com.toolslab.noisepercolator.util.packagemanager
 
-import android.annotation.TargetApi
 import android.content.Context
 import android.content.pm.PackageManager
 import com.toolslab.noisepercolator.NoisePercolator
 import com.toolslab.noisepercolator.receiver.SmsMessagesConverter
-import com.toolslab.noisepercolator.util.device.SdkChecker
 import timber.log.Timber
 
-@TargetApi(SdkChecker.KITKAT)
-class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(), private val smsMessagesConverter: SmsMessagesConverter = SmsMessagesConverter()) {
+class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(),
+                         private val smsMessagesConverter: SmsMessagesConverter = SmsMessagesConverter()) {
 
     fun launchDefaultSmsApp() {
         val defaultSmsPackage = smsMessagesConverter.getDefaultSmsPackage(context)
@@ -17,7 +15,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         if (intent != null) {
             context.startActivity(intent)
         } else {
-            Timber.e("No launch intent for $defaultSmsPackage")
+            Timber.e("No launch intent for package $defaultSmsPackage")
         }
     }
 
@@ -32,7 +30,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         } catch (e: PackageManager.NameNotFoundException) {
             Timber.e(e)
         }
-        Timber.e("No label for $defaultSmsPackage")
+        Timber.e("No label for package $defaultSmsPackage")
         return ""
     }
 
