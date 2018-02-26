@@ -10,8 +10,7 @@ import android.telephony.SmsMessage
 import com.toolslab.noisepercolator.util.device.SdkChecker
 import timber.log.Timber
 
-// TODO rename
-class IntentToSmsMessageConverter(private val sdkChecker: SdkChecker = SdkChecker()) {
+class SmsMessagesConverter(private val sdkChecker: SdkChecker = SdkChecker()) {
 
     @VisibleForTesting
     companion object {
@@ -20,7 +19,7 @@ class IntentToSmsMessageConverter(private val sdkChecker: SdkChecker = SdkChecke
         const val PDUS_KEY = "pdus"
     }
 
-    fun extractFrom(intent: Intent): List<SmsMessage> {
+    fun convertFrom(intent: Intent): List<SmsMessage> {
         return when {
             sdkChecker.deviceIsKitkatOrAbove() -> convert(intent)
             intent.extras != null -> convertLegacy(intent.extras)
@@ -31,13 +30,15 @@ class IntentToSmsMessageConverter(private val sdkChecker: SdkChecker = SdkChecke
         }
     }
 
+    @VisibleForTesting
     @TargetApi(SdkChecker.KITKAT)
-    private fun convert(intent: Intent): List<SmsMessage> {
+    fun convert(intent: Intent): List<SmsMessage> {
         return Telephony.Sms.Intents.getMessagesFromIntent(intent).toList()
     }
 
+    @VisibleForTesting
     @Suppress("DEPRECATION")
-    private fun convertLegacy(bundle: Bundle): List<SmsMessage> {
+    fun convertLegacy(bundle: Bundle): List<SmsMessage> {
         val smsMessages = mutableListOf<SmsMessage>()
         val messages = bundle.get(PDUS_KEY) as Array<*>
         messages

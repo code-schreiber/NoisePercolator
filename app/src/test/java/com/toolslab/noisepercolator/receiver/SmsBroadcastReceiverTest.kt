@@ -20,17 +20,17 @@ class SmsBroadcastReceiverTest {
     private val mockContext: Context = mock()
     private val mockIntent: Intent = mock()
     private val mockNotifier: Notifier = mock()
-    private val mockIntentToSmsMessageConverter: IntentToSmsMessageConverter = mock()
+    private val mockSmsMessagesConverter: SmsMessagesConverter = mock()
     private val mockSmsFilter: SmsFilter = mock()
     private val mockFilteredOutSmsSaver: FilteredOutSmsSaver = mock()
     private val mockSmsMessage: SmsMessage = mock()
 
     private val underTest: SmsBroadcastReceiver =
-            SmsBroadcastReceiver(mockNotifier, mockFilteredOutSmsSaver, mockIntentToSmsMessageConverter, mockSmsFilter)
+            SmsBroadcastReceiver(mockNotifier, mockFilteredOutSmsSaver, mockSmsMessagesConverter, mockSmsFilter)
 
     @Test
     fun onReceiveWithNoMessages() {
-        whenever(mockIntentToSmsMessageConverter.extractFrom(mockIntent)).thenReturn(emptyList())
+        whenever(mockSmsMessagesConverter.convertFrom(mockIntent)).thenReturn(emptyList())
 
         underTest.onReceive(mockContext, mockIntent)
 
@@ -46,7 +46,7 @@ class SmsBroadcastReceiverTest {
         val text = "the display message body"
         whenever(mockSmsMessage.displayOriginatingAddress).thenReturn(title)
         whenever(mockSmsMessage.displayMessageBody).thenReturn(text)
-        whenever(mockIntentToSmsMessageConverter.extractFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
+        whenever(mockSmsMessagesConverter.convertFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
         whenever(mockSmsFilter.shouldNotify(mockSmsMessage)).thenReturn(true)
 
         underTest.onReceive(mockContext, mockIntent)
@@ -57,7 +57,7 @@ class SmsBroadcastReceiverTest {
 
     @Test
     fun onReceiveNotNotifying() {
-        whenever(mockIntentToSmsMessageConverter.extractFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
+        whenever(mockSmsMessagesConverter.convertFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
         whenever(mockSmsFilter.shouldNotify(mockSmsMessage)).thenReturn(false)
 
         underTest.onReceive(mockContext, mockIntent)

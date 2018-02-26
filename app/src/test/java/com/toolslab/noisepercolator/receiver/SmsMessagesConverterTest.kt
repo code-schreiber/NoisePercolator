@@ -8,22 +8,22 @@ import com.toolslab.noisepercolator.util.device.SdkChecker
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
-class IntentToSmsMessageConverterTest {
+class SmsMessagesConverterTest {
 
     private val mockIntent: Intent = mock()
     private val mockExtras: Bundle = mock()
     private val mockSdkChecker: SdkChecker = mock()
 
-    private val underTest: IntentToSmsMessageConverter = IntentToSmsMessageConverter(mockSdkChecker)
+    private val underTest: SmsMessagesConverter = SmsMessagesConverter(mockSdkChecker)
 
     @Test
     fun extractEmptyExtrasLegacy() {
         val pdus: Array<ByteArray> = emptyArray()
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
         whenever(mockIntent.extras).thenReturn(mockExtras)
-        whenever(mockExtras.get(IntentToSmsMessageConverter.PDUS_KEY)).thenReturn(pdus)
+        whenever(mockExtras.get(SmsMessagesConverter.PDUS_KEY)).thenReturn(pdus)
 
-        val result = underTest.extractFrom(mockIntent)
+        val result = underTest.convertFrom(mockIntent)
 
         result shouldEqual emptyList()
     }
@@ -33,7 +33,7 @@ class IntentToSmsMessageConverterTest {
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
         whenever(mockIntent.extras).thenReturn(null)
 
-        val result = underTest.extractFrom(mockIntent)
+        val result = underTest.convertFrom(mockIntent)
 
         result shouldEqual emptyList()
     }

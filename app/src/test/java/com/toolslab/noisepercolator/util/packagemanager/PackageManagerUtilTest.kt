@@ -6,7 +6,7 @@ import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
-import com.toolslab.noisepercolator.receiver.IntentToSmsMessageConverter
+import com.toolslab.noisepercolator.receiver.SmsMessagesConverter
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 import org.mockito.Mockito.*
@@ -17,16 +17,16 @@ class PackageManagerUtilTest {
     private val mockIntent: Intent = mock()
     private val mockPackageManager: PackageManager = mock()
     private val mockApplicationInfo: ApplicationInfo = mock()
-    private val mockIntentToSmsMessageConverter: IntentToSmsMessageConverter = mock()
+    private val mockSmsMessagesConverter: SmsMessagesConverter = mock()
 
-    private val underTest: PackageManagerUtil = PackageManagerUtil(mockContext, mockIntentToSmsMessageConverter)
+    private val underTest: PackageManagerUtil = PackageManagerUtil(mockContext, mockSmsMessagesConverter)
 
     private val smsPackage = "a.package"
 
     @Test
     fun launchDefaultSmsApp() {
         whenever(mockContext.packageManager).thenReturn(mockPackageManager)
-        whenever(mockIntentToSmsMessageConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
+        whenever(mockSmsMessagesConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
         whenever(mockPackageManager.getLaunchIntentForPackage(smsPackage)).thenReturn(mockIntent)
 
         underTest.launchDefaultSmsApp()
@@ -37,7 +37,7 @@ class PackageManagerUtilTest {
     @Test
     fun launchDefaultSmsAppWithNullIntent() {
         whenever(mockContext.packageManager).thenReturn(mockPackageManager)
-        whenever(mockIntentToSmsMessageConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
+        whenever(mockSmsMessagesConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
         whenever(mockPackageManager.getLaunchIntentForPackage(smsPackage)).thenReturn(null)
 
         underTest.launchDefaultSmsApp()
@@ -49,7 +49,7 @@ class PackageManagerUtilTest {
     fun getDefaultSmsAppName() {
         val label = "a label"
         whenever(mockContext.packageManager).thenReturn(mockPackageManager)
-        whenever(mockIntentToSmsMessageConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
+        whenever(mockSmsMessagesConverter.getDefaultSmsPackage(mockContext)).thenReturn(smsPackage)
         whenever(mockPackageManager.getApplicationInfo(smsPackage, PackageManager.GET_META_DATA)).thenReturn(mockApplicationInfo)
         whenever(mockPackageManager.getApplicationLabel(mockApplicationInfo)).thenReturn(label)
 

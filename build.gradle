@@ -25,6 +25,7 @@ buildscript {
                 mockito         : "2.9.0",
                 mockitoKotlin   : "1.5.0",
                 kluent          : "1.14",
+                testRunner      : "1.0.1"
         ]
     }
 

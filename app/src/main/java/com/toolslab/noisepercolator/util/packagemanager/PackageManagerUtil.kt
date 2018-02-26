@@ -4,15 +4,15 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.pm.PackageManager
 import com.toolslab.noisepercolator.NoisePercolator
-import com.toolslab.noisepercolator.receiver.IntentToSmsMessageConverter
+import com.toolslab.noisepercolator.receiver.SmsMessagesConverter
 import com.toolslab.noisepercolator.util.device.SdkChecker
 import timber.log.Timber
 
 @TargetApi(SdkChecker.KITKAT)
-class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(), private val intentToSmsMessageConverter: IntentToSmsMessageConverter = IntentToSmsMessageConverter()) {
+class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(), private val smsMessagesConverter: SmsMessagesConverter = SmsMessagesConverter()) {
 
     fun launchDefaultSmsApp() {
-        val defaultSmsPackage = intentToSmsMessageConverter.getDefaultSmsPackage(context)
+        val defaultSmsPackage = smsMessagesConverter.getDefaultSmsPackage(context)
         val intent = context.packageManager.getLaunchIntentForPackage(defaultSmsPackage)
         if (intent != null) {
             context.startActivity(intent)
@@ -22,7 +22,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
     }
 
     fun getDefaultSmsAppName(): String {
-        val defaultSmsPackage = intentToSmsMessageConverter.getDefaultSmsPackage(context)
+        val defaultSmsPackage = smsMessagesConverter.getDefaultSmsPackage(context)
         try {
             val applicationInfo = context.packageManager.getApplicationInfo(defaultSmsPackage, PackageManager.GET_META_DATA)
             val label = context.packageManager.getApplicationLabel(applicationInfo)

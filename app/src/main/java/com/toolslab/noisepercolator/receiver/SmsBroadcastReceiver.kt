@@ -14,7 +14,7 @@ import java.util.*
 
 class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
                            private val filteredOutSmsSaver: FilteredOutSmsSaver = FilteredOutSmsSaver(),
-                           private val intentToSmsMessageConverter: IntentToSmsMessageConverter = IntentToSmsMessageConverter(),
+                           private val smsMessagesConverter: SmsMessagesConverter = SmsMessagesConverter(),
                            private val smsFilter: SmsFilter = SmsFilter())
     : BroadcastReceiver() {
 
@@ -24,7 +24,7 @@ class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
     }
 
     private fun processIntent(intent: Intent) {
-        val smsMessages = intentToSmsMessageConverter.extractFrom(intent)
+        val smsMessages = smsMessagesConverter.convertFrom(intent)
         if (smsMessages.isNotEmpty()) {
             // Show notification for all messages that where not filtered out
             smsMessages
@@ -32,8 +32,7 @@ class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
                     .forEach { postNotification(it) }
 
             // Save information about messages that where filtered out
-            smsMessages.
-                    filter { !smsFilter.shouldNotify(it) }
+            smsMessages.filter { !smsFilter.shouldNotify(it) }
                     .forEach { filteredOutSmsSaver.saveFilteredOutSmsMessage(it) }
         } else {
             Timber.e("No messages in intent")
