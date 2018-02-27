@@ -22,7 +22,6 @@ class NotificationChannelCreator(private val sdkChecker: SdkChecker = SdkChecker
             // If you target Android 8.0 (API level 26)
             // and post a notification without specifying a valid notifications channel,
             // the notification fails to post and the system logs an error.
-            // TODO only createNotificationChannel if non existent
             createChannel(notificationManager, channelId)
         }
     }
