@@ -6,7 +6,6 @@ import android.net.Uri
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.util.device.SdkChecker
-import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class MessagesProviderTest {
