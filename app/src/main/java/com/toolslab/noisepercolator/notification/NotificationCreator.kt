@@ -5,13 +5,15 @@ import android.content.Context
 import android.support.annotation.VisibleForTesting
 import android.support.v4.app.NotificationCompat
 import com.toolslab.noisepercolator.R
+import com.toolslab.noisepercolator.util.device.SdkChecker
 
-class NotificationCreator {
+class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker()) {
 
     @VisibleForTesting
     companion object {
         @VisibleForTesting
-        const val SMALL_ICON = R.mipmap.ic_launcher
+        const val SMALL_ICON = R.drawable.ic_launcher_foreground
+        const val SMALL_ICON_LEGACY = R.mipmap.ic_launcher
     }
 
     fun createNotification(context: Context, channelId: String, title: String, text: String): Notification {
@@ -22,10 +24,12 @@ class NotificationCreator {
     @VisibleForTesting()
     fun setNotificationAttributes(builder: NotificationCompat.Builder, title: String, text: String): Notification {
         return builder
-                .setSmallIcon(SMALL_ICON)
+                .setSmallIcon(getSmallIcon())
                 .setContentTitle(title)
                 .setContentText(text)
                 .build()
     }
+
+    private fun getSmallIcon() = if (sdkChecker.deviceIsKitkatOrAbove()) SMALL_ICON else SMALL_ICON_LEGACY
 
 }

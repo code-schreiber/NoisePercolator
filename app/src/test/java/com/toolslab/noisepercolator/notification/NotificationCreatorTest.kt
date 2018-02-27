@@ -6,32 +6,58 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
+import com.toolslab.noisepercolator.util.device.SdkChecker
+import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldEqual
+import org.junit.Before
 import org.junit.Test
 
 class NotificationCreatorTest {
 
+    companion object {
+        const val TITLE = "a title"
+        const val TEXT = "a text"
+    }
+
     private val mockBuilder: NotificationCompat.Builder = mock()
     private val mockNotification: Notification = mock()
+    private val mockSdkChecker: SdkChecker = mock()
 
-    private val underTest: NotificationCreator = NotificationCreator()
+    private val underTest: NotificationCreator = NotificationCreator(mockSdkChecker)
 
-    @Test
-    fun setNotificationAttributes() {
-        val title = "title"
-        val text = "text"
+    @Before
+    fun setUp() {
         whenever(mockBuilder.setSmallIcon(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.setContentTitle(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.setContentText(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.build()).thenReturn(mockNotification)
+    }
 
-        val notification = underTest.setNotificationAttributes(mockBuilder, title, text)
+    @Test
+    fun setNotificationAttributes() {
+        whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(true)
+
+        val notification = underTest.setNotificationAttributes(mockBuilder, TITLE, TEXT)
 
         verify(mockBuilder).setSmallIcon(NotificationCreator.SMALL_ICON)
-        verify(mockBuilder).setContentTitle(title)
-        verify(mockBuilder).setContentText(text)
+        verify(mockBuilder).setContentTitle(TITLE)
+        verify(mockBuilder).setContentText(TEXT)
 
         notification shouldEqual mockNotification
+    }
+
+    @Test
+    fun setNotificationAttributesLegacy() {
+        whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
+
+        val notification = underTest.setNotificationAttributes(mockBuilder, TITLE, TEXT)
+
+        verify(mockBuilder).setSmallIcon(NotificationCreator.SMALL_ICON_LEGACY)
+        verify(mockBuilder).setContentTitle(TITLE)
+        verify(mockBuilder).setContentText(TEXT)
+
+        notification shouldEqual mockNotification
+        notification shouldBe mockNotification // DELETE ME
     }
 
 }
