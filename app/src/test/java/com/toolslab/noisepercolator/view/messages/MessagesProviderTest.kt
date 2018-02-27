@@ -1,4 +1,4 @@
-package com.toolslab.noisepercolator.view
+package com.toolslab.noisepercolator.view.messages
 
 import android.content.ContentResolver
 import android.database.Cursor
@@ -6,6 +6,7 @@ import android.net.Uri
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.util.device.SdkChecker
+import org.amshove.kluent.shouldEqual
 import org.junit.Test
 
 class MessagesProviderTest {
