@@ -25,7 +25,7 @@
             android:id="@+id/activity_messages_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            tools:listitem="@layout/item_of_list" />
+            tools:listitem="@layout/item_message" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
