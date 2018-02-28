@@ -2,6 +2,7 @@ package com.toolslab.noisepercolator.util
 
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
+import android.support.annotation.CheckResult
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.toolslab.noisepercolator.view.base.BaseActivity
@@ -39,7 +40,8 @@ class PermissionsUtil {
         }
     }
 
-    internal fun hasSmsPermission(activity: BaseActivity) =
+    @CheckResult
+    internal fun hasSmsPermission(activity: BaseActivity): Boolean =
             ContextCompat.checkSelfPermission(activity, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
     private fun showPermissionExplanation(activity: BaseActivity) =
