@@ -21,10 +21,10 @@ class MessagesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        if (permissionsUtil.noPermission(this)) {
-            permissionsUtil.maybeShowPermissionExplanation(this)
-        } else {
+        if (permissionsUtil.hasSmsPermission(this)) {
             refreshSmsInbox()
+        } else {
+            permissionsUtil.maybeShowPermissionExplanation(this)
         }
     }
 
@@ -47,7 +47,7 @@ class MessagesActivity : BaseActivity() {
         this.findViewById<TextView>(R.id.activity_messages_number_of_filtered_messages).text = "$numberOfFilteredMessages spam messages out of $numberOfMessages messages:"
         this.findViewById<RecyclerView>(R.id.activity_messages_recycleview).setHasFixedSize(true)
         this.findViewById<RecyclerView>(R.id.activity_messages_recycleview).layoutManager = LinearLayoutManager(this)
-        this.findViewById<RecyclerView>(R.id.activity_messages_recycleview).adapter = SmsListAdapter(messages)
+        this.findViewById<RecyclerView>(R.id.activity_messages_recycleview).adapter = MessagesAdapter(messages)
     }
 
 }

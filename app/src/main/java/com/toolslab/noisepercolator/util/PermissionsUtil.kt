@@ -1,7 +1,7 @@
 package com.toolslab.noisepercolator.util
 
 import android.Manifest
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.toolslab.noisepercolator.view.base.BaseActivity
@@ -12,12 +12,13 @@ class PermissionsUtil {
 
     companion object {
         private const val READ_SMS_PERMISSIONS_REQUEST = 100
+        private const val READ_SMS_PERMISSION = Manifest.permission.READ_SMS
     }
 
     internal fun isOnRequestPermissionsResultGranted(activity: BaseActivity, requestCode: Int, permissions: Array<String>, grantResults: IntArray): Boolean {
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             // If request is cancelled, the result arrays are empty.
-            if ((grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 return true
             }
         } else {
@@ -28,7 +29,7 @@ class PermissionsUtil {
     }
 
     internal fun maybeShowPermissionExplanation(activity: BaseActivity) {
-        if (noPermission(activity)) {
+        if (!hasSmsPermission(activity)) {
             if (shouldShowRequestPermission(activity)) {
                 showPermissionExplanation(activity)
             } else {
@@ -38,16 +39,16 @@ class PermissionsUtil {
         }
     }
 
-    internal fun noPermission(activity: BaseActivity) =
-            ContextCompat.checkSelfPermission(activity, Manifest.permission.READ_SMS) != PackageManager.PERMISSION_GRANTED
+    internal fun hasSmsPermission(activity: BaseActivity) =
+            ContextCompat.checkSelfPermission(activity, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
     private fun showPermissionExplanation(activity: BaseActivity) =
-            activity.showSimpleError("Please allow permission after clicking ok", { requestPermission(activity) })
+            activity.showSimpleError("Please allow permission after clicking ok", { requestPermission(activity) }) // TODO can this leak?
 
     private fun shouldShowRequestPermission(activity: BaseActivity) =
-            ActivityCompat.shouldShowRequestPermissionRationale(activity, Manifest.permission.READ_SMS)
+            ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_SMS_PERMISSION)
 
     private fun requestPermission(activity: BaseActivity) =
-            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.READ_SMS), READ_SMS_PERMISSIONS_REQUEST)
+            ActivityCompat.requestPermissions(activity, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
 
 }
