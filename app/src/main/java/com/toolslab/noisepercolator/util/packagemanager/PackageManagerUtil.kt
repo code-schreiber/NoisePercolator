@@ -58,7 +58,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                     it.contains("sms", true) ||
                             it.contains("mms", true) || // i.e. com.android.mms
                             it.contains("message", true) ||
-                            it.contains("media", true)
+                            it.contains("media", true) && it != "com.android.providers.media"
                 }
 
         return when {

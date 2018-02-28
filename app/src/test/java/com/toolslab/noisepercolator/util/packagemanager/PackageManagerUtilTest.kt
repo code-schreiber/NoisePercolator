@@ -102,6 +102,16 @@ class PackageManagerUtilTest {
         result shouldEqual ""
     }
 
+    @Test
+    fun mediaProviderIsNoAnSmsApp() {
+        val packages = listOf(dummyApplicationInfo("com.android.providers.media"))
+        whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
+
+        val result = underTest.getDefaultSmsPackage()
+
+        result shouldEqual ""
+    }
+
     private fun dummyApplicationInfo(packageName: String): ApplicationInfo {
         val applicationInfo = ApplicationInfo()
         applicationInfo.packageName = packageName
