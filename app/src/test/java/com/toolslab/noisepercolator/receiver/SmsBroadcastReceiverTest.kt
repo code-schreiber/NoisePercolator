@@ -10,6 +10,7 @@ import com.toolslab.noisepercolator.filter.SmsFilter
 import com.toolslab.noisepercolator.notification.Notifier
 import org.amshove.kluent.shouldBeInRange
 import org.amshove.kluent.shouldEqual
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
@@ -134,6 +135,18 @@ class SmsBroadcastReceiverTest {
         val result = underTest.createIdFrom(number)
 
         result shouldEqual expected
+    }
+
+    // TODO: id should be the same for the same string
+    @Ignore("TODO: id should be the same for the same string")
+    @Test
+    fun idShouldBeTheSameForSameString() {
+        val number = "the same string"
+
+        val id = underTest.createIdFrom(number)
+        val id2 = underTest.createIdFrom(number)
+
+        id shouldEqual id2
     }
 
     @Test
