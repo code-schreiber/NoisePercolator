@@ -1,34 +1,36 @@
 package com.toolslab.noisepercolator.view.messages
 
 import android.annotation.TargetApi
-import android.content.ContentResolver
+import android.content.Context
 import android.net.Uri
 import android.provider.Telephony
 import android.support.annotation.VisibleForTesting
+import com.toolslab.noisepercolator.NoisePercolator
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.device.SdkChecker
 import timber.log.Timber
 
 
-class MessagesProvider(private val sdkChecker: SdkChecker = SdkChecker(),
+class MessagesProvider(private val context: Context = NoisePercolator.applicationContext(),
+                       private val sdkChecker: SdkChecker = SdkChecker(),
                        private val cursorToMessageConverter: CursorToMessageConverter = CursorToMessageConverter()) {
 
     @VisibleForTesting
     lateinit var smsUri: Uri // TODO there is a better way of testing without lateinit
 
-    fun getMessages(contentResolver: ContentResolver): List<Message> {
+    fun getMessages(): List<Message> {
         return if (sdkChecker.deviceIsKitkatOrAbove()) {
-            extractSmsAsString(contentResolver)
+            extractSmsAsString()
         } else {
-            extractSmsAsStringLegacy(contentResolver)
+            extractSmsAsStringLegacy()
         }
     }
 
     @TargetApi(SdkChecker.KITKAT)
-    private fun extractSmsAsString(contentResolver: ContentResolver): List<Message> {
+    private fun extractSmsAsString(): List<Message> {
         initSmsUri()
         val messages = mutableListOf<Message>()
-        val cursor = contentResolver.query(smsUri, null, null, null, null)
+        val cursor = context.contentResolver.query(smsUri, null, null, null, null)
         if (cursor.moveToFirst()) {
             Timber.d("$cursor.count.toString() sms in $smsUri")
             do {
@@ -39,10 +41,10 @@ class MessagesProvider(private val sdkChecker: SdkChecker = SdkChecker(),
         return messages.toList()
     }
 
-    private fun extractSmsAsStringLegacy(contentResolver: ContentResolver): List<Message> {
+    private fun extractSmsAsStringLegacy(): List<Message> {
         initSmsUri()
         val messages = mutableListOf<Message>()
-        val cursor = contentResolver.query(smsUri, null, null, null, null)
+        val cursor = context.contentResolver.query(smsUri, null, null, null, null)
         if (cursor.moveToFirst()) {
             val smsCount = cursor.count
             Timber.d("$smsCount sms in $smsUri")

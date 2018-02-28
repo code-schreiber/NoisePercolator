@@ -1,6 +1,7 @@
 package com.toolslab.noisepercolator.view.messages
 
 import android.content.ContentResolver
+import android.content.Context
 import android.database.Cursor
 import android.net.Uri
 import com.nhaarman.mockito_kotlin.mock
@@ -13,6 +14,7 @@ import org.junit.Test
 
 class MessagesProviderTest {
 
+    private val mockContext: Context = mock()
     private val mockContentResolver: ContentResolver = mock()
     private val mockUri: Uri = mock()
     private val mockCursor: Cursor = mock()
@@ -20,11 +22,12 @@ class MessagesProviderTest {
     private val mockSdkChecker: SdkChecker = mock()
     private val mockCursorToMessageConverter: CursorToMessageConverter = mock()
 
-    val underTest = MessagesProvider(mockSdkChecker, mockCursorToMessageConverter)
+    val underTest = MessagesProvider(mockContext, mockSdkChecker, mockCursorToMessageConverter)
 
     @Before
     fun setup() {
         underTest.smsUri = mockUri
+        whenever(mockContext.contentResolver).thenReturn(mockContentResolver)
         whenever(mockContentResolver.query(mockUri, null, null, null, null)).thenReturn(mockCursor)
         whenever(mockCursor.moveToFirst()).thenReturn(true)
         whenever(mockCursorToMessageConverter.convert(mockCursor)).thenReturn(mockMessage)
@@ -34,7 +37,7 @@ class MessagesProviderTest {
     fun getMessages() {
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(true)
 
-        val result = underTest.getMessages(mockContentResolver)
+        val result = underTest.getMessages()
 
         result.size shouldEqual 1
         result[0] shouldEqual mockMessage
@@ -44,7 +47,7 @@ class MessagesProviderTest {
     fun getMessagesLegacy() {
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
 
-        val result = underTest.getMessages(mockContentResolver)
+        val result = underTest.getMessages()
 
         result.size shouldEqual 1
         result[0] shouldEqual mockMessage
