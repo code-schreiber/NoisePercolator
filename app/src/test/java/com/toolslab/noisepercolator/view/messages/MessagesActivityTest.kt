@@ -2,10 +2,12 @@ package com.toolslab.noisepercolator.view.messages
 
 import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.amshove.kluent.shouldEqual
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.verify
 
@@ -16,6 +18,38 @@ class MessagesActivityTest {
     private val mockMessages: List<Message> = mock()
 
     private val underTest = MessagesActivity(mockPresenter, mockPermissionsUtil)
+
+    @Ignore("How to verify bind and unbind?")
+    @Test
+    fun viewBindsItself() {
+
+    }
+
+    @Test
+    fun onRequestPermissionsResultGranted() {
+        val requestCode = 0
+        val permissions = arrayOf<String>()
+        val grantResults = intArrayOf()
+        whenever(mockPermissionsUtil.isOnRequestPermissionsResultGranted(underTest, requestCode, permissions, grantResults))
+                .thenReturn(true)
+
+        underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        verify(mockPresenter).smsPermissionsGranted()
+    }
+
+    @Test
+    fun onRequestPermissionsResultDenied() {
+        val requestCode = 0
+        val permissions = arrayOf<String>()
+        val grantResults = intArrayOf()
+        whenever(mockPermissionsUtil.isOnRequestPermissionsResultGranted(underTest, requestCode, permissions, grantResults))
+                .thenReturn(false)
+
+        underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
+
+        verifyZeroInteractions(mockPresenter)
+    }
 
     @Test
     fun hasSmsPermission() {

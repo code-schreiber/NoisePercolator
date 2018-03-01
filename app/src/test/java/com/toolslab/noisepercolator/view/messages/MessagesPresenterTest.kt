@@ -1,17 +1,27 @@
 package com.toolslab.noisepercolator.view.messages
 
-import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.db.Persister
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
+import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyNoMoreInteractions
+import org.mockito.Mockito.*
 
 class MessagesPresenterTest {
+
+    companion object {
+        private val MESSAGES = listOf(dummyMessage(), dummyMessage())
+        private const val DEFAULT_SMS_APP_NAME = "DEFAULT_SMS_APP_NAME"
+        private const val EXPECTED_BUTTON_TEXT = "Open $DEFAULT_SMS_APP_NAME"
+        private const val NUMBER_OF_FILTERED_MESSAGES = 1
+        private val NUMBER_OF_MESSAGES = MESSAGES.size
+        private val EXPECTED_INFO_TEXT = "$NUMBER_OF_FILTERED_MESSAGES spam messages out of $NUMBER_OF_MESSAGES messages:"
+
+        private fun dummyMessage() = Message("", "", "", "")
+    }
 
     private val mockPackageManagerUtil: PackageManagerUtil = mock()
     private val mockMessagesProvider: MessagesProvider = mock()
@@ -20,26 +30,20 @@ class MessagesPresenterTest {
 
     private val underTest = MessagesPresenter(mockPackageManagerUtil, mockMessagesProvider, mockPersister)
 
+    @Before
+    fun setUp() {
+        whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
+        whenever(mockMessagesProvider.getMessages()).thenReturn(MESSAGES)
+        whenever(mockPersister.getNumberOfMessages()).thenReturn(NUMBER_OF_FILTERED_MESSAGES)
+    }
+
     @Test
     fun onBound() {
-        val defaultSmsAppName = "defaultSmsAppName"
-        val expectedButtonText = "Open $defaultSmsAppName"
-        val messages = listOf(dummyMessage(), dummyMessage())
-        val numberOfFilteredMessages = 1
-        val numberOfMessages = messages.size
-        val expectedInfoText = "$numberOfFilteredMessages spam messages out of $numberOfMessages messages:"
         whenever(mockView.hasSmsPermission()).thenReturn(true)
-        whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(defaultSmsAppName)
-        whenever(mockMessagesProvider.getMessages()).thenReturn(messages)
-        whenever(mockPersister.getNumberOfMessages()).thenReturn(numberOfFilteredMessages)
 
         underTest.onBound(mockView)
 
-        verify(mockView).hasSmsPermission()
-        verify(mockView).initDefaultSmsAppButton(expectedButtonText, any())//TODO how to test setOnClickListener?
-        verify(mockView).setInfoText(expectedInfoText)
-        verify(mockView).initMessagesList(messages)
-        verifyNoMoreInteractions(mockView)
+        verifyInitView()
     }
 
     @Test
@@ -54,12 +58,27 @@ class MessagesPresenterTest {
     }
 
     @Test
+    fun smsPermissionsGranted() {
+        underTest.bind(mockView)
+        reset(mockView)
+
+        underTest.smsPermissionsGranted()
+
+        verifyInitView()
+    }
+
+    @Test
     fun unbind() {
         underTest.unbind(mockView)
 
         verifyZeroInteractions(mockView)
     }
 
-    private fun dummyMessage() = Message("", "", "", "")
+    private fun verifyInitView() {
+//        verify(mockView).initDefaultSmsAppButton(EXPECTED_BUTTON_TEXT, any<() -> Unit>())//TODO how to test setOnClickListener?
+        verify(mockView).setInfoText(EXPECTED_INFO_TEXT)
+        verify(mockView).initMessagesList(MESSAGES)
+//        verifyNoMoreInteractions(mockView)
+    }
 
 }

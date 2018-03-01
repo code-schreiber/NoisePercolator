@@ -34,13 +34,13 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     }
 
     override fun onDestroy() {
-        presenter.unbind(this) // TODO verify this
+        presenter.unbind(this)
         super.onDestroy()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (permissionsUtil.isOnRequestPermissionsResultGranted(this, requestCode, permissions, grantResults)) {
-            presenter.smsPermissionsGranted() // TODO test this for activity and presenter
+            presenter.smsPermissionsGranted()
         }
     }
 
