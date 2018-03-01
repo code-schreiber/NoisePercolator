@@ -16,7 +16,7 @@ class MessagesProvider(private val context: Context = NoisePercolator.applicatio
                        private val cursorToMessageConverter: CursorToMessageConverter = CursorToMessageConverter()) {
 
     @VisibleForTesting
-    lateinit var smsUri: Uri // TODO there is a better way of testing without lateinit
+    lateinit var smsUri: Uri // TODO ASK there is a better way of testing without lateinit
 
     fun getMessages(): List<Message> {
         return if (sdkChecker.deviceIsKitkatOrAbove()) {

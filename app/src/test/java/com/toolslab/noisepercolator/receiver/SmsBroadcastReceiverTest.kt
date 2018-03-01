@@ -8,9 +8,6 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.db.FilteredOutSmsSaver
 import com.toolslab.noisepercolator.filter.SmsFilter
 import com.toolslab.noisepercolator.notification.Notifier
-import org.amshove.kluent.shouldBeInRange
-import org.amshove.kluent.shouldEqual
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.verify
 import org.mockito.Mockito.verifyZeroInteractions
@@ -65,93 +62,6 @@ class SmsBroadcastReceiverTest {
 
         verifyZeroInteractions(mockNotifier)
         verify(mockFilteredOutSmsSaver).saveFilteredOutSmsMessage(mockSmsMessage)
-    }
-
-    @Test
-    fun createIdFromNormalNumber() {
-        val number = "12"
-        val expected = 12
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    @Test
-    fun createIdFromMaxInt() {
-        val number = Int.MAX_VALUE.toString()
-        val expected = 147483647 // the last digits of Int max: 2 147483647
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    @Test
-    fun createIdFromBiggerThanMaxInt() {
-        val number = Long.MAX_VALUE.toString()
-        val expected = 854775807 // the last digits of Long max: 9223372036 854775807
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    @Test
-    fun createIdFromNumberContainingMinus() {
-        val number = "-12"
-        val expected = 12
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    @Test
-    fun createIdFromNumberContainingPlus() {
-        val number = "+12"
-        val expected = 12
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    @Test
-    fun createIdFromOnlyText() {
-        val number = "only text, no numbers"
-        whenever(mockSmsMessage.displayOriginatingAddress).thenReturn(number)
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldBeInRange IntRange(Int.MIN_VALUE, Int.MAX_VALUE) // any random number
-    }
-
-    @Test
-    fun createIdFromNumbersInSymbols() {
-        val number = "+„¡“¶¢[]|{}≠¿'«∑€®†Ω¨øπ•±å‚∂ƒ©ªº∆@œ123æ‘≤¥≈ç√∫~∞…–°!§$%&/(\n)=?"
-        val expected = 123
-
-        val result = underTest.createIdFrom(number)
-
-        result shouldEqual expected
-    }
-
-    // TODO: id should be the same for the same string
-    @Ignore("TODO: id should be the same for the same string")
-    @Test
-    fun idShouldBeTheSameForSameString() {
-        val number = "the same string"
-
-        val id = underTest.createIdFrom(number)
-        val id2 = underTest.createIdFrom(number)
-
-        id shouldEqual id2
-    }
-
-    @Test
-    fun parameterLessConstructorExists() {
-        SmsBroadcastReceiver(mockNotifier, mockFilteredOutSmsSaver) // TODO ASK how to test that it is possible to instantiate class without constructor parameters?
     }
 
 }

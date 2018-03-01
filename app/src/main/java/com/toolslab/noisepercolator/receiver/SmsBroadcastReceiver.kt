@@ -3,19 +3,19 @@ package com.toolslab.noisepercolator.receiver
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.support.annotation.VisibleForTesting
 import android.telephony.SmsMessage
 import com.toolslab.noisepercolator.db.FilteredOutSmsSaver
 import com.toolslab.noisepercolator.filter.SmsFilter
 import com.toolslab.noisepercolator.notification.Notifier
+import com.toolslab.noisepercolator.util.IdProvider
 import timber.log.Timber
-import java.util.*
 
 
 class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
                            private val filteredOutSmsSaver: FilteredOutSmsSaver = FilteredOutSmsSaver(),
                            private val smsMessagesConverter: SmsMessagesConverter = SmsMessagesConverter(),
-                           private val smsFilter: SmsFilter = SmsFilter())
+                           private val smsFilter: SmsFilter = SmsFilter(),
+                           private val idProvider: IdProvider = IdProvider())
     : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
@@ -40,22 +40,10 @@ class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
     }
 
     private fun postNotification(smsMessage: SmsMessage) {
-        val notificationId = createIdFrom(smsMessage.displayOriginatingAddress)
+        val notificationId = idProvider.createIdFrom(smsMessage.displayOriginatingAddress)
         val title = smsMessage.displayOriginatingAddress
         val text = smsMessage.displayMessageBody
         notifier.postNotification(notificationId, title, text)
-    }
-
-    @VisibleForTesting
-    fun createIdFrom(displayOriginatingAddress: String): Int {
-        val leaveOnlyNumbersRegex = "\\D+".toRegex()
-        val onlyNumbers = displayOriginatingAddress.replace(leaveOnlyNumbersRegex, "")
-        if (onlyNumbers.isNotEmpty()) {
-            val maxLength = Int.MAX_VALUE.toString().length - 1
-            val startIndex = Math.max(onlyNumbers.length, maxLength) - maxLength
-            return onlyNumbers.substring(startIndex).toInt()
-        }
-        return Random().nextInt()
     }
 
 }
