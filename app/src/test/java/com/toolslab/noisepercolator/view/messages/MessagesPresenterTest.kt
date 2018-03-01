@@ -3,7 +3,7 @@ package com.toolslab.noisepercolator.view.messages
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
-import com.toolslab.noisepercolator.db.Persister
+import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 import org.junit.Before
@@ -25,16 +25,16 @@ class MessagesPresenterTest {
 
     private val mockPackageManagerUtil: PackageManagerUtil = mock()
     private val mockMessagesProvider: MessagesProvider = mock()
-    private val mockPersister: Persister = mock()
+    private val mockDataProvider: DataProvider = mock()
     private val mockView: MessagesContract.View = mock()
 
-    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockMessagesProvider, mockPersister)
+    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockMessagesProvider, mockDataProvider)
 
     @Before
     fun setUp() {
         whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
         whenever(mockMessagesProvider.getMessages()).thenReturn(MESSAGES)
-        whenever(mockPersister.getNumberOfMessages()).thenReturn(NUMBER_OF_FILTERED_MESSAGES)
+        whenever(mockDataProvider.getNumberOfMessages()).thenReturn(NUMBER_OF_FILTERED_MESSAGES)
     }
 
     @Test

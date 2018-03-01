@@ -2,16 +2,19 @@ package com.toolslab.noisepercolator.db
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.support.annotation.VisibleForTesting
 import androidx.content.edit
 import com.toolslab.noisepercolator.NoisePercolator
 
-// TODO rename and test class
-
-class Persister(private val context: Context = NoisePercolator.applicationContext()) {
+class DataProvider(private val context: Context = NoisePercolator.applicationContext()) {
 
     companion object {
-        private const val SHARED_PREFERENCES_KEY = "SHARED_PREFERENCES_KEY"
-        private const val NUMBER_OF_MESSAGES_KEY = "NUMBER_OF_MESSAGES_KEY"
+
+        @VisibleForTesting
+        const val SHARED_PREFERENCES_KEY = "SHARED_PREFERENCES_KEY"
+
+        @VisibleForTesting
+        const val NUMBER_OF_MESSAGES_KEY = "NUMBER_OF_MESSAGES_KEY"
     }
 
     fun getNumberOfMessages(): Int {

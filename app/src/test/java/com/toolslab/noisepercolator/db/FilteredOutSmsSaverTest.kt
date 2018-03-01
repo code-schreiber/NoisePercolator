@@ -7,9 +7,9 @@ import org.junit.Test
 class FilteredOutSmsSaverTest {
 
     private val mockSmsMessage: SmsMessage = mock()
-    private val mockPersister: Persister = mock()
+    private val mockDataProvider: DataProvider = mock()
 
-    private val underTest: FilteredOutSmsSaver = FilteredOutSmsSaver(mockPersister)
+    private val underTest: FilteredOutSmsSaver = FilteredOutSmsSaver(mockDataProvider)
 
     @Test
     fun saveFilteredOutSmsMessage() {

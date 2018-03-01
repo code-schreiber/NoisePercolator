@@ -1,12 +1,12 @@
 package com.toolslab.noisepercolator.view.messages
 
-import com.toolslab.noisepercolator.db.Persister
+import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.mvp.BasePresenter
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 
 class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = PackageManagerUtil(),
                         private val messagesProvider: MessagesProvider = MessagesProvider(),
-                        private val persister: Persister = Persister())
+                        private val dataProvider: DataProvider = DataProvider())
     : BasePresenter<MessagesContract.View>(), MessagesContract.Presenter {
 
     override fun onBound(view: MessagesContract.View) {
@@ -25,7 +25,7 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
         val defaultSmsAppName = packageManagerUtil.getDefaultSmsAppName()
         val messages = messagesProvider.getMessages()
         val numberOfMessages = messages.size
-        val numberOfFilteredMessages = persister.getNumberOfMessages()
+        val numberOfFilteredMessages = dataProvider.getNumberOfMessages()
         view.initDefaultSmsAppButton("Open $defaultSmsAppName", { packageManagerUtil.launchDefaultSmsApp() })
         view.setInfoText("$numberOfFilteredMessages spam messages out of $numberOfMessages messages:")
         view.initMessagesList(messages)
