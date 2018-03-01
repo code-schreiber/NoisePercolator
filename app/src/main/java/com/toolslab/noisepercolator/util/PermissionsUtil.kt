@@ -3,20 +3,26 @@ package com.toolslab.noisepercolator.util
 import android.Manifest
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.support.annotation.CheckResult
+import android.support.annotation.VisibleForTesting
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
 import com.toolslab.noisepercolator.view.base.BaseActivity
 import timber.log.Timber
 
-// TODO test class
 class PermissionsUtil {
 
     companion object {
-        private const val READ_SMS_PERMISSIONS_REQUEST = 100
+
+        @VisibleForTesting
+        const val READ_SMS_PERMISSIONS_REQUEST = 100
+
         private const val READ_SMS_PERMISSION = Manifest.permission.READ_SMS
     }
 
-    internal fun isOnRequestPermissionsResultGranted(activity: BaseActivity, requestCode: Int, permissions: Array<String>, grantResults: IntArray): Boolean {
+    internal fun isOnRequestPermissionsResultGranted(activity: BaseActivity,
+                                                     requestCode: Int,
+                                                     permissions: Array<String>,
+                                                     grantResults: IntArray): Boolean {
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             // If request is cancelled, the result arrays are empty.
             if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
