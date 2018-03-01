@@ -25,7 +25,7 @@ class MessagesProviderTest {
     val underTest = MessagesProvider(mockContext, mockSdkChecker, mockCursorToMessageConverter)
 
     @Before
-    fun setup() {
+    fun setUp() {
         underTest.smsUri = mockUri
         whenever(mockContext.contentResolver).thenReturn(mockContentResolver)
         whenever(mockContentResolver.query(mockUri, null, null, null, null)).thenReturn(mockCursor)
