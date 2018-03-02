@@ -14,6 +14,8 @@ echo "deploy.sh: TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 
 echo "deploy.sh: Running gradle build"
 ./gradlew build
+echo "deploy.sh: Running gradle assembleAndroidTest"
+./gradlew assembleAndroidTest
 #echo "deploy.sh: Running gradle sonarqube"
 #./gradlew sonarqube
 echo "deploy.sh: app/build/outputs/apk/release now contains:"
