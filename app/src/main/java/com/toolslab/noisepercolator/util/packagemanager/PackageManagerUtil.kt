@@ -50,8 +50,9 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         }
     }
 
+    @VisibleForTesting
     @TargetApi(SdkChecker.KITKAT)
-    private fun getDefaultSmsPackageKitkat() = Telephony.Sms.getDefaultSmsPackage(context)
+    fun getDefaultSmsPackageKitkat() = Telephony.Sms.getDefaultSmsPackage(context)
 
     private fun getDefaultSmsPackageLegacy(): String {
         val packageNames = mutableListOf<String>()

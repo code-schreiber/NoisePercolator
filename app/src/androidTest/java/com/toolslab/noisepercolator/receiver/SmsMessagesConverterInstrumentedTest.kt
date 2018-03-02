@@ -1,7 +1,6 @@
 package com.toolslab.noisepercolator.receiver
 
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
 import android.support.test.runner.AndroidJUnit4
 import android.telephony.SmsMessage
 import junit.framework.Assert.assertEquals
@@ -47,15 +46,6 @@ class SmsMessagesConverterInstrumentedTest {
         val result = underTest.convertLegacy(intent.extras)
 
         assertMessageIsCorrect(result)
-    }
-
-    @Test
-    fun getDefaultSmsPackage() {
-        val expectedSmsPackage = "com.android.messaging"
-
-        val result = underTest.getDefaultSmsPackage(InstrumentationRegistry.getTargetContext())
-
-        assertEquals(expectedSmsPackage, result)
     }
 
     private fun assertMessageIsCorrect(result: List<SmsMessage>) {
