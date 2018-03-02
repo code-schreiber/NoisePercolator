@@ -19,7 +19,7 @@ class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
     : BroadcastReceiver() {
 
     override fun onReceive(context: Context, intent: Intent) {
-        Timber.d("Received intent: $intent.action")
+        Timber.d("Received intent: $intent")
         processIntent(intent)
     }
 
