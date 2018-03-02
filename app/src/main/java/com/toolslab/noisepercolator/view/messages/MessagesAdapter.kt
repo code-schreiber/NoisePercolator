@@ -9,9 +9,6 @@ import android.widget.TextView
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
 
-
-// TODO show only blocked messages
-// TODO show empty screen if no messages
 class MessagesAdapter(private val messages: List<Message>) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
