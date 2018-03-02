@@ -28,7 +28,7 @@ class SmsMessagesConverterInstrumentedTest {
     }
 
     @Test
-    fun extractFrom() {
+    fun convertFrom() {
         val result = underTest.convertFrom(intent)
 
         assertMessageIsCorrect(result)

@@ -13,7 +13,7 @@ class PackageManagerUtilInstrumentedTest {
 
     @Test
     fun getDefaultSmsPackageKitkat() {
-        val expectedSmsPackage = "com.android.messaging"
+        val expectedSmsPackage = "com.android.mms"
 
         val result = underTest.getDefaultSmsPackageKitkat()
 
