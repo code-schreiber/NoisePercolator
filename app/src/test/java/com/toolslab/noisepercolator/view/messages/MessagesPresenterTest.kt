@@ -20,20 +20,19 @@ class MessagesPresenterTest {
         private val NUMBER_OF_MESSAGES = MESSAGES.size
         private val EXPECTED_INFO_TEXT = "$NUMBER_OF_FILTERED_MESSAGES spam messages out of $NUMBER_OF_MESSAGES messages:"
 
-        private fun dummyMessage() = Message("", "", "", "")
+        private fun dummyMessage() = Message("", 0L, "", false, "")
     }
 
     private val mockPackageManagerUtil: PackageManagerUtil = mock()
-    private val mockMessagesProvider: MessagesProvider = mock()
     private val mockDataProvider: DataProvider = mock()
     private val mockView: MessagesContract.View = mock()
 
-    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockMessagesProvider, mockDataProvider)
+    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockDataProvider)
 
     @Before
     fun setUp() {
         whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
-        whenever(mockMessagesProvider.getMessages()).thenReturn(MESSAGES)
+        whenever(mockDataProvider.getMessages()).thenReturn(MESSAGES)
         whenever(mockDataProvider.getNumberOfMessages()).thenReturn(NUMBER_OF_FILTERED_MESSAGES)
     }
 
