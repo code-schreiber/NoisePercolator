@@ -38,12 +38,8 @@ class SmsMessagesConverter(private val sdkChecker: SdkChecker = SdkChecker()) {
     @VisibleForTesting
     @Suppress("DEPRECATION")
     fun convertLegacy(bundle: Bundle): List<SmsMessage> {
-        val smsMessages = mutableListOf<SmsMessage>()
         val messages = bundle.get(PDUS_KEY) as Array<*>
-        messages
-                .map { SmsMessage.createFromPdu(it as ByteArray) }
-                .mapTo(smsMessages) { it }
-        return smsMessages.toList()
+        return messages.map { SmsMessage.createFromPdu(it as ByteArray) }
     }
 
 }

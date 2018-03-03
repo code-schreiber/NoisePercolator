@@ -17,7 +17,7 @@ class SmsMessagesConverterTest {
     private val underTest: SmsMessagesConverter = SmsMessagesConverter(mockSdkChecker)
 
     @Test
-    fun extractEmptyExtrasLegacy() {
+    fun convertFromEmptyExtrasLegacy() {
         val pdus: Array<ByteArray> = emptyArray()
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
         whenever(mockIntent.extras).thenReturn(mockExtras)
@@ -29,7 +29,7 @@ class SmsMessagesConverterTest {
     }
 
     @Test
-    fun extractFromNoExtrasLegacy() {
+    fun convertFromNullExtrasLegacy() {
         whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
         whenever(mockIntent.extras).thenReturn(null)
 
