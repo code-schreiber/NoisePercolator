@@ -12,10 +12,10 @@ import com.toolslab.noisepercolator.model.Message
 class MessagesAdapter(private val messages: List<Message>) : RecyclerView.Adapter<MessagesAdapter.ViewHolder>() {
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        val address: TextView = view.findViewById(R.id.item_message_address)
-        val date: TextView = view.findViewById(R.id.item_message_date)
-        val body: TextView = view.findViewById(R.id.item_message_body)
-        val spam: View = view.findViewById(R.id.item_message_spam)
+        internal val address: TextView = view.findViewById(R.id.item_message_address)
+        internal val date: TextView = view.findViewById(R.id.item_message_date)
+        internal val body: TextView = view.findViewById(R.id.item_message_body)
+        internal val spam: View = view.findViewById(R.id.item_message_spam)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -23,15 +23,15 @@ class MessagesAdapter(private val messages: List<Message>) : RecyclerView.Adapte
         return ViewHolder(view)
     }
 
-    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+    override fun onBindViewHolder(viewHolder: ViewHolder, position: Int) {
         val message = messages[position]
-        holder.address.text = message.address
-        holder.date.text = message.date
-        holder.body.text = message.body + "\n" + "Debuginfo\n\t" + message.debugInfo.replace(";", "\n\t")
+        viewHolder.address.text = message.address
+        viewHolder.date.text = message.getFormattedDate()
+        viewHolder.body.text = message.body + "\n" + "Debuginfo\n\t" + message.debugInfo.replace(";", "\n\t")
         if (message.spam) {
-            holder.spam.visibility = View.VISIBLE
+            viewHolder.spam.visibility = View.VISIBLE
         } else {
-            holder.spam.visibility = View.INVISIBLE
+            viewHolder.spam.visibility = View.INVISIBLE
         }
     }
 

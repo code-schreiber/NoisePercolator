@@ -1,11 +1,14 @@
 package com.toolslab.noisepercolator.model
 
-class Message(val address: String, val date: String, val body: String, val debugInfo: String) {
+import java.text.DateFormat
+import java.util.*
 
-    var spam: Boolean = false
+class Message(internal val address: String,
+              internal val date: Long,
+              internal val body: String,
+              internal val spam: Boolean = false,
+              internal val debugInfo: String) {
 
-    fun markAsSpam() {
-        spam = true
-    }
+    fun getFormattedDate(): String = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT).format(Date(date))
 
 }
