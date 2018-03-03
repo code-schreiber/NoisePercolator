@@ -1,15 +1,14 @@
 package com.toolslab.noisepercolator.db
 
 import android.telephony.SmsMessage
-import timber.log.Timber
+import com.toolslab.noisepercolator.view.messages.MessageConverter
 
-class FilteredOutSmsSaver(private val dataProvider: DataProvider = DataProvider()) {
+class FilteredOutSmsSaver(private val dataProvider: DataProvider = DataProvider(),
+                          private val messageConverter: MessageConverter = MessageConverter()) {
 
     fun saveFilteredOutSmsMessage(filteredOutSmsMessage: SmsMessage) {
-        // TODO Save information about messages that where filtered out in a way that they can be shown
-        Timber.d("TODO Save information about message that was filtered out: $filteredOutSmsMessage.displayMessageBody")
-        val numberOfMessages = dataProvider.getNumberOfMessages()
-        dataProvider.setNumberOfMessages(numberOfMessages + 1)
+        val message = messageConverter.convert(filteredOutSmsMessage)
+        dataProvider.saveMessage(message)
     }
 
 }
