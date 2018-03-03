@@ -28,11 +28,11 @@ class SmsBroadcastReceiver(private var notifier: Notifier = Notifier(),
         if (smsMessages.isNotEmpty()) {
             // Show notification for all messages that where not filtered out
             smsMessages
-                    .filter { smsFilter.shouldNotify(it) }
+                    .filter { smsFilter.isNotSpam(it) }
                     .forEach { postNotification(it) }
 
             // Save information about messages that where filtered out
-            smsMessages.filter { !smsFilter.shouldNotify(it) }
+            smsMessages.filter { !smsFilter.isNotSpam(it) }
                     .forEach { filteredOutSmsSaver.saveFilteredOutSmsMessage(it) }
         } else {
             Timber.e("No messages in intent")

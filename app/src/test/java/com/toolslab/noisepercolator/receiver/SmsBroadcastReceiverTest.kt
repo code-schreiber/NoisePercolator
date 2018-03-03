@@ -45,7 +45,7 @@ class SmsBroadcastReceiverTest {
         whenever(mockSmsMessage.displayOriginatingAddress).thenReturn(title)
         whenever(mockSmsMessage.displayMessageBody).thenReturn(text)
         whenever(mockSmsMessagesConverter.convertFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
-        whenever(mockSmsFilter.shouldNotify(mockSmsMessage)).thenReturn(true)
+        whenever(mockSmsFilter.isNotSpam(mockSmsMessage)).thenReturn(true)
 
         underTest.onReceive(mockContext, mockIntent)
 
@@ -56,7 +56,7 @@ class SmsBroadcastReceiverTest {
     @Test
     fun onReceiveNotNotifying() {
         whenever(mockSmsMessagesConverter.convertFrom(mockIntent)).thenReturn(listOf(mockSmsMessage))
-        whenever(mockSmsFilter.shouldNotify(mockSmsMessage)).thenReturn(false)
+        whenever(mockSmsFilter.isNotSpam(mockSmsMessage)).thenReturn(false)
 
         underTest.onReceive(mockContext, mockIntent)
 
