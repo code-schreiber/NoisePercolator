@@ -13,19 +13,19 @@ class SmsFilterTest {
     private val underTest: SmsFilter = SmsFilter()
 
     @Test
-    fun shouldNotify() {
+    fun isSpam() {
         whenever(mockSmsMessage.displayMessageBody).thenReturn("another word")
 
-        val result = underTest.shouldNotify(mockSmsMessage)
+        val result = underTest.isNotSpam(mockSmsMessage)
 
         result shouldEqual true
     }
 
     @Test
-    fun shouldNotNotify() {
+    fun isNotSpam() {
         whenever(mockSmsMessage.displayMessageBody).thenReturn("a keyword")
 
-        val result = underTest.shouldNotify(mockSmsMessage)
+        val result = underTest.isNotSpam(mockSmsMessage)
 
         result shouldEqual false
     }
