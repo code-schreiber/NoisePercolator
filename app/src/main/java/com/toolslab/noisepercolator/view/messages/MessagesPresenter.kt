@@ -24,9 +24,8 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
         val defaultSmsAppName = packageManagerUtil.getDefaultSmsAppName()
         val messages = dataProvider.getMessages()
         val numberOfMessages = messages.size
-        val numberOfFilteredMessages = dataProvider.getNumberOfMessages()
         val defaultSmsAppButtonText = "Open $defaultSmsAppName"
-        val infoText = "$numberOfFilteredMessages spam messages out of $numberOfMessages messages:"
+        val infoText = "$numberOfMessages spam messages"
 
         view.initDefaultSmsAppButton(defaultSmsAppButtonText, { packageManagerUtil.launchDefaultSmsApp() })
         view.setInfoText(infoText)

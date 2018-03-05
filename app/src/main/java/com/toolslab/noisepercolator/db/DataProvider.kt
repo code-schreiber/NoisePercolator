@@ -18,21 +18,7 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
         const val SHARED_PREFERENCES_KEY = "SHARED_PREFERENCES_KEY"
 
         @VisibleForTesting
-        const val NUMBER_OF_MESSAGES_KEY = "NUMBER_OF_MESSAGES_KEY"
-
-        @VisibleForTesting
         const val MESSAGES_KEY = "MESSAGES_KEY"
-    }
-
-    @CheckResult
-    fun getNumberOfMessages(): Int {
-        return getInt(NUMBER_OF_MESSAGES_KEY, 0)
-    }
-
-    fun setNumberOfMessages(numberOfMessages: Int) {
-        getPreferences().edit {
-            putInt(NUMBER_OF_MESSAGES_KEY, numberOfMessages)
-        }
     }
 
     @CheckResult
@@ -43,7 +29,7 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
 
     @CheckResult
     fun getMessagesStringSet(): MutableSet<String> {
-        return getPreferences().getStringSet(MESSAGES_KEY, emptySet())
+        return getPreferences().getStringSet(MESSAGES_KEY, emptySet()).toMutableSet()
     }
 
     fun saveMessage(message: Message) {

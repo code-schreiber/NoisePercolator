@@ -16,9 +16,8 @@ class MessagesPresenterTest {
         private val MESSAGES = listOf(dummyMessage(), dummyMessage())
         private const val DEFAULT_SMS_APP_NAME = "DEFAULT_SMS_APP_NAME"
         private const val EXPECTED_BUTTON_TEXT = "Open $DEFAULT_SMS_APP_NAME"
-        private const val NUMBER_OF_FILTERED_MESSAGES = 1
         private val NUMBER_OF_MESSAGES = MESSAGES.size
-        private val EXPECTED_INFO_TEXT = "$NUMBER_OF_FILTERED_MESSAGES spam messages out of $NUMBER_OF_MESSAGES messages:"
+        private val EXPECTED_INFO_TEXT = "$NUMBER_OF_MESSAGES spam messages"
 
         private fun dummyMessage() = Message("", 0L, "", false, "")
     }
@@ -33,7 +32,6 @@ class MessagesPresenterTest {
     fun setUp() {
         whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
         whenever(mockDataProvider.getMessages()).thenReturn(MESSAGES)
-        whenever(mockDataProvider.getNumberOfMessages()).thenReturn(NUMBER_OF_FILTERED_MESSAGES)
     }
 
     @Test

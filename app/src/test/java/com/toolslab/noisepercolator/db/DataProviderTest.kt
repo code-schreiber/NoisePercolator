@@ -14,9 +14,8 @@ import org.mockito.Mockito.inOrder
 class DataProviderTest {
 
     companion object {
-        private const val A_NUMBER = 123
+        private const val MESSAGE_AS_STRING = "a message"
         private val MESSAGE = Message("", 0L, "", false, "")
-        private val MESSAGE_AS_STRING = "a message"
         private val MESSAGES = setOf(MESSAGE_AS_STRING)
     }
 
@@ -33,32 +32,6 @@ class DataProviderTest {
         whenever(mockSharedPreferences.edit()).thenReturn(mockEditor)
         whenever(mockMessageConverter.convert(MESSAGE)).thenReturn(MESSAGE_AS_STRING)
         whenever(mockMessageConverter.convert(MESSAGE_AS_STRING)).thenReturn(MESSAGE)
-    }
-
-    @Test
-    fun getNumberOfMessages() {
-        whenever(mockSharedPreferences.getInt(DataProvider.NUMBER_OF_MESSAGES_KEY, 0)).thenReturn(A_NUMBER)
-
-        val result = underTest.getNumberOfMessages()
-
-        result shouldEqual A_NUMBER
-    }
-
-    @Test
-    fun getNumberOfMessagesDefault() {
-        val result = underTest.getNumberOfMessages()
-
-        result shouldEqual 0
-    }
-
-    @Test
-    fun setNumberOfMessages() {
-        underTest.setNumberOfMessages(A_NUMBER)
-
-        inOrder(mockEditor).apply {
-            verify(mockEditor).putInt(DataProvider.NUMBER_OF_MESSAGES_KEY, A_NUMBER)
-            verify(mockEditor).apply()
-        }
     }
 
     @Test
