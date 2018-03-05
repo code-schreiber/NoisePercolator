@@ -1,8 +1,26 @@
 package com.toolslab.noisepercolator.filter
 
+import android.support.annotation.VisibleForTesting
 import android.telephony.SmsMessage
 
 class SmsFilter {
+
+    companion object {
+
+        @VisibleForTesting
+        val SPAM_KEYWORDS = listOf(
+                "@",
+                "bit.ly",
+                "tinyurl.com",
+                ".com",
+                "ld.com",
+                "jsagh.com",
+                "psiuoh.com",
+                "ysdrai.com",
+                "qawrrw.com",
+                "qqldgf.com",
+                "eatezd.com")
+    }
 
     fun isNotSpam(smsMessage: SmsMessage): Boolean {
         return !isSpam(smsMessage)
@@ -12,6 +30,8 @@ class SmsFilter {
         return bodyContainsSpam(smsMessage.displayMessageBody)
     }
 
-    private fun bodyContainsSpam(body: String) = body.contains("a keyword")
+    private fun bodyContainsSpam(body: String): Boolean {
+        return SPAM_KEYWORDS.any { body.contains(it) }
+    }
 
 }

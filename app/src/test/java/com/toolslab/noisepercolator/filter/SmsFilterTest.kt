@@ -8,26 +8,54 @@ import org.junit.Test
 
 class SmsFilterTest {
 
+    companion object {
+        const val A_SMS_BODY = "another word"
+    }
+
     private val mockSmsMessage: SmsMessage = mock()
 
     private val underTest: SmsFilter = SmsFilter()
 
     @Test
+    fun isSpamForKeywords() {
+        for (keyword in SmsFilter.SPAM_KEYWORDS) {
+            whenever(mockSmsMessage.displayMessageBody).thenReturn(keyword)
+
+            val isSpam = underTest.isSpam(mockSmsMessage)
+
+            isSpam shouldEqual true
+        }
+    }
+
+    @Test
+    fun isNotSpamForKeywords() {
+        for (keyword in SmsFilter.SPAM_KEYWORDS) {
+            whenever(mockSmsMessage.displayMessageBody).thenReturn(keyword)
+
+            val isNotSpam = underTest.isNotSpam(mockSmsMessage)
+
+            isNotSpam shouldEqual false
+        }
+    }
+
+    @Test
     fun isSpam() {
-        whenever(mockSmsMessage.displayMessageBody).thenReturn("another word")
+        whenever(mockSmsMessage.displayMessageBody).thenReturn(A_SMS_BODY)
 
-        val result = underTest.isNotSpam(mockSmsMessage)
+        val isSpam = underTest.isSpam(mockSmsMessage)
 
-        result shouldEqual true
+        isSpam shouldEqual false
     }
 
     @Test
     fun isNotSpam() {
-        whenever(mockSmsMessage.displayMessageBody).thenReturn("a keyword")
+        whenever(mockSmsMessage.displayMessageBody).thenReturn(A_SMS_BODY)
 
-        val result = underTest.isNotSpam(mockSmsMessage)
+        val isNotSpam = underTest.isNotSpam(mockSmsMessage)
 
-        result shouldEqual false
+        isNotSpam shouldEqual true
+
+
     }
 
 }
