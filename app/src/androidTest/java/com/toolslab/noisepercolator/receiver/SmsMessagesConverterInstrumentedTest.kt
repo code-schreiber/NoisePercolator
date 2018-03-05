@@ -49,11 +49,11 @@ class SmsMessagesConverterInstrumentedTest {
     }
 
     private fun assertMessageIsCorrect(result: List<SmsMessage>) {
+        assertEquals(EXPECTED_PDUS_LIST_SIZE, result.size)
         assertEquals(EXPECTED_MESSAGE, result[0].messageBody)
         assertEquals(EXPECTED_MESSAGE, result[0].displayMessageBody)
         assertEquals(EXPECTED_ADDRESS, result[0].originatingAddress)
         assertEquals(EXPECTED_ADDRESS, result[0].displayOriginatingAddress)
-        assertEquals(EXPECTED_PDUS_LIST_SIZE, result.size)
     }
 
 }
