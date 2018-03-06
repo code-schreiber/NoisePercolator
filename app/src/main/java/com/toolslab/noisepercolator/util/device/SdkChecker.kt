@@ -4,12 +4,15 @@ import android.os.Build
 
 class SdkChecker {
 
-    companion object {
-        const val OREO = Build.VERSION_CODES.O
+    internal companion object {
+        internal const val OREO = Build.VERSION_CODES.O
+        internal const val NOUGAT = Build.VERSION_CODES.N
         internal const val KITKAT = Build.VERSION_CODES.KITKAT
     }
 
     fun deviceIsOreoOrAbove(): Boolean = deviceSdk() >= OREO
+
+    fun deviceIsNougatOrAbove(): Boolean = deviceSdk() >= NOUGAT
 
     fun deviceIsKitkatOrAbove(): Boolean = deviceSdk() >= KITKAT
 

@@ -30,6 +30,6 @@ class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker()) {
                 .build()
     }
 
-    private fun getSmallIcon() = if (sdkChecker.deviceIsKitkatOrAbove()) SMALL_ICON else SMALL_ICON_LEGACY
+    private fun getSmallIcon() = if (sdkChecker.deviceIsNougatOrAbove()) SMALL_ICON else SMALL_ICON_LEGACY
 
 }

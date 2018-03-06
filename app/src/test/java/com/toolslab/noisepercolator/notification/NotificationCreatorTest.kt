@@ -7,7 +7,6 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.util.device.SdkChecker
-import org.amshove.kluent.shouldBe
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
 import org.junit.Test
@@ -35,7 +34,7 @@ class NotificationCreatorTest {
 
     @Test
     fun setNotificationAttributes() {
-        whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(true)
+        whenever(mockSdkChecker.deviceIsNougatOrAbove()).thenReturn(true)
 
         val notification = underTest.setNotificationAttributes(mockBuilder, TITLE, TEXT)
 
@@ -48,7 +47,7 @@ class NotificationCreatorTest {
 
     @Test
     fun setNotificationAttributesLegacy() {
-        whenever(mockSdkChecker.deviceIsKitkatOrAbove()).thenReturn(false)
+        whenever(mockSdkChecker.deviceIsNougatOrAbove()).thenReturn(false)
 
         val notification = underTest.setNotificationAttributes(mockBuilder, TITLE, TEXT)
 
@@ -57,7 +56,6 @@ class NotificationCreatorTest {
         verify(mockBuilder).setContentText(TEXT)
 
         notification shouldEqual mockNotification
-        notification shouldBe mockNotification // DELETE ME
     }
 
 }
