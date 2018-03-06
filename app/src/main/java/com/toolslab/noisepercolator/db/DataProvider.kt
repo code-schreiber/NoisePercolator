@@ -27,9 +27,10 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
         return messagesAsStringSet.map { messageConverter.convert(it) }
     }
 
+    @VisibleForTesting
     @CheckResult
     fun getMessagesStringSet(): MutableSet<String> {
-        return getPreferences().getStringSet(MESSAGES_KEY, emptySet()).toMutableSet()
+        return getPreferences().getStringSet(MESSAGES_KEY, mutableSetOf())
     }
 
     fun saveMessage(message: Message) {
