@@ -35,6 +35,8 @@ dependencies {
     implementation "com.android.support.constraint:constraint-layout:$versions.constraintLayout"
     implementation "androidx.core:core-ktx:$versions.ktx"
 
+    implementation "com.google.code.gson:gson:$versions.gson"
+
     implementation "com.jakewharton.timber:timber:$versions.timber"
 
     // Tests

@@ -11,9 +11,18 @@ class MessageConverterTest {
 
     private companion object {
         private const val ADDRESS = "an address"
-        private const val DATE = "946681199000"
         private const val DATE_IN_MILLIS = 946681199000
         private const val BODY = "a message body"
+        private const val SPAM = true
+        private const val DEBUG_INFO = "a debug info"
+        private val MESSAGE = Message(ADDRESS, DATE_IN_MILLIS, BODY, SPAM, DEBUG_INFO)
+        private const val MESSAGE_AS_JSON_STRING = "{" +
+                "\"address\":\"" + ADDRESS + "\"," +
+                "\"date\":" + DATE_IN_MILLIS + "," +
+                "\"body\":\"" + BODY + "\"," +
+                "\"spam\":" + SPAM + "," +
+                "\"debugInfo\":\"" + DEBUG_INFO +
+                "\"}"
     }
 
     private val mockSmsMessage: SmsMessage = mock()
@@ -37,63 +46,36 @@ class MessageConverterTest {
 
     @Test
     fun convertMessage() {
-        val message = Message(ADDRESS, DATE_IN_MILLIS, BODY, true, "a debug info")
+        val result = underTest.convert(MESSAGE)
 
-        val result = underTest.convert(message)
-
-        result shouldEqual ADDRESS + "_SEPARATOR_" +
-                DATE + "_SEPARATOR_" +
-                BODY + "_SEPARATOR_" +
-                true + "_SEPARATOR_" +
-                "a debug info" + "_SEPARATOR_"
+        result shouldEqual MESSAGE_AS_JSON_STRING
     }
 
     @Test
     fun convertString() {
-        val input = ADDRESS + "_SEPARATOR_" +
-                DATE + "_SEPARATOR_" +
-                BODY + "_SEPARATOR_" +
-                true + "_SEPARATOR_" +
-                "a debug info" + "_SEPARATOR_"
+        val result = underTest.convert(MESSAGE_AS_JSON_STRING)
 
-        val result = underTest.convert(input)
-
-        result.apply {
-            address shouldEqual ADDRESS
-            date shouldEqual DATE_IN_MILLIS
-            body shouldEqual BODY
-            spam shouldEqual true
-        }
+        result shouldEqual MESSAGE
     }
 
     @Test
     fun convertToStringAndBack() {
-        val input = Message(ADDRESS, DATE_IN_MILLIS, BODY, true, "a debug info")
+        val originalInput = MESSAGE
 
-        val messageAsString = underTest.convert(input)
+        val messageAsString = underTest.convert(originalInput)
         val result = underTest.convert(messageAsString)
 
-        result.apply {
-            address shouldEqual input.address
-            date shouldEqual input.date
-            body shouldEqual input.body
-            spam shouldEqual input.spam
-            debugInfo shouldEqual input.debugInfo
-        }
+        result shouldEqual originalInput
     }
 
     @Test
     fun convertToMessageAndBack() {
-        val input = ADDRESS + "_SEPARATOR_" +
-                DATE + "_SEPARATOR_" +
-                BODY + "_SEPARATOR_" +
-                true + "_SEPARATOR_" +
-                "a debug info" + "_SEPARATOR_"
+        val originalInput = MESSAGE_AS_JSON_STRING
 
-        val message = underTest.convert(input)
+        val message = underTest.convert(originalInput)
         val result = underTest.convert(message)
 
-        result shouldEqual input
+        result shouldEqual originalInput
     }
 
 }
