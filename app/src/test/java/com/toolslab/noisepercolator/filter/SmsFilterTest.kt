@@ -89,9 +89,7 @@ class SmsFilterTest {
         val mockSmsMessages = mutableListOf<SmsMessage>()
         for (parsedSms in XmlParser().parseSpamMessages()) {
             val mockSms: SmsMessage = mock()
-            whenever(mockSms.protocolIdentifier).thenReturn(parsedSms.protocol)
             whenever(mockSms.displayOriginatingAddress).thenReturn(parsedSms.address)
-            whenever(mockSms.timestampMillis).thenReturn(parsedSms.date)
             whenever(mockSms.displayMessageBody).thenReturn(parsedSms.body)
             mockSmsMessages.add(mockSms)
         }
