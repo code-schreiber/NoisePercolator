@@ -19,7 +19,8 @@ class SmsFilter {
                 "ysdrai.com",
                 "qawrrw.com",
                 "qqldgf.com",
-                "eatezd.com")
+                "eatezd.com",
+                "Mastercard")
     }
 
     fun isNotSpam(smsMessage: SmsMessage): Boolean {
@@ -31,7 +32,7 @@ class SmsFilter {
     }
 
     private fun bodyContainsSpam(body: String): Boolean {
-        return SPAM_KEYWORDS.any { body.contains(it) }
+        return SPAM_KEYWORDS.any { body.contains(it, true) }
     }
 
 }

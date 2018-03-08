@@ -5,11 +5,13 @@ import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
+import kotlin.test.assertEquals
 
 class SmsFilterTest {
 
     companion object {
         const val A_SMS_BODY = "another word"
+        const val A_SPAM_SMS_BODY = "bit.ly"
     }
 
     private val mockSmsMessage: SmsMessage = mock()
@@ -54,8 +56,47 @@ class SmsFilterTest {
         val isNotSpam = underTest.isNotSpam(mockSmsMessage)
 
         isNotSpam shouldEqual true
+    }
 
+    @Test
+    fun isSpamUpperCase() {
+        whenever(mockSmsMessage.displayMessageBody).thenReturn(A_SPAM_SMS_BODY.toUpperCase())
 
+        val isSpam = underTest.isSpam(mockSmsMessage)
+
+        isSpam shouldEqual true
+    }
+
+    @Test
+    fun isSpamLowerCase() {
+        whenever(mockSmsMessage.displayMessageBody).thenReturn(A_SPAM_SMS_BODY.toLowerCase())
+
+        val isSpam = underTest.isSpam(mockSmsMessage)
+
+        isSpam shouldEqual true
+    }
+
+    @Test
+    fun testSpamSmsList() {
+        val spamMessages: List<SmsMessage> = getSpamMessages()
+        for (spamMessage in spamMessages) {
+            val smsBody = spamMessage.displayMessageBody
+            assertEquals(true, underTest.isSpam(spamMessage), "$smsBody should be spam")
+        }
+    }
+
+    private fun getSpamMessages(): List<SmsMessage> {
+        val mockSmsMessages = mutableListOf<SmsMessage>()
+        for (parsedSms in XmlParser().parseSpamMessages()) {
+            val mockSms: SmsMessage = mock()
+            whenever(mockSms.protocolIdentifier).thenReturn(parsedSms.protocol)
+            whenever(mockSms.displayOriginatingAddress).thenReturn(parsedSms.address)
+            whenever(mockSms.timestampMillis).thenReturn(parsedSms.date)
+            whenever(mockSms.displayMessageBody).thenReturn(parsedSms.body)
+            mockSmsMessages.add(mockSms)
+        }
+        return mockSmsMessages
     }
 
 }
+
