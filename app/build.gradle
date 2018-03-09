@@ -15,10 +15,10 @@ android {
 
     signingConfigs {
         releaseConfig {
-            keyAlias System.getenv(RELEASE_KEY_ALIAS)
-            keyPassword System.getenv(RELEASE_KEY_PASSWORD)
+            keyAlias System.getenv("RELEASE_KEY_ALIAS")
+            keyPassword System.getenv("RELEASE_KEY_PASSWORD")
             storeFile file("../secrets/keystore.jks")
-            storePassword System.getenv(RELEASE_KEYSTORE_PASSWORD)
+            storePassword System.getenv("RELEASE_KEYSTORE_PASSWORD")
         }
     }
 
