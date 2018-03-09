@@ -1,0 +1,6 @@
+How much is your time worth? ⏰🕰⌚⏲⏳⌛
+A simple SMS filter 💬📨📮
+
+This app is open source and can be found at <a href="https://github.com/code-schreiber/NoisePercolator">GitHub </a> https://github.com/code-schreiber/NoisePercolator
+
+Become an early access tester at <a href="https://play.google.com/apps/testing/com.toolslab.noisepercolator">Google Play </a> https://play.google.com/apps/testing/com.toolslab.noisepercolator
