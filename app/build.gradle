@@ -3,21 +3,31 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 
 android {
-    compileSdkVersion toolVersions.compileSdkVersion
-
     defaultConfig {
         applicationId "com.toolslab.noisepercolator"
         minSdkVersion toolVersions.minSdkVersion
         targetSdkVersion toolVersions.targetSdkVersion
+        compileSdkVersion toolVersions.compileSdkVersion
         versionCode toolVersions.versionCode
         versionName toolVersions.versionName
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
+    signingConfigs {
+        releaseConfig {
+            keyAlias System.getenv(RELEASE_KEY_ALIAS)
+            keyPassword System.getenv(RELEASE_KEY_PASSWORD)
+            storeFile file("../secrets/keystore.jks")
+            storePassword System.getenv(RELEASE_KEYSTORE_PASSWORD)
+        }
+    }
+
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.releaseConfig
         }
     }
 

@@ -32,14 +32,14 @@ elif [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
 elif [ "$TRAVIS_BRANCH" != "$EXPECTED_TRAVIS_BRANCH" ]; then
   echo "deploy.sh: Skipping deployment: wrong branch. Expected '$EXPECTED_TRAVIS_BRANCH' but was '$TRAVIS_BRANCH'."
 else
-#  echo "deploy.sh: Deploying to Google Play"
+  echo "deploy.sh: Deploying to Google Play"
 #  echo "deploy.sh: Running gradle firebaseUploadReleaseProguardMapping"
 #  ./gradlew firebaseUploadReleaseProguardMapping
 #  cd ..
-#  echo "deploy.sh: Running fastlane supply"
-#  fastlane supply --version
-#  fastlane supply run --json_key dev-console-api-private-key.json --package_name com.toolslab. --apk app/build/outputs/apk/release/mobile-release.apk --track alpha
-#  echo "deploy.sh: Deployed to Google Play"
+  echo "deploy.sh: Running fastlane supply"
+  fastlane supply --version
+  fastlane supply run --json_key dev-console-api-private-key.json --package_name com.toolslab.noisepercolator --apk app/build/outputs/apk/release/app-release.apk --track alpha
+  echo "deploy.sh: Deployed to Google Play"
   echo "Thank you, come again."
   exit $?
 fi
