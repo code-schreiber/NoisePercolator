@@ -19,9 +19,15 @@ class MessagesActivityTest {
 
     private val underTest = MessagesActivity(mockPresenter, mockPermissionsUtil)
 
-    @Ignore("How to verify bind and unbind?")
+    @Ignore("How to verify bind?")
     @Test
     fun viewBindsItself() {
+
+    }
+
+    @Ignore("How to verify unbind?")
+    @Test
+    fun viewUnbindsItself() {
 
     }
 
