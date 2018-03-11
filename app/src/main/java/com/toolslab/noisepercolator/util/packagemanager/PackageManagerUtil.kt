@@ -4,7 +4,6 @@ import android.annotation.TargetApi
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
-import android.provider.Settings
 import android.provider.Telephony
 import android.support.annotation.VisibleForTesting
 import com.toolslab.noisepercolator.NoisePercolator
@@ -52,7 +51,9 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
 
     @VisibleForTesting
     @TargetApi(SdkChecker.KITKAT)
-    fun getDefaultSmsPackageKitkat() = Telephony.Sms.getDefaultSmsPackage(context)
+    fun getDefaultSmsPackageKitkat(): String {
+        return Telephony.Sms.getDefaultSmsPackage(context) ?: ""
+    }
 
     private fun getDefaultSmsPackageLegacy(): String {
         val packageNames = mutableListOf<String>()
@@ -60,17 +61,16 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         packages
                 .map { it.packageName }
                 .filterTo(packageNames) {
-                    it.contains("sms", true) ||
+                    it.contains("sms", true) && it != "com.android.smspush" ||
                             it.contains("mms", true) || // i.e. com.android.mms
                             it.contains("message", true) ||
                             it.contains("messaging", true) ||
-                            it.contains("media", true) && it != "com.android.providers.media"
+                            it.contains("media", true) && it != "com.android.providers.media" && it != "com.sec.android.nearby.mediaserver"
                 }
 
         return when {
             packageNames.size < 1 -> {
                 Timber.e("No messaging apps found")
-//                getDefaultSmsPackageLegacyFallback()
                 ""
             }
             packageNames.size == 1 -> {
@@ -83,19 +83,6 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         }
     }
 
-    // TODO test method on different devices
-    private fun getDefaultSmsPackageLegacyFallback(): String {
-        val name = "sms_default_application" // Taken from Settings.Secure.SMS_DEFAULT_APPLICATION
-        val defaultSmsPackage = Settings.Secure.getString(context.contentResolver, name)
-        return if (defaultSmsPackage == null) {
-            Timber.e("getDefaultSmsPackageLegacyFallback failed to find defaultSmsPackage")
-            ""
-        } else {
-            defaultSmsPackage
-        }
-    }
-
-    // TODO test method on different devices
     private fun openDefaultSmsPackageFallback() {
         val type = "vnd.android-dir/mms-sms"
         val intent = Intent(Intent.ACTION_MAIN)

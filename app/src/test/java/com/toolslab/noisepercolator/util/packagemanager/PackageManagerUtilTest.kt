@@ -99,18 +99,12 @@ class PackageManagerUtilTest {
     }
 
     @Test
-    fun getDefaultSmsPackageNoMessagingApp() {
-        val packages = listOf(dummyApplicationInfo("com.example.another.app"))
-        whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
+    fun getDefaultSmsPackageForInvalidMessagingApps() {
+        val packages = listOf(dummyApplicationInfo("com.android.providers.media"),
+                dummyApplicationInfo("com.android.smspush"),
+                dummyApplicationInfo("com.sec.android.nearby.mediaserver"),
+                dummyApplicationInfo("com.example.another.app"))
 
-        val result = underTest.getDefaultSmsPackage()
-
-        result shouldEqual ""
-    }
-
-    @Test
-    fun mediaProviderIsNotAnSmsApp() {
-        val packages = listOf(dummyApplicationInfo("com.android.providers.media"))
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
 
         val result = underTest.getDefaultSmsPackage()
