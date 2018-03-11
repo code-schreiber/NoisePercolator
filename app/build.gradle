@@ -10,6 +10,7 @@ android {
         compileSdkVersion toolVersions.compileSdkVersion
         versionCode toolVersions.versionCode
         versionName toolVersions.versionName
+        resConfigs "en"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
 
