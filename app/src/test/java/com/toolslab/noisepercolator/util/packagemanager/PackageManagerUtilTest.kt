@@ -10,9 +10,14 @@ import com.toolslab.noisepercolator.util.device.SdkChecker
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
+import org.mockito.Mockito.verify
+import org.mockito.Mockito.verifyNoMoreInteractions
 
 class PackageManagerUtilTest {
+
+    companion object {
+        private const val SMS_PACKAGE = "an.sms.package"
+    }
 
     private val mockContext: Context = mock()
     private val mockIntent: Intent = mock()
@@ -22,17 +27,18 @@ class PackageManagerUtilTest {
 
     private val underTest: PackageManagerUtil = PackageManagerUtil(mockContext, mockSdkChecker)
 
-    private val smsPackage = "an.sms.package"
 
     @Before
     fun setUp() {
-        whenever(mockContext.packageManager).thenReturn(mockPackageManager)
-        whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(listOf(dummyApplicationInfo(smsPackage)))
+        whenever(mockContext.packageManager)
+                .thenReturn(mockPackageManager)
+        whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA))
+                .thenReturn(listOf(dummyApplicationInfo(SMS_PACKAGE)))
     }
 
     @Test
     fun launchDefaultSmsApp() {
-        whenever(mockPackageManager.getLaunchIntentForPackage(smsPackage)).thenReturn(mockIntent)
+        whenever(mockPackageManager.getLaunchIntentForPackage(SMS_PACKAGE)).thenReturn(mockIntent)
 
         underTest.launchDefaultSmsApp()
 
@@ -40,18 +46,20 @@ class PackageManagerUtilTest {
     }
 
     @Test
-    fun launchDefaultSmsAppWithNullIntent() {
-        whenever(mockPackageManager.getLaunchIntentForPackage(smsPackage)).thenReturn(null)
+    fun createDefaultSmsAppFallbackIntent() {
+        underTest.createDefaultSmsAppFallbackIntent(mockIntent)
 
-        underTest.launchDefaultSmsApp()
-
-        verify(mockContext, never()).startActivity(any())
+        verify(mockIntent).action = Intent.ACTION_MAIN
+        verify(mockIntent).addCategory(Intent.CATEGORY_DEFAULT)
+        verify(mockIntent).type = "vnd.android-dir/mms-sms"
+        verify(mockIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        verifyNoMoreInteractions(mockIntent)
     }
 
     @Test
     fun getDefaultSmsAppName() {
         val label = "a label"
-        whenever(mockPackageManager.getApplicationInfo(smsPackage, PackageManager.GET_META_DATA)).thenReturn(mockApplicationInfo)
+        whenever(mockPackageManager.getApplicationInfo(SMS_PACKAGE, PackageManager.GET_META_DATA)).thenReturn(mockApplicationInfo)
         whenever(mockPackageManager.getApplicationLabel(mockApplicationInfo)).thenReturn(label)
 
         val result = underTest.getDefaultSmsAppName()
@@ -61,7 +69,7 @@ class PackageManagerUtilTest {
 
     @Test
     fun getDefaultSmsAppNameWithNullLabel() {
-        whenever(mockPackageManager.getApplicationInfo(smsPackage, PackageManager.GET_META_DATA)).thenReturn(mockApplicationInfo)
+        whenever(mockPackageManager.getApplicationInfo(SMS_PACKAGE, PackageManager.GET_META_DATA)).thenReturn(mockApplicationInfo)
         whenever(mockPackageManager.getApplicationLabel(mockApplicationInfo)).thenReturn(null)
 
         val result = underTest.getDefaultSmsAppName()
@@ -71,7 +79,7 @@ class PackageManagerUtilTest {
 
     @Test
     fun getDefaultSmsAppNameWithNameNotFoundException() {
-        whenever(mockPackageManager.getApplicationInfo(smsPackage, PackageManager.GET_META_DATA)).thenThrow(PackageManager.NameNotFoundException())
+        whenever(mockPackageManager.getApplicationInfo(SMS_PACKAGE, PackageManager.GET_META_DATA)).thenThrow(PackageManager.NameNotFoundException())
 
         val result = underTest.getDefaultSmsAppName()
 

@@ -20,8 +20,8 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent)
         } else {
-            Timber.e("No launch intent for package $defaultSmsPackage")
-//            openDefaultSmsPackageFallback()
+            Timber.e("No launch intent for package $defaultSmsPackage, going for fallback")
+            launchDefaultSmsAppFallback()
         }
     }
 
@@ -83,13 +83,19 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         }
     }
 
-    private fun openDefaultSmsPackageFallback() {
+    private fun launchDefaultSmsAppFallback() {
+        val intent = createDefaultSmsAppFallbackIntent(Intent())
+        context.startActivity(intent)
+    }
+
+    @VisibleForTesting
+    fun createDefaultSmsAppFallbackIntent(intent: Intent): Intent {
         val type = "vnd.android-dir/mms-sms"
-        val intent = Intent(Intent.ACTION_MAIN)
+        intent.action = Intent.ACTION_MAIN
         intent.addCategory(Intent.CATEGORY_DEFAULT)
         intent.type = type
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        context.startActivity(intent)
+        return intent
     }
 
 }
