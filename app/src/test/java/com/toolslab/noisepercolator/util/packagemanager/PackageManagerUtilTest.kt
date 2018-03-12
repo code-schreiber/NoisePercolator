@@ -27,7 +27,6 @@ class PackageManagerUtilTest {
 
     private val underTest: PackageManagerUtil = PackageManagerUtil(mockContext, mockSdkChecker)
 
-
     @Before
     fun setUp() {
         whenever(mockContext.packageManager)

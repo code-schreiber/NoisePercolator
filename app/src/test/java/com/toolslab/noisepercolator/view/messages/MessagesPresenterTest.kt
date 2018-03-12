@@ -7,15 +7,16 @@ import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.*
 
 class MessagesPresenterTest {
 
     companion object {
-        private val MESSAGES = listOf(dummyMessage(), dummyMessage())
         private const val DEFAULT_SMS_APP_NAME = "DEFAULT_SMS_APP_NAME"
         private const val EXPECTED_BUTTON_TEXT = "Open $DEFAULT_SMS_APP_NAME"
+        private val MESSAGES = listOf(dummyMessage(), dummyMessage())
         private val NUMBER_OF_MESSAGES = MESSAGES.size
         private val EXPECTED_INFO_TEXT = "$NUMBER_OF_MESSAGES spam messages"
 
@@ -41,6 +42,17 @@ class MessagesPresenterTest {
         underTest.onBound(mockView)
 
         verifyInitView()
+    }
+
+    @Ignore("How to test setOnClickListener?")
+    @Test
+    fun onBoundWithEmptyDefaultSmsAppName() {
+        whenever(mockView.hasSmsPermission()).thenReturn(true)
+        whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn("")
+
+        underTest.onBound(mockView)
+
+        verify(mockView).initDefaultSmsAppButton("Open sms app", any())
     }
 
     @Test
