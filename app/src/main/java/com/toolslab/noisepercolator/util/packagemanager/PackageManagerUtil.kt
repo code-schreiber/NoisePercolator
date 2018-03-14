@@ -1,6 +1,7 @@
 package com.toolslab.noisepercolator.util.packagemanager
 
 import android.annotation.TargetApi
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
@@ -14,15 +15,8 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                          private val sdkChecker: SdkChecker = SdkChecker()) {
 
     fun launchDefaultSmsApp() {
-        val defaultSmsPackage = getDefaultSmsPackage()
-        val intent = context.packageManager.getLaunchIntentForPackage(defaultSmsPackage)
-        if (intent != null) {
-            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-            context.startActivity(intent)
-        } else {
-            Timber.e("No launch intent for package $defaultSmsPackage, going for fallback")
-            launchDefaultSmsAppFallback()
-        }
+        val intent = createLaunchDefaultSmsAppIntent()
+        context.startActivity(intent)
     }
 
     fun getDefaultSmsAppName(): String {
@@ -38,6 +32,23 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         }
         Timber.e("No label for package $defaultSmsPackage")
         return ""
+    }
+
+    fun createLaunchDefaultSmsAppPendingIntent(): PendingIntent {
+        val intent = createLaunchDefaultSmsAppIntent()
+        return PendingIntent.getActivity(context, 0, intent, 0)
+    }
+
+    private fun createLaunchDefaultSmsAppIntent(): Intent {
+        val defaultSmsPackage = getDefaultSmsPackage()
+        val intent = context.packageManager.getLaunchIntentForPackage(defaultSmsPackage)
+        return if (intent != null) {
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            intent
+        } else {
+            Timber.e("No launch intent for package $defaultSmsPackage, going for fallback")
+            createDefaultSmsAppFallbackIntent(Intent())
+        }
     }
 
     @VisibleForTesting
@@ -81,11 +92,6 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
         }
-    }
-
-    private fun launchDefaultSmsAppFallback() {
-        val intent = createDefaultSmsAppFallbackIntent(Intent())
-        context.startActivity(intent)
     }
 
     @VisibleForTesting

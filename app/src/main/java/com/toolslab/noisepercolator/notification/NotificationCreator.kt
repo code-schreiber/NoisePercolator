@@ -6,8 +6,10 @@ import android.support.annotation.VisibleForTesting
 import android.support.v4.app.NotificationCompat
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.util.device.SdkChecker
+import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 
-class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker()) {
+class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker(),
+                          private val packageManagerUtil: PackageManagerUtil = PackageManagerUtil()) {
 
     @VisibleForTesting
     companion object {
@@ -26,10 +28,14 @@ class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker()) {
 
     @VisibleForTesting()
     fun setNotificationAttributes(builder: NotificationCompat.Builder, title: String, text: String): Notification {
+        val pendingIntent = packageManagerUtil.createLaunchDefaultSmsAppPendingIntent()
         return builder
                 .setSmallIcon(getSmallIcon())
                 .setContentTitle(title)
                 .setContentText(text)
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                 .build()
     }
 
