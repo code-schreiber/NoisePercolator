@@ -41,6 +41,8 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (permissionsUtil.isOnRequestPermissionsResultGranted(this, requestCode, permissions, grantResults)) {
             presenter.smsPermissionsGranted()
+        } else {
+            maybeShowPermissionExplanation()
         }
     }
 

@@ -42,6 +42,7 @@ class MessagesActivityTest {
 
         underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
+        verify(mockPermissionsUtil).maybeShowPermissionExplanation(underTest)
         verifyZeroInteractions(mockPresenter)
     }
 
