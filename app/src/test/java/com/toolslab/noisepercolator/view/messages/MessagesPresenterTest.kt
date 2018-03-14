@@ -7,7 +7,6 @@ import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 import org.mockito.Mockito.*
 
@@ -44,7 +43,6 @@ class MessagesPresenterTest {
         verifyInitView()
     }
 
-    @Ignore("How to test setOnClickListener?")
     @Test
     fun onBoundWithEmptyDefaultSmsAppName() {
         whenever(mockView.hasSmsPermission()).thenReturn(true)
@@ -52,7 +50,7 @@ class MessagesPresenterTest {
 
         underTest.onBound(mockView)
 
-        verify(mockView).initDefaultSmsAppButton("Open sms app", any())
+        verify(mockView).setDefaultSmsAppButtonText("Open sms app")
     }
 
     @Test
@@ -77,6 +75,13 @@ class MessagesPresenterTest {
     }
 
     @Test
+    fun onDefaultSmsAppButtonClicked() {
+        underTest.onDefaultSmsAppButtonClicked()
+
+        verify(mockPackageManagerUtil).launchDefaultSmsApp()
+    }
+
+    @Test
     fun unbind() {
         underTest.unbind(mockView)
 
@@ -84,10 +89,10 @@ class MessagesPresenterTest {
     }
 
     private fun verifyInitView() {
-//        verify(mockView).initDefaultSmsAppButton(EXPECTED_BUTTON_TEXT, any<() -> Unit>())//TODO how to test setOnClickListener?
+        verify(mockView).setDefaultSmsAppButtonText(EXPECTED_BUTTON_TEXT)
+        verify(mockView).setDefaultSmsAppButtonOnClickListener()
         verify(mockView).setInfoText(EXPECTED_INFO_TEXT)
         verify(mockView).initMessagesList(MESSAGES)
-//        verifyNoMoreInteractions(mockView)
     }
 
 }

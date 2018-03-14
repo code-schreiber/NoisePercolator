@@ -52,9 +52,12 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
         permissionsUtil.maybeShowPermissionExplanation(this)
     }
 
-    override fun initDefaultSmsAppButton(text: String, onClickAction: () -> Unit) {
+    override fun setDefaultSmsAppButtonText(text: String) {
         defaultSmsAppButton.text = text
-        defaultSmsAppButton.setOnClickListener({ onClickAction() })
+    }
+
+    override fun setDefaultSmsAppButtonOnClickListener() {
+        defaultSmsAppButton.setOnClickListener({ presenter.onDefaultSmsAppButtonClicked() })
     }
 
     override fun setInfoText(text: String) {

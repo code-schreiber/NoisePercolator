@@ -9,6 +9,8 @@ interface MessagesContract {
     interface Presenter : MvpPresenter<View> {
 
         fun smsPermissionsGranted()
+
+        fun onDefaultSmsAppButtonClicked()
     }
 
     interface View : BaseView {
@@ -17,7 +19,9 @@ interface MessagesContract {
 
         fun maybeShowPermissionExplanation()
 
-        fun initDefaultSmsAppButton(text: String, onClickAction: () -> Unit)
+        fun setDefaultSmsAppButtonText(text: String)
+
+        fun setDefaultSmsAppButtonOnClickListener()
 
         fun setInfoText(text: String)
 

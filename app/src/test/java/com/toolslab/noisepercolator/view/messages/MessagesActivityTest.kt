@@ -7,8 +7,8 @@ import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.amshove.kluent.shouldEqual
-import org.junit.Ignore
 import org.junit.Test
+import org.mockito.ArgumentCaptor
 import org.mockito.Mockito.verify
 
 class MessagesActivityTest {
@@ -18,18 +18,6 @@ class MessagesActivityTest {
     private val mockMessages: List<Message> = mock()
 
     private val underTest = MessagesActivity(mockPresenter, mockPermissionsUtil)
-
-    @Ignore("How to verify bind?")
-    @Test
-    fun viewBindsItself() {
-
-    }
-
-    @Ignore("How to verify unbind?")
-    @Test
-    fun viewUnbindsItself() {
-
-    }
 
     @Test
     fun onRequestPermissionsResultGranted() {
@@ -75,15 +63,22 @@ class MessagesActivityTest {
     }
 
     @Test
-    fun initDefaultSmsAppButton() {
-        val mockAction: () -> Unit = mock()
+    fun setDefaultSmsAppButtonText() {
         underTest.defaultSmsAppButton = mock()
         val text = "a text"
 
-        underTest.initDefaultSmsAppButton(text, mockAction)
+        underTest.setDefaultSmsAppButtonText(text)
 
         verify(underTest.defaultSmsAppButton).text = text
-//        verify(underTest.defaultSmsAppButton).setOnClickListener { mockAction() } TODO how to test setOnClickListener?
+    }
+
+    @Test
+    fun setDefaultSmsAppButtonOnClickListener() {
+        underTest.defaultSmsAppButton = mock()
+
+        underTest.setDefaultSmsAppButtonOnClickListener()
+
+        verify(underTest.defaultSmsAppButton).setOnClickListener(any())
     }
 
     @Test
@@ -98,13 +93,17 @@ class MessagesActivityTest {
 
     @Test
     fun initMessagesList() {
+        val expectedItemCount = 1234
+        whenever(mockMessages.size).thenReturn(expectedItemCount)
+        val captor = ArgumentCaptor.forClass<MessagesAdapter, MessagesAdapter>(MessagesAdapter::class.java)
         underTest.recyclerView = mock()
 
         underTest.initMessagesList(mockMessages)
 
         verify(underTest.recyclerView).setHasFixedSize(true)
         verify(underTest.recyclerView).layoutManager = any()
-        verify(underTest.recyclerView).adapter = any() // TODO test that that any was passed messages to constructor MessagesAdapter(messages)
+        verify(underTest.recyclerView).adapter = captor.capture()
+        captor.value.itemCount shouldEqual expectedItemCount
     }
 
 }
