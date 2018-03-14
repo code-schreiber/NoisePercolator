@@ -36,6 +36,7 @@ class NotificationCreatorTest {
         whenever(mockBuilder.setContentText(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.setContentIntent(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.setAutoCancel(any())).thenReturn(mockBuilder)
+        whenever(mockBuilder.setCategory(any())).thenReturn(mockBuilder)
         whenever(mockBuilder.build()).thenReturn(mockNotification)
     }
 
