@@ -36,13 +36,11 @@ class PermissionsUtil {
     }
 
     internal fun maybeShowPermissionExplanation(activity: BaseActivity) {
-        if (!hasSmsPermission(activity)) {
-            if (shouldShowRequestPermission(activity)) {
-                showPermissionExplanation(activity)
-            } else {
-                // No explanation needed, we can request the permission.
-                requestPermission(activity)
-            }
+        if (shouldShowRequestPermission(activity)) {
+            showPermissionExplanation(activity)
+        } else {
+            // No explanation needed, we can request the permission.
+            requestPermission(activity)
         }
     }
 
@@ -50,13 +48,16 @@ class PermissionsUtil {
     internal fun hasSmsPermission(activity: BaseActivity): Boolean =
             ContextCompat.checkSelfPermission(activity, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
-    private fun showPermissionExplanation(activity: BaseActivity) =
-            activity.showSimpleError("Please allow permission after clicking ok", { requestPermission(activity) }) // TODO can this leak?
+    private fun showPermissionExplanation(activity: BaseActivity) {
+        activity.showSimpleError("Please allow permission after clicking ok", { requestPermission(activity) })
+    }
 
-    private fun shouldShowRequestPermission(activity: BaseActivity) =
+    @CheckResult
+    private fun shouldShowRequestPermission(activity: BaseActivity): Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(activity, READ_SMS_PERMISSION)
 
-    private fun requestPermission(activity: BaseActivity) =
-            ActivityCompat.requestPermissions(activity, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
+    private fun requestPermission(activity: BaseActivity) {
+        ActivityCompat.requestPermissions(activity, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
+    }
 
 }
