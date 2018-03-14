@@ -41,6 +41,7 @@ class PackageManagerUtilTest {
 
         underTest.launchDefaultSmsApp()
 
+        verify(mockIntent).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         verify(mockContext).startActivity(mockIntent)
     }
 
@@ -78,7 +79,8 @@ class PackageManagerUtilTest {
 
     @Test
     fun getDefaultSmsAppNameWithNameNotFoundException() {
-        whenever(mockPackageManager.getApplicationInfo(SMS_PACKAGE, PackageManager.GET_META_DATA)).thenThrow(PackageManager.NameNotFoundException())
+        whenever(mockPackageManager.getApplicationInfo(SMS_PACKAGE, PackageManager.GET_META_DATA))
+                .thenThrow(PackageManager.NameNotFoundException())
 
         val result = underTest.getDefaultSmsAppName()
 
