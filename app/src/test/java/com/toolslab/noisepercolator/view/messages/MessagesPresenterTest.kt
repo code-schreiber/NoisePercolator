@@ -14,12 +14,10 @@ class MessagesPresenterTest {
 
     companion object {
         private const val DEFAULT_SMS_APP_NAME = "DEFAULT_SMS_APP_NAME"
-        private const val EXPECTED_BUTTON_TEXT = "Open $DEFAULT_SMS_APP_NAME"
         private val MESSAGES = listOf(dummyMessage(), dummyMessage())
         private val NUMBER_OF_MESSAGES = MESSAGES.size
-        private val EXPECTED_INFO_TEXT = "$NUMBER_OF_MESSAGES spam messages"
 
-        private fun dummyMessage() = Message("", 0L, "", false, "")
+        private fun dummyMessage() = Message("", 0L, "")
     }
 
     private val mockPackageManagerUtil: PackageManagerUtil = mock()
@@ -50,7 +48,7 @@ class MessagesPresenterTest {
 
         underTest.onBound(mockView)
 
-        verify(mockView).setDefaultSmsAppButtonText("Open sms app")
+        verify(mockView).setDefaultSmsAppButtonTextFallback()
     }
 
     @Test
@@ -89,9 +87,9 @@ class MessagesPresenterTest {
     }
 
     private fun verifyInitView() {
-        verify(mockView).setDefaultSmsAppButtonText(EXPECTED_BUTTON_TEXT)
+        verify(mockView).setDefaultSmsAppButtonText(DEFAULT_SMS_APP_NAME)
         verify(mockView).setDefaultSmsAppButtonOnClickListener()
-        verify(mockView).setInfoText(EXPECTED_INFO_TEXT)
+        verify(mockView).setInfoText(NUMBER_OF_MESSAGES)
         verify(mockView).initMessagesList(MESSAGES)
     }
 

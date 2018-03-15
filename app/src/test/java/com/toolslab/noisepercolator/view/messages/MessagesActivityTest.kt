@@ -4,6 +4,7 @@ import com.nhaarman.mockito_kotlin.any
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
+import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.amshove.kluent.shouldEqual
@@ -64,13 +65,12 @@ class MessagesActivityTest {
     }
 
     @Test
-    fun setDefaultSmsAppButtonText() {
+    fun setDefaultSmsAppButtonTextFallback() {
         underTest.defaultSmsAppButton = mock()
-        val text = "a text"
 
-        underTest.setDefaultSmsAppButtonText(text)
+        underTest.setDefaultSmsAppButtonTextFallback()
 
-        verify(underTest.defaultSmsAppButton).text = text
+        verify(underTest.defaultSmsAppButton).setText(R.string.open_sms_app_fallback)
     }
 
     @Test
@@ -80,16 +80,6 @@ class MessagesActivityTest {
         underTest.setDefaultSmsAppButtonOnClickListener()
 
         verify(underTest.defaultSmsAppButton).setOnClickListener(any())
-    }
-
-    @Test
-    fun setInfoText() {
-        underTest.infoText = mock()
-        val text = "a text"
-
-        underTest.setInfoText(text)
-
-        verify(underTest.infoText).text = text
     }
 
     @Test

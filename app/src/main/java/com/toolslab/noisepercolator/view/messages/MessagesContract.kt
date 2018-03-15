@@ -19,11 +19,13 @@ interface MessagesContract {
 
         fun maybeShowPermissionExplanation()
 
-        fun setDefaultSmsAppButtonText(text: String)
+        fun setDefaultSmsAppButtonText(defaultSmsAppName: String)
+
+        fun setDefaultSmsAppButtonTextFallback()
 
         fun setDefaultSmsAppButtonOnClickListener()
 
-        fun setInfoText(text: String)
+        fun setInfoText(numberOfSpamMessages: Int)
 
         fun initMessagesList(messages: List<Message>)
     }

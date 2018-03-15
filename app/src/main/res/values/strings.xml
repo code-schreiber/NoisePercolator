@@ -1,5 +1,16 @@
 <resources>
     <string name="app_name">Noise Percolator</string>
 
-    <string name="spam">s\np\na\nm</string>
+    <string name="ok">OK</string>
+    <string name="Please_allow_permission_after_clicking_ok">Please allow permission after clicking OK</string>
+
+    <!-- MessagesActivity -->
+    <string name="open_default_sms_app">Open %s)</string>
+    <string name="open_sms_app_fallback">Open sms app</string>
+    <plurals name="number_of_spam_messages">
+        <item quantity="zero">No spam messages</item>
+        <item quantity="one">%d spam message</item>
+        <item quantity="other">%d spam messages</item>
+    </plurals>
+
 </resources>

@@ -25,16 +25,21 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
     }
 
     private fun initView(view: MessagesContract.View) {
-        val defaultSmsAppName = packageManagerUtil.getDefaultSmsAppName()
         val messages = dataProvider.getMessages()
-        val numberOfMessages = messages.size
-        val defaultSmsAppButtonText = if (defaultSmsAppName.isEmpty()) "Open sms app" else "Open $defaultSmsAppName"
-        val infoText = "$numberOfMessages spam messages"
 
-        view.setDefaultSmsAppButtonText(defaultSmsAppButtonText)
-        view.setDefaultSmsAppButtonOnClickListener()
-        view.setInfoText(infoText)
+        initDefaultSmsAppButtonText(view)
+        view.setInfoText(messages.size)
         view.initMessagesList(messages)
+    }
+
+    private fun initDefaultSmsAppButtonText(view: MessagesContract.View) {
+        val defaultSmsAppName = packageManagerUtil.getDefaultSmsAppName()
+        if (defaultSmsAppName.isEmpty()) {
+            view.setDefaultSmsAppButtonTextFallback()
+        } else {
+            view.setDefaultSmsAppButtonText(defaultSmsAppName)
+        }
+        view.setDefaultSmsAppButtonOnClickListener()
     }
 
 }

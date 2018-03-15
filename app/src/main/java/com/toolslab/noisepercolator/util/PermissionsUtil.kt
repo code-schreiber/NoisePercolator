@@ -6,6 +6,7 @@ import android.support.annotation.CheckResult
 import android.support.annotation.VisibleForTesting
 import android.support.v4.app.ActivityCompat
 import android.support.v4.content.ContextCompat
+import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.view.base.BaseActivity
 import timber.log.Timber
 
@@ -49,7 +50,7 @@ class PermissionsUtil {
             ContextCompat.checkSelfPermission(activity, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
     private fun showPermissionExplanation(activity: BaseActivity) {
-        activity.showSimpleError("Please allow permission after clicking ok", { requestPermission(activity) })
+        activity.showSimpleError(R.string.Please_allow_permission_after_clicking_ok, { requestPermission(activity) })
     }
 
     @CheckResult

@@ -54,16 +54,20 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
         permissionsUtil.maybeShowPermissionExplanation(this)
     }
 
-    override fun setDefaultSmsAppButtonText(text: String) {
-        defaultSmsAppButton.text = text
+    override fun setDefaultSmsAppButtonText(defaultSmsAppName: String) {
+        defaultSmsAppButton.text = getString(R.string.open_default_sms_app, defaultSmsAppName)
+    }
+
+    override fun setDefaultSmsAppButtonTextFallback() {
+        defaultSmsAppButton.setText(R.string.open_sms_app_fallback)
     }
 
     override fun setDefaultSmsAppButtonOnClickListener() {
         defaultSmsAppButton.setOnClickListener({ presenter.onDefaultSmsAppButtonClicked() })
     }
 
-    override fun setInfoText(text: String) {
-        infoText.text = text
+    override fun setInfoText(numberOfSpamMessages: Int) {
+        infoText.text = resources.getQuantityString(R.plurals.number_of_spam_messages, numberOfSpamMessages, numberOfSpamMessages)
     }
 
     override fun initMessagesList(messages: List<Message>) {

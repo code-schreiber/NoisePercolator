@@ -16,16 +16,16 @@ open class BaseActivity : AppCompatActivity() {
         showSimpleDialog(getString(resId))
     }
 
-    protected fun showSimpleDialog(message: String) {
+    fun showSimpleDialog(message: String) {
         Timber.d("Showing dialog with message $message")
         ShowDialog().withMessage(this, message)
     }
 
-    protected fun showSimpleError(@StringRes resId: Int, vararg formatArgs: Any) {
+    fun showSimpleError(@StringRes resId: Int, vararg formatArgs: Any) {
         showSimpleError(getString(resId, *formatArgs))
     }
 
-    protected fun showSimpleError(message: String) {
+    fun showSimpleError(message: String) {
         showSimpleError(message, {})
     }
 
