@@ -3,19 +3,16 @@ package com.toolslab.noisepercolator.view.messages
 import android.support.annotation.CheckResult
 import android.telephony.SmsMessage
 import com.google.gson.Gson
-import com.toolslab.noisepercolator.filter.SmsFilter
 import com.toolslab.noisepercolator.model.Message
 
-class MessageConverter(private val smsFilter: SmsFilter = SmsFilter()) {
+class MessageConverter {
 
     @CheckResult
     internal fun convert(smsMessage: SmsMessage): Message {
         val address = smsMessage.displayOriginatingAddress
         val date = smsMessage.timestampMillis
         val body = smsMessage.displayMessageBody
-        val spam = smsFilter.isSpam(smsMessage)
-        val debugInfo = smsMessage.toString()
-        return Message(address, date, body, spam, debugInfo)
+        return Message(address, date, body)
     }
 
     @CheckResult

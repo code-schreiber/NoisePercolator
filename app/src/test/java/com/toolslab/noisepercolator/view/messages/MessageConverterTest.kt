@@ -13,15 +13,11 @@ class MessageConverterTest {
         private const val ADDRESS = "an address"
         private const val DATE_IN_MILLIS = 946681199000
         private const val BODY = "a message body"
-        private const val SPAM = true
-        private const val DEBUG_INFO = "a debug info"
-        private val MESSAGE = Message(ADDRESS, DATE_IN_MILLIS, BODY, SPAM, DEBUG_INFO)
+        private val MESSAGE = Message(ADDRESS, DATE_IN_MILLIS, BODY)
         private const val MESSAGE_AS_JSON_STRING = "{" +
                 "\"address\":\"" + ADDRESS + "\"," +
                 "\"date\":" + DATE_IN_MILLIS + "," +
-                "\"body\":\"" + BODY + "\"," +
-                "\"spam\":" + SPAM + "," +
-                "\"debugInfo\":\"" + DEBUG_INFO +
+                "\"body\":\"" + BODY +
                 "\"}"
     }
 

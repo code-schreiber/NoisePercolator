@@ -16,7 +16,7 @@ class MessagesActivityInstrumentedTest {
 
     @Rule
     @JvmField
-    var activityRule: ActivityTestRule<MessagesActivity> = ActivityTestRule(MessagesActivity::class.java)
+    var activityRule = ActivityTestRule(MessagesActivity::class.java)
 
     private lateinit var underTest: MessagesActivity
 

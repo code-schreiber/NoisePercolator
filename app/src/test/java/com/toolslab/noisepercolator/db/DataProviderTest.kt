@@ -15,7 +15,7 @@ class DataProviderTest {
 
     companion object {
         private const val MESSAGE_AS_STRING = "a message"
-        private val MESSAGE = Message("", 0L, "", false, "")
+        private val MESSAGE = Message("", 0L, "")
         private val MESSAGES = setOf(MESSAGE_AS_STRING)
     }
 

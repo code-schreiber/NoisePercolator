@@ -15,7 +15,6 @@ class MessagesAdapter(private val messages: List<Message>) : RecyclerView.Adapte
         internal val address: TextView = view.findViewById(R.id.item_message_address)
         internal val date: TextView = view.findViewById(R.id.item_message_date)
         internal val body: TextView = view.findViewById(R.id.item_message_body)
-        internal val spam: View = view.findViewById(R.id.item_message_spam)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -27,12 +26,7 @@ class MessagesAdapter(private val messages: List<Message>) : RecyclerView.Adapte
         val message = messages[position]
         viewHolder.address.text = message.address
         viewHolder.date.text = message.getFormattedDate()
-        viewHolder.body.text = message.body + "\n" + "Debuginfo\n\t" + message.debugInfo.replace(";", "\n\t")
-        if (message.spam) {
-            viewHolder.spam.visibility = View.VISIBLE
-        } else {
-            viewHolder.spam.visibility = View.INVISIBLE
-        }
+        viewHolder.body.text = message.body
     }
 
     override fun getItemCount(): Int {
