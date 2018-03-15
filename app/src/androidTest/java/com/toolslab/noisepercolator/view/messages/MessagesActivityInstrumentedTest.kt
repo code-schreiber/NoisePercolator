@@ -1,5 +1,6 @@
 package com.toolslab.noisepercolator.view.messages
 
+import android.support.test.annotation.UiThreadTest
 import android.support.test.rule.ActivityTestRule
 import android.support.test.runner.AndroidJUnit4
 import com.toolslab.noisepercolator.R
@@ -25,6 +26,7 @@ class MessagesActivityInstrumentedTest {
         underTest = activityRule.activity
     }
 
+    @UiThreadTest
     @Test
     fun setDefaultSmsAppButtonText() {
         val defaultSmsAppName = "defaultSmsAppName"
@@ -35,6 +37,7 @@ class MessagesActivityInstrumentedTest {
         assertThat(underTest.defaultSmsAppButton.text.toString(), `is`(expected))
     }
 
+    @UiThreadTest
     @Test
     fun setInfoText() {
         val numberOfSpamMessages = 12
@@ -45,6 +48,7 @@ class MessagesActivityInstrumentedTest {
         assertThat(underTest.infoText.text.toString(), `is`(expected))
     }
 
+    @UiThreadTest
     @Test
     fun setInfoTextToOne() {
         val numberOfSpamMessages = 1
@@ -55,6 +59,7 @@ class MessagesActivityInstrumentedTest {
         assertThat(underTest.infoText.text.toString(), `is`(expected))
     }
 
+    @UiThreadTest
     @Test
     fun setInfoTextToZero() {
         val numberOfSpamMessages = 0
