@@ -13,7 +13,7 @@ buildscript {
 
         versions = [
                 gradle          : "3.0.1",
-                kotlin          : "1.2.21",
+                kotlin          : "1.2.30",
 
                 googleSupport   : "27.1.0",
                 constraintLayout: "1.0.2",
