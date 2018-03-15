@@ -4,6 +4,7 @@ import android.content.Intent
 import android.support.test.runner.AndroidJUnit4
 import android.telephony.SmsMessage
 import junit.framework.Assert.assertEquals
+import junit.framework.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -50,6 +51,7 @@ class SmsMessagesConverterInstrumentedTest {
 
     private fun assertMessageIsCorrect(result: List<SmsMessage>) {
         assertEquals(EXPECTED_PDUS_LIST_SIZE, result.size)
+        assertNotNull(result[0])
         assertEquals(EXPECTED_MESSAGE, result[0].messageBody)
         assertEquals(EXPECTED_MESSAGE, result[0].displayMessageBody)
         assertEquals(EXPECTED_ADDRESS, result[0].originatingAddress)
