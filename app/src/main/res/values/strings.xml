@@ -2,7 +2,7 @@
     <string name="app_name">Noise Percolator</string>
 
     <string name="ok">OK</string>
-    <string name="Please_allow_permission_after_clicking_ok">Please allow sms permission for the app to work</string>
+    <string name="please_allow_sms_permission">Please allow sms permission for the app to work</string>
 
     <!-- MessagesActivity -->
     <string name="open_default_sms_app">Open %s</string>

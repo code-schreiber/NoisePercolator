@@ -49,8 +49,9 @@ class PermissionsUtil {
     internal fun hasSmsPermission(activity: BaseActivity): Boolean =
             ContextCompat.checkSelfPermission(activity, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
-    private fun showPermissionExplanation(activity: BaseActivity) {
-        activity.showSimpleError(R.string.Please_allow_permission_after_clicking_ok, { requestPermission(activity) })
+    @VisibleForTesting
+    fun showPermissionExplanation(activity: BaseActivity) {
+        activity.showSimpleError(R.string.please_allow_sms_permission, { requestPermission(activity) })
     }
 
     @CheckResult
