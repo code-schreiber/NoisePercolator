@@ -2,7 +2,6 @@ Master
 
 [![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=master)](https://travis-ci.org/code-schreiber/NoisePercolator)
 
-
 Develop
 
 [![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=develop)](https://travis-ci.org/code-schreiber/NoisePercolator)
@@ -21,6 +20,7 @@ How much is your time worth? ⏳
 A simple sms spam filter 📨
 
 How it works
+
 This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is a spam sms. This way, you can continue using your preferred sms app.
 
 This app is
