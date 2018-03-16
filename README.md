@@ -1,4 +1,11 @@
+Master
+
 [![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=master)](https://travis-ci.org/code-schreiber/NoisePercolator)
+
+
+Develop
+
+[![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=develop)](https://travis-ci.org/code-schreiber/NoisePercolator)
 
 <p align="center">
  <b>Noise Percolator</b>
@@ -9,9 +16,12 @@
   <img alt='Get it on Google Play' src='https://play.google.com/intl/en_us/badges/images/generic/en_badge_web_generic.png' width='200'/>
  </a>
 </p>
+How much is your time worth? ⏳
 
-How much is your time worth? ⏰🕰⌚⏲⏳⌛
-A simple SMS filter 💬📨📮
+A simple sms spam filter 📨
+
+How it works
+This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is a spam sms. This way, you can continue using your preferred sms app.
 
 This app is
 [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
