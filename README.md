@@ -1,9 +1,6 @@
-Master
-
-[![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=master)](https://travis-ci.org/code-schreiber/NoisePercolator)
-
-Develop
-
+Master  
+[![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=master)](https://travis-ci.org/code-schreiber/NoisePercolator)  
+Develop  
 [![Build Status](https://travis-ci.org/code-schreiber/NoisePercolator.svg?branch=develop)](https://travis-ci.org/code-schreiber/NoisePercolator)
 
 <p align="center">
@@ -21,10 +18,15 @@ A simple sms spam filter 📨
 
 How it works
 
-This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is a spam sms. This way, you can continue using your preferred sms app.
+This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is spam. This way, you can continue using your preferred sms app.
 
 This app is
 [![Open Source Love svg3](https://badges.frapsoft.com/os/v3/open-source.svg?v=103)](https://github.com/ellerbrock/open-source-badges/)
 and is available on Google Play: https://play.google.com/store/apps/developer?id=Tools+Lab
 
 Become an early access tester at https://play.google.com/apps/testing/com.toolslab.noisepercolator
+
+######Technical details and used technologies
+This project is written in Kotlin and uses Model-View-Presenter for better testability.
+
+The app is built, Unit and Instrumentation tested and then deployed to Google Play automatically with the help of Travis and Fastlane Supply.  

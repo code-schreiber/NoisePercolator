@@ -2,7 +2,7 @@ How much is your time worth? ⏳
 A simple sms spam filter 📨
 
 How it works
-This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is a spam sms. This way, you can continue using your preferred sms app.
+This app is designed do be as simple as possible. When an sms arrives it shows a notification unless it thinks it is spam. This way, you can continue using your preferred sms app.
 
 This app is open source and can be found at <a href="https://github.com/code-schreiber/NoisePercolator">GitHub </a> https://github.com/code-schreiber/NoisePercolator
 
