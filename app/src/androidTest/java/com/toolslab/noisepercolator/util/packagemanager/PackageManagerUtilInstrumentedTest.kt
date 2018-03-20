@@ -4,7 +4,8 @@ import android.os.Build.VERSION_CODES.*
 import android.support.test.InstrumentationRegistry
 import android.support.test.filters.SdkSuppress
 import android.support.test.runner.AndroidJUnit4
-import junit.framework.Assert.assertEquals
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -20,7 +21,7 @@ class PackageManagerUtilInstrumentedTest {
 
         val result = underTest.getDefaultSmsPackageKitkat()
 
-        assertEquals(expectedSmsPackage, result)
+        assertThat(result, `is`(expectedSmsPackage))
     }
 
     @SdkSuppress(minSdkVersion = KITKAT_WATCH, maxSdkVersion = M)
@@ -30,7 +31,7 @@ class PackageManagerUtilInstrumentedTest {
 
         val result = underTest.getDefaultSmsPackageKitkat()
 
-        assertEquals(expectedSmsPackage, result)
+        assertThat(result, `is`(expectedSmsPackage))
     }
 
     @SdkSuppress(maxSdkVersion = LOLLIPOP_MR1)
@@ -40,7 +41,7 @@ class PackageManagerUtilInstrumentedTest {
 
         val result = underTest.getDefaultSmsPackageKitkat()
 
-        assertEquals(expectedSmsPackage, result)
+        assertThat(result, `is`(expectedSmsPackage))
     }
 
 }

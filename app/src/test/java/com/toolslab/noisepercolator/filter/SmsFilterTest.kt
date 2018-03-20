@@ -4,8 +4,9 @@ import android.telephony.SmsMessage
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import org.amshove.kluent.shouldEqual
+import org.hamcrest.CoreMatchers.`is`
+import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Test
-import kotlin.test.assertEquals
 
 class SmsFilterTest {
 
@@ -81,7 +82,7 @@ class SmsFilterTest {
         val spamMessages: List<SmsMessage> = getSpamMessages()
         for (spamMessage in spamMessages) {
             val smsBody = spamMessage.displayMessageBody
-            assertEquals(true, underTest.isSpam(spamMessage), "$smsBody should be spam")
+            assertThat("$smsBody should be spam", underTest.isSpam(spamMessage), `is`(true))
         }
     }
 
