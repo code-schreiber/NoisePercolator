@@ -19,6 +19,9 @@ android:
     # SDK version to compile project
     - android-26
 
+    # Emulators for instrumented tests
+    - sys-img-armeabi-v7a-android-26
+
 script: "./deploy.sh"
 
 before_install:
