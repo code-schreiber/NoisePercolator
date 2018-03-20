@@ -14,10 +14,14 @@ echo "deploy.sh: TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 
 echo "deploy.sh: Running gradle build"
 ./gradlew build
+echo "deploy.sh: Creating emulator"
+echo no | avdmanager create avd -n emulatorApi26 -k "system-images;android-26;x86"
+echo "deploy.sh: Starting emulator"
+emulator -avd emulatorApi26 -no-audio -no-window &
+echo "deploy.sh: Waiting for emulator to be ready"
+android-wait-for-emulator
 echo "deploy.sh: Running gradle connectedAndroidTest"
 ./gradlew connectedAndroidTest
-#echo "deploy.sh: Running gradle sonarqube"
-#./gradlew sonarqube
 echo "deploy.sh: app/build/outputs/apk/release now contains:"
 ls -l app/build/outputs/apk/release
 #echo "deploy.sh: Running gradle printStatsFromThisVersion"
