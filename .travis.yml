@@ -26,6 +26,9 @@ android:
     - extra-android-m2repository
 
     # Emulators for instrumented tests
+    - sys-img-armeabi-v7a-android-27
+    - sys-img-armeabi-v7a-android-26
+    - sys-img-armeabi-v7a-android-25
     - sys-img-armeabi-v7a-android-24
 
 script: "./deploy.sh"
