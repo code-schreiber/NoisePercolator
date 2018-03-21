@@ -12,14 +12,8 @@ echo "deploy.sh: TRAVIS_REPO_SLUG: $TRAVIS_REPO_SLUG"
 echo "deploy.sh: TRAVIS_TAG: $TRAVIS_TAG"
 echo "deploy.sh: TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 
-echo "deploy.sh: Running gradle build"
+#echo "deploy.sh: Running gradle build"
 #./gradlew build
-echo "deploy.sh: Creating emulator"
-echo no | android create avd -n emulatorApi24 -t android-24 --abi armeabi-v7a
-echo "deploy.sh: Starting emulator"
-emulator -avd emulatorApi24 -no-skin -no-audio -no-window &
-echo "deploy.sh: Waiting for emulator to be ready"
-android-wait-for-emulator
 echo "deploy.sh: Running gradle connectedAndroidTest"
 ./gradlew connectedAndroidTest
 echo "deploy.sh: app/build/outputs/apk/release now contains:"
