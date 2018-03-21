@@ -12,12 +12,19 @@ android:
     # use the latest revision of Android SDK Tools
     - tools
     - platform-tools
+    - tools # duplicated on purpose as it’s required to get the newest Android SDK tools.
 
     # BuildTools version used by project
     - build-tools-26.0.2
 
     # SDK version to compile project
     - android-26
+
+    # Additional components
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-26
 
     # Emulators for instrumented tests
     - sys-img-armeabi-v7a-android-26
