@@ -15,7 +15,7 @@ echo "deploy.sh: TRAVIS_PULL_REQUEST: $TRAVIS_PULL_REQUEST"
 echo "deploy.sh: Running gradle build"
 ./gradlew build
 echo "deploy.sh: Creating emulator"
-echo no | avdmanager create avd -n emulatorApi26 -k "system-images;android-26;x86"
+echo no | android create avd -n emulatorApi26 -k "system-images;android-26;x86"
 echo "deploy.sh: Starting emulator"
 emulator -avd emulatorApi26 -no-audio -no-window &
 echo "deploy.sh: Waiting for emulator to be ready"
