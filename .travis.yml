@@ -21,18 +21,13 @@ android:
     - android-26
     - android-24
 
-    # Additional components
-    - extra-google-google_play_services
-    - extra-google-m2repository
-    - extra-android-m2repository
-
     # Emulator for instrumented tests
     - sys-img-armeabi-v7a-android-24
 
 before_install:
-  - openssl aes-256-cbc -K $encrypted_cfd0276aa3e8_key -iv $encrypted_cfd0276aa3e8_iv -in secrets.tar.enc -out secrets.tar -d
-  - tar xvf secrets.tar
-  - gem install fastlane supply
+#  - openssl aes-256-cbc -K $encrypted_cfd0276aa3e8_key -iv $encrypted_cfd0276aa3e8_iv -in secrets.tar.enc -out secrets.tar -d
+#  - tar xvf secrets.tar
+#  - gem install fastlane supply
   # Install SDK license so Android Gradle plugin can install deps.
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo "d56f5187479451eabf01fb78af6dfcb131a6481e" >> "$ANDROID_HOME/licenses/android-sdk-license"
@@ -40,7 +35,8 @@ before_install:
   - sdkmanager tools
    # Install the system image.
   - sdkmanager "system-images;android-24;default;armeabi-v7a"
-  - sdkmanager "system-images;android-27;default;armeabi-v7a
+  - sdkmanager "system-images;android-27;default;armeabi-v7a"
+  - sdkmanager "system-images;android-27;armeabi-v7a"
   # Create and start emulator for the script. Meant to race the install task.
   - echo no | avdmanager create avd --force -n emulatorApi24 -k "system-images;android-24;default;armeabi-v7a"
   - emulator -avd emulatorApi24 -no-audio -no-window &
