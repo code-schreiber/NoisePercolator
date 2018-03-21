@@ -19,10 +19,6 @@ android:
 
     # SDK version to compile project
     - android-26
-    - android-24
-
-    # Emulator for instrumented tests
-    - sys-img-armeabi-v7a-android-24
 
 before_install:
 #  - openssl aes-256-cbc -K $encrypted_cfd0276aa3e8_key -iv $encrypted_cfd0276aa3e8_iv -in secrets.tar.enc -out secrets.tar -d
@@ -37,7 +33,6 @@ before_install:
   - sdkmanager "system-images;android-24;default;armeabi-v7a"
   # Create and start emulator for the script. Meant to race the install task.
   - echo no | avdmanager create avd --force -n emulatorApi24 -k "system-images;android-24;default;armeabi-v7a"
-  - emulator -avd emulatorApi24 -no-audio -no-window &
   - $ANDROID_HOME/emulator/emulator -avd emulatorApi24 -no-audio -no-window &
 
 before_script:
