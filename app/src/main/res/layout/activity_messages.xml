@@ -3,7 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="@dimen/spacing_large"
     tools:context="com.toolslab.noisepercolator.view.messages.MessagesActivity">
 
     <LinearLayout
@@ -14,17 +13,24 @@
         <Button
             android:id="@+id/activity_messages_button"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/spacing_large"
+            tools:text="This opens the default sms app" />
 
         <TextView
             android:id="@+id/activity_messages_number_of_filtered_messages"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
+            tools:text="X number of spam" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/activity_messages_recycleview"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/spacing_large"
+            android:layout_marginRight="@dimen/spacing_large"
             tools:listitem="@layout/item_message" />
     </LinearLayout>
 
