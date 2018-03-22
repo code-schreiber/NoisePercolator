@@ -17,7 +17,8 @@ class PermissionsUtil {
         @VisibleForTesting
         const val READ_SMS_PERMISSIONS_REQUEST = 100
 
-        private const val READ_SMS_PERMISSION = Manifest.permission.READ_SMS
+        @VisibleForTesting
+        const val READ_SMS_PERMISSION = Manifest.permission.READ_SMS
     }
 
     internal fun isOnRequestPermissionsResultGranted(activity: BaseActivity,

@@ -2,8 +2,10 @@ package com.toolslab.noisepercolator.view.messages
 
 import android.support.test.annotation.UiThreadTest
 import android.support.test.rule.ActivityTestRule
+import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import com.toolslab.noisepercolator.R
+import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.hamcrest.CoreMatchers.`is`
 import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Before
@@ -18,6 +20,10 @@ class MessagesActivityInstrumentedTest {
     @Rule
     @JvmField
     var activityRule = ActivityTestRule(MessagesActivity::class.java)
+
+    @Rule
+    @JvmField
+    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(PermissionsUtil.READ_SMS_PERMISSION)
 
     private lateinit var underTest: MessagesActivity
 
