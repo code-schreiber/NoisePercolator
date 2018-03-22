@@ -34,7 +34,7 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
     }
 
     fun saveMessage(message: Message) {
-        val messages = getMessagesStringSet()
+        val messages = getMessagesStringSet().toMutableSet()
         messages.add(messageConverter.convert(message))
         getPreferences().edit {
             putStringSet(MESSAGES_KEY, messages)
