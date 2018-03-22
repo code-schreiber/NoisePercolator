@@ -30,4 +30,4 @@ Become an early access tester at https://play.google.com/apps/testing/com.toolsl
 This project is written in Kotlin and uses Model-View-Presenter for better testability.  
 One of the goals of this app is to work on as many Android versions as pragmatically possible. That's why it can be installed on devices as old as API 16 (Jelly Bean), covering 99.93% of the active Android devices worldwide.
 
-The app is built, Unit and Instrumentation tested and then deployed to Google Play automatically with the help of Travis and Fastlane Supply.  
+The app is built, unit and instrumentation tested and then deployed to Google Play automatically with the help of Travis and Fastlane Supply.  
