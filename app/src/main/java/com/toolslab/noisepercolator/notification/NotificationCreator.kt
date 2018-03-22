@@ -15,7 +15,7 @@ class NotificationCreator(private val sdkChecker: SdkChecker = SdkChecker(),
     companion object {
 
         @VisibleForTesting
-        const val SMALL_ICON = R.drawable.ic_launcher_foreground
+        const val SMALL_ICON = R.drawable.ic_notification
 
         @VisibleForTesting
         const val SMALL_ICON_LEGACY = R.mipmap.ic_launcher
