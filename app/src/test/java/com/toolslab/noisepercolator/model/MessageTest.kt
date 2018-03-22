@@ -32,4 +32,23 @@ class MessageTest {
         result shouldEqual FORMATTED_DATE
     }
 
+    @Test
+    fun sortedSortsNewestFirst() {
+        val oneDay = 1000 * 60 * 60 * 24
+        val olderMessage = Message(ADDRESS, 0, BODY)
+        val message = Message(ADDRESS, DATE_IN_MILLIS, BODY)
+        val newerMessage = Message(ADDRESS, DATE_IN_MILLIS + oneDay, BODY)
+        val messages = listOf(newerMessage, olderMessage, message)
+
+        messages[0] shouldEqual newerMessage
+        messages[1] shouldEqual olderMessage
+        messages[2] shouldEqual message
+
+        val sortedMessages = messages.sorted()
+
+        sortedMessages[0] shouldEqual newerMessage
+        sortedMessages[1] shouldEqual message
+        sortedMessages[2] shouldEqual olderMessage
+    }
+
 }

@@ -29,7 +29,7 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
 
         initDefaultSmsAppButtonText(view)
         view.setInfoText(messages.size)
-        view.initMessagesList(messages)
+        view.initMessagesList(messages.sorted())
     }
 
     private fun initDefaultSmsAppButtonText(view: MessagesContract.View) {

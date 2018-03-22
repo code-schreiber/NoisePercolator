@@ -87,7 +87,7 @@ class MessagesPresenterTest {
         verify(mockView).setDefaultSmsAppButtonText(DEFAULT_SMS_APP_NAME)
         verify(mockView).setDefaultSmsAppButtonOnClickListener()
         verify(mockView).setInfoText(NUMBER_OF_MESSAGES)
-        verify(mockView).initMessagesList(MESSAGES)
+        verify(mockView).initMessagesList(MESSAGES.sorted())
     }
 
 }
