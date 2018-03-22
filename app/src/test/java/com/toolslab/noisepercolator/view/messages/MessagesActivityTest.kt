@@ -1,16 +1,12 @@
 package com.toolslab.noisepercolator.view.messages
 
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 import org.mockito.ArgumentCaptor
-import org.mockito.Mockito.verify
 
 class MessagesActivityTest {
 

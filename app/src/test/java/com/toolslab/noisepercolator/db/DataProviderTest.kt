@@ -2,6 +2,7 @@ package com.toolslab.noisepercolator.db
 
 import android.content.Context
 import android.content.SharedPreferences
+import com.nhaarman.mockito_kotlin.inOrder
 import com.nhaarman.mockito_kotlin.mock
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.model.Message
@@ -9,7 +10,6 @@ import com.toolslab.noisepercolator.view.messages.MessageConverter
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.inOrder
 
 class DataProviderTest {
 

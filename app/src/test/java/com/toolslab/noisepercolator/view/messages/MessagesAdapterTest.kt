@@ -2,12 +2,12 @@ package com.toolslab.noisepercolator.view.messages
 
 import android.widget.TextView
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.model.Message
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.verify
 
 class MessagesAdapterTest {
 

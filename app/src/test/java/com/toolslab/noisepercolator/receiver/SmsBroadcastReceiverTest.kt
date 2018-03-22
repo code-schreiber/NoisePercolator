@@ -4,13 +4,13 @@ import android.content.Context
 import android.content.Intent
 import android.telephony.SmsMessage
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
+import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.db.FilteredOutSmsSaver
 import com.toolslab.noisepercolator.filter.SmsFilter
 import com.toolslab.noisepercolator.notification.Notifier
 import org.junit.Test
-import org.mockito.Mockito.verify
-import org.mockito.Mockito.verifyZeroInteractions
 
 
 class SmsBroadcastReceiverTest {

@@ -1,14 +1,11 @@
 package com.toolslab.noisepercolator.view.messages
 
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
-import com.nhaarman.mockito_kotlin.whenever
+import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mockito.*
 
 class MessagesPresenterTest {
 

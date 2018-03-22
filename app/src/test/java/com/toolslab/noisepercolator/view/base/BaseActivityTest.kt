@@ -1,9 +1,9 @@
 package com.toolslab.noisepercolator.view.base
 
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import com.toolslab.noisepercolator.view.common.DialogFactory
 import org.junit.Test
-import org.mockito.Mockito.verify
 
 class BaseActivityTest {
 

@@ -4,9 +4,9 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.content.Context
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import org.junit.Test
-import org.mockito.Mockito.verify
 
 class NotifierTest {
 

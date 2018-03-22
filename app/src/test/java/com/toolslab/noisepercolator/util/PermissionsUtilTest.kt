@@ -1,15 +1,11 @@
 package com.toolslab.noisepercolator.util
 
 import android.content.pm.PackageManager
-import com.nhaarman.mockito_kotlin.any
-import com.nhaarman.mockito_kotlin.eq
-import com.nhaarman.mockito_kotlin.mock
-import com.nhaarman.mockito_kotlin.verifyZeroInteractions
+import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.view.base.BaseActivity
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
-import org.mockito.Mockito.verify
 
 class PermissionsUtilTest {
 

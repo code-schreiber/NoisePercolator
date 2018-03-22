@@ -2,11 +2,11 @@ package com.toolslab.noisepercolator.db
 
 import android.telephony.SmsMessage
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verify
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.view.messages.MessageConverter
 import org.junit.Test
-import org.mockito.Mockito.verify
 
 class FilteredOutSmsSaverTest {
 

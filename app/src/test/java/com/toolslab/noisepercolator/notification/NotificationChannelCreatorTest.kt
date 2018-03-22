@@ -2,12 +2,12 @@ package com.toolslab.noisepercolator.notification
 
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import com.nhaarman.mockito_kotlin.inOrder
 import com.nhaarman.mockito_kotlin.mock
+import com.nhaarman.mockito_kotlin.verifyZeroInteractions
 import com.nhaarman.mockito_kotlin.whenever
 import com.toolslab.noisepercolator.util.device.SdkChecker
 import org.junit.Test
-import org.mockito.Mockito.inOrder
-import org.mockito.Mockito.verifyZeroInteractions
 
 class NotificationChannelCreatorTest {
 
