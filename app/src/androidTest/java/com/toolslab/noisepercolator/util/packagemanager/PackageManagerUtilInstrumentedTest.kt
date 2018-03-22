@@ -1,6 +1,7 @@
 package com.toolslab.noisepercolator.util.packagemanager
 
-import android.os.Build.VERSION_CODES.*
+import android.os.Build.VERSION_CODES.KITKAT_WATCH
+import android.os.Build.VERSION_CODES.LOLLIPOP_MR1
 import android.support.test.InstrumentationRegistry
 import android.support.test.filters.SdkSuppress
 import android.support.test.runner.AndroidJUnit4
@@ -14,17 +15,7 @@ class PackageManagerUtilInstrumentedTest {
 
     private val underTest = PackageManagerUtil(InstrumentationRegistry.getTargetContext())
 
-    @SdkSuppress(minSdkVersion = N)
-    @Test
-    fun getDefaultSmsPackageForNougatAndUp() {
-        val expectedSmsPackage = "com.google.android.apps.messaging"
-
-        val result = underTest.getDefaultSmsPackageKitkat()
-
-        assertThat(result, `is`(expectedSmsPackage))
-    }
-
-    @SdkSuppress(minSdkVersion = KITKAT_WATCH, maxSdkVersion = M)
+    @SdkSuppress(minSdkVersion = KITKAT_WATCH)
     @Test
     fun getDefaultSmsPackageFromKitkatToMarshmallow() {
         val expectedSmsPackage = "com.android.messaging"
