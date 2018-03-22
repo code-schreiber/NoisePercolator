@@ -47,11 +47,12 @@ class SmsMessagesConverterInstrumentedTest {
     private fun assertMessageIsCorrect(result: List<SmsMessage>) {
         assertThat(result.size, `is`(EXPECTED_PDUS_LIST_SIZE))
         assertThat(result[0], `is`(not(nullValue())))
-        assertThat(result[0].messageBody, `is`(EXPECTED_MESSAGE))
-        assertThat(result[0].displayMessageBody, `is`(EXPECTED_MESSAGE))
-        assertThat(result[0].originatingAddress, `is`(EXPECTED_ADDRESS))
-        assertThat(result[0].displayOriginatingAddress, `is`(EXPECTED_ADDRESS))
-
+        result[0].apply {
+            assertThat(messageBody, `is`(EXPECTED_MESSAGE))
+            assertThat(displayMessageBody, `is`(EXPECTED_MESSAGE))
+            assertThat(originatingAddress, `is`(EXPECTED_ADDRESS))
+            assertThat(displayOriginatingAddress, `is`(EXPECTED_ADDRESS))
+        }
     }
 
 }
