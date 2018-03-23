@@ -17,8 +17,6 @@ interface MessagesContract {
 
     interface View : BaseView {
 
-        fun hasSmsPermission(): Boolean
-
         fun setDefaultSmsAppButtonText(defaultSmsAppName: String)
 
         fun setDefaultSmsAppButtonTextFallback()
@@ -28,6 +26,8 @@ interface MessagesContract {
         fun setInfoText(numberOfSpamMessages: Int)
 
         fun initMessagesList(messages: List<Message>)
+
+        fun hasSmsPermission(): Boolean
 
         fun shouldShowRequestPermission(): Boolean
 

@@ -1,9 +1,9 @@
 package com.toolslab.noisepercolator.view.messages
 
+import android.content.pm.PackageManager
 import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
-import com.toolslab.noisepercolator.util.PermissionsUtil
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 import org.mockito.ArgumentCaptor
@@ -11,53 +11,44 @@ import org.mockito.ArgumentCaptor
 class MessagesActivityTest {
 
     private val mockPresenter: MessagesContract.Presenter = mock()
-    private val mockPermissionsUtil: PermissionsUtil = mock()
     private val mockMessages: List<Message> = mock()
 
-    private val underTest = MessagesActivity(mockPresenter, mockPermissionsUtil)
+    private val underTest = MessagesActivity(mockPresenter)
 
     @Test
     fun onRequestPermissionsResultGranted() {
-        val requestCode = 0
+        val requestCode = MessagesActivity.READ_SMS_PERMISSIONS_REQUEST
         val permissions = arrayOf<String>()
-        val grantResults = intArrayOf()
-        whenever(mockPermissionsUtil.isOnRequestPermissionsResultGranted(underTest, requestCode, permissions, grantResults))
-                .thenReturn(true)
+        val grantResults = intArrayOf(PackageManager.PERMISSION_GRANTED)
 
         underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
         verify(mockPresenter).smsPermissionsGranted()
+        verify(mockPresenter, never()).onNoPermission()
     }
 
     @Test
     fun onRequestPermissionsResultDenied() {
-        val requestCode = 0
+        val requestCode = MessagesActivity.READ_SMS_PERMISSIONS_REQUEST
         val permissions = arrayOf<String>()
-        val grantResults = intArrayOf()
-        whenever(mockPermissionsUtil.isOnRequestPermissionsResultGranted(underTest, requestCode, permissions, grantResults))
-                .thenReturn(false)
+        val grantResults = intArrayOf(PackageManager.PERMISSION_DENIED)
 
         underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        verify(mockPermissionsUtil).maybeShowPermissionExplanation(underTest)
-        verifyZeroInteractions(mockPresenter)
+        verify(mockPresenter).onNoPermission()
+        verify(mockPresenter, never()).smsPermissionsGranted()
     }
 
     @Test
-    fun hasSmsPermission() {
-        val expected = true
-        whenever(mockPermissionsUtil.hasSmsPermission(underTest)).thenReturn(expected)
+    fun onRequestPermissionsResultWithEmptyGrantResults() {
+        val requestCode = MessagesActivity.READ_SMS_PERMISSIONS_REQUEST
+        val permissions = arrayOf<String>()
+        val grantResults = intArrayOf()
 
-        val result = underTest.hasSmsPermission()
+        underTest.onRequestPermissionsResult(requestCode, permissions, grantResults)
 
-        result shouldEqual expected
-    }
-
-    @Test
-    fun maybeShowPermissionExplanation() {
-        underTest.maybeShowPermissionExplanation()
-
-        verify(mockPermissionsUtil).maybeShowPermissionExplanation(underTest)
+        verify(mockPresenter).onNoPermission()
+        verify(mockPresenter, never()).smsPermissionsGranted()
     }
 
     @Test
@@ -91,6 +82,16 @@ class MessagesActivityTest {
         verify(underTest.recyclerView).layoutManager = any()
         verify(underTest.recyclerView).adapter = captor.capture()
         captor.value.itemCount shouldEqual expectedItemCount
+    }
+
+    @Test
+    fun showPermissionExplanation() {
+//        val resId = R.string.please_allow_sms_permission
+
+//        underTest.showPermissionExplanation()
+
+        // TODO implement test with spy
+//        verify(mockBaseActivity).showSimpleError(eq(resId), any())
     }
 
 }
