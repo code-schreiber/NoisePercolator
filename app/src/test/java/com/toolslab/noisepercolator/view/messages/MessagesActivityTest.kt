@@ -1,12 +1,14 @@
 package com.toolslab.noisepercolator.view.messages
 
 import android.content.pm.PackageManager
+import android.view.View
 import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers.anyInt
 
 class MessagesActivityTest {
 
@@ -63,10 +65,15 @@ class MessagesActivityTest {
     @Test
     fun setDefaultSmsAppButtonOnClickListener() {
         underTest.defaultSmsAppButton = mock()
+        val captor = argumentCaptor<View.OnClickListener>()
 
         underTest.setDefaultSmsAppButtonOnClickListener()
 
-        verify(underTest.defaultSmsAppButton).setOnClickListener(any())
+        verify(underTest.defaultSmsAppButton).setOnClickListener(captor.capture())
+        // Invoke the passed function as a parameter and then verify that the expected thing happens
+        val passedFunction = captor.firstValue
+        passedFunction.onClick(null)
+        verify(mockPresenter).onDefaultSmsAppButtonClicked()
     }
 
     @Test
@@ -86,12 +93,19 @@ class MessagesActivityTest {
 
     @Test
     fun showPermissionExplanation() {
-//        val resId = R.string.please_allow_sms_permission
+        val expectedResId = R.string.please_allow_sms_permission
+        val captor = argumentCaptor<() -> Unit>()
+        val spyOfUnderTest = spy(underTest)
+        doNothing().whenever(spyOfUnderTest).showSimpleError(anyInt(), any())
+        doNothing().whenever(spyOfUnderTest).requestPermission()
 
-//        underTest.showPermissionExplanation()
+        spyOfUnderTest.showPermissionExplanation()
 
-        // TODO implement test with spy
-//        verify(mockBaseActivity).showSimpleError(eq(resId), any())
+        verify(spyOfUnderTest).showSimpleError(eq(expectedResId), captor.capture())
+        // Invoke the passed function as a parameter and then verify that the expected thing happens
+        val passedFunction = captor.firstValue
+        passedFunction.invoke()
+        verify(spyOfUnderTest).requestPermission()
     }
 
 }
