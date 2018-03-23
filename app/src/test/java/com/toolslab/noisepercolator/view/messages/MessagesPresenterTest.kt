@@ -27,6 +27,17 @@ class MessagesPresenterTest {
     fun setUp() {
         whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
         whenever(mockDataProvider.getMessages()).thenReturn(MESSAGES)
+
+        underTest.bind(mockView)
+    }
+
+    @Test
+    fun unbind() {
+        reset(mockView)
+
+        underTest.unbind(mockView)
+
+        verifyZeroInteractions(mockView)
     }
 
     @Test
@@ -54,14 +65,11 @@ class MessagesPresenterTest {
 
         underTest.onBound(mockView)
 
-        verify(mockView).hasSmsPermission()
-        verify(mockView).maybeShowPermissionExplanation()
-        verifyNoMoreInteractions(mockView)
+        verify(mockView, times(2)).requestPermission()
     }
 
     @Test
     fun smsPermissionsGranted() {
-        underTest.bind(mockView)
         reset(mockView)
 
         underTest.smsPermissionsGranted()
@@ -77,10 +85,21 @@ class MessagesPresenterTest {
     }
 
     @Test
-    fun unbind() {
-        underTest.unbind(mockView)
+    fun onNoPermissionShowingExplanation() {
+        whenever(mockView.shouldShowRequestPermission()).thenReturn(true)
 
-        verifyZeroInteractions(mockView)
+        underTest.onNoPermission()
+
+        verify(mockView).showPermissionExplanation()
+    }
+
+    @Test
+    fun onNoPermissionNotShowingExplanation() {
+        whenever(mockView.shouldShowRequestPermission()).thenReturn(false)
+
+        underTest.onNoPermission()
+
+        verify(mockView, times(2)).requestPermission()
     }
 
     private fun verifyInitView() {

@@ -11,13 +11,13 @@ interface MessagesContract {
         fun smsPermissionsGranted()
 
         fun onDefaultSmsAppButtonClicked()
+
+        fun onNoPermission()
     }
 
     interface View : BaseView {
 
         fun hasSmsPermission(): Boolean
-
-        fun maybeShowPermissionExplanation()
 
         fun setDefaultSmsAppButtonText(defaultSmsAppName: String)
 
@@ -28,5 +28,11 @@ interface MessagesContract {
         fun setInfoText(numberOfSpamMessages: Int)
 
         fun initMessagesList(messages: List<Message>)
+
+        fun shouldShowRequestPermission(): Boolean
+
+        fun showPermissionExplanation()
+
+        fun requestPermission()
     }
 }

@@ -12,7 +12,7 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
         if (view.hasSmsPermission()) {
             initView(view)
         } else {
-            view.maybeShowPermissionExplanation()
+            onNoPermission()
         }
     }
 
@@ -22,6 +22,15 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
 
     override fun onDefaultSmsAppButtonClicked() {
         packageManagerUtil.launchDefaultSmsApp()
+    }
+
+    override fun onNoPermission() {
+        if (getView().shouldShowRequestPermission()) {
+            getView().showPermissionExplanation()
+        } else {
+            // No explanation needed, we can request the permission.
+            getView().requestPermission()
+        }
     }
 
     private fun initView(view: MessagesContract.View) {
