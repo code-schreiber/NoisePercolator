@@ -72,11 +72,11 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         packages
                 .map { it.packageName }
                 .filterTo(packageNames) {
-                    it.contains("sms", true) && it != "com.android.smspush" ||
-                            it.contains("mms", true) || // i.e. com.android.mms
-                            it.contains("message", true) ||
-                            it.contains("messaging", true) ||
-                            it.contains("media", true) && it != "com.android.providers.media" && it != "com.sec.android.nearby.mediaserver"
+                    it.contains("sms") && it != "com.android.smspush" ||
+                            it.contains("mms") ||
+                            it.contains("message") ||
+                            it.contains("messaging") ||
+                            it.contains("media") && it != "com.android.providers.media" && it != "com.sec.android.nearby.mediaserver"
                 }
 
         return when {
@@ -88,6 +88,13 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
             else -> {
+                val messagingFilter = packageNames.filter { it.contains("messaging") }
+                if (messagingFilter.size > 1) {
+                    val googleFilter = messagingFilter.filter { it.contains("google") }
+                    if (googleFilter.isNotEmpty()) {
+                        return googleFilter[0]
+                    }
+                }
                 Timber.e("Taking first from more than one messaging app: $packageNames")
                 packageNames[0]
             }
