@@ -52,7 +52,8 @@ dependencies {
 
     // Tests
     testImplementation "com.nhaarman:mockito-kotlin-kt1.1:$versions.mockitoKotlin"
-    testImplementation "org.amshove.kluent:kluent:$versions.kluent"
+    testImplementation "org.amshove.kluent:kluent-android:$versions.kluent"
+    androidTestImplementation "org.amshove.kluent:kluent-android:$versions.kluent"
     androidTestImplementation "com.android.support.test:runner:$versions.testRunner"
     androidTestImplementation "com.android.support.test:rules:1.0.1"
 }
