@@ -51,7 +51,11 @@ class MessageConverterTest {
     fun convertString() {
         val result = underTest.convert(MESSAGE_AS_JSON_STRING)
 
-        result shouldEqual MESSAGE
+        result.apply {
+            address shouldEqual MESSAGE.address
+            date shouldEqual MESSAGE.date
+            body shouldEqual MESSAGE.body
+        }
     }
 
     @Test
@@ -61,7 +65,11 @@ class MessageConverterTest {
         val messageAsString = underTest.convert(originalInput)
         val result = underTest.convert(messageAsString)
 
-        result shouldEqual originalInput
+        result.apply {
+            address shouldEqual originalInput.address
+            date shouldEqual originalInput.date
+            body shouldEqual originalInput.body
+        }
     }
 
     @Test
