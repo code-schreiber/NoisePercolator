@@ -26,6 +26,17 @@ class MessageTest {
     }
 
     @Test
+    fun defaultFieldsAreSetCorrectly() {
+        val message = Message()
+
+        message.apply {
+            address shouldEqual ""
+            date shouldEqual 0
+            body shouldEqual ""
+        }
+    }
+
+    @Test
     fun getFormattedDate() {
         val result = underTest.getFormattedDate()
 
