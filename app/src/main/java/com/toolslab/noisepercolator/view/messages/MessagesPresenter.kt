@@ -3,9 +3,11 @@ package com.toolslab.noisepercolator.view.messages
 import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.mvp.BasePresenter
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
+import io.reactivex.disposables.CompositeDisposable
 
 class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = PackageManagerUtil(),
-                        private val dataProvider: DataProvider = DataProvider())
+                        private val dataProvider: DataProvider = DataProvider(),
+                        private val compositeDisposable: CompositeDisposable = CompositeDisposable())
     : BasePresenter<MessagesContract.View>(), MessagesContract.Presenter {
 
     override fun onBound(view: MessagesContract.View) {
@@ -14,6 +16,10 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
         } else {
             onNoPermission()
         }
+    }
+
+    override fun onUnbound(view: MessagesContract.View) {
+        compositeDisposable.clear()
     }
 
     override fun smsPermissionsGranted() {
@@ -34,11 +40,15 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
     }
 
     private fun initView(view: MessagesContract.View) {
-        val messages = dataProvider.getMessages()
-
         initDefaultSmsAppButtonText(view)
-        view.setInfoText(messages.size)
-        view.initMessagesList(messages.sorted())
+
+        compositeDisposable.add(dataProvider.getMessages()
+                .subscribe {
+                    // FIXME ASK This code runs twice on init
+                    view.setInfoText(it.size)
+                    view.initMessagesList(it.sorted())
+                }
+        )
     }
 
     private fun initDefaultSmsAppButtonText(view: MessagesContract.View) {

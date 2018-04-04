@@ -4,6 +4,8 @@ import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.db.DataProvider
 import com.toolslab.noisepercolator.model.Message
 import com.toolslab.noisepercolator.util.packagemanager.PackageManagerUtil
+import io.reactivex.Observable
+import io.reactivex.disposables.CompositeDisposable
 import org.junit.Before
 import org.junit.Test
 
@@ -19,14 +21,15 @@ class MessagesPresenterTest {
 
     private val mockPackageManagerUtil: PackageManagerUtil = mock()
     private val mockDataProvider: DataProvider = mock()
+    private val mockCompositeDisposable: CompositeDisposable = mock()
     private val mockView: MessagesContract.View = mock()
 
-    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockDataProvider)
+    private val underTest = MessagesPresenter(mockPackageManagerUtil, mockDataProvider, mockCompositeDisposable)
 
     @Before
     fun setUp() {
         whenever(mockPackageManagerUtil.getDefaultSmsAppName()).thenReturn(DEFAULT_SMS_APP_NAME)
-        whenever(mockDataProvider.getMessages()).thenReturn(MESSAGES)
+        whenever(mockDataProvider.getMessages()).thenReturn(Observable.just(MESSAGES))
 
         underTest.bind(mockView)
     }
@@ -69,6 +72,13 @@ class MessagesPresenterTest {
     }
 
     @Test
+    fun onUnbound() {
+        underTest.onUnbound(mockView)
+
+        verify(mockCompositeDisposable).clear()
+    }
+
+    @Test
     fun smsPermissionsGranted() {
         reset(mockView)
 
@@ -107,6 +117,7 @@ class MessagesPresenterTest {
         verify(mockView).setDefaultSmsAppButtonOnClickListener()
         verify(mockView).setInfoText(NUMBER_OF_MESSAGES)
         verify(mockView).initMessagesList(MESSAGES.sorted())
+        verify(mockCompositeDisposable).add(any())
     }
 
 }
