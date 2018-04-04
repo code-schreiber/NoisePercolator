@@ -1,13 +1,13 @@
 package com.toolslab.noisepercolator.view.messages
 
 import android.content.pm.PackageManager
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View
 import com.nhaarman.mockito_kotlin.*
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
 import org.amshove.kluent.shouldEqual
 import org.junit.Test
-import org.mockito.ArgumentCaptor
 import org.mockito.ArgumentMatchers.anyInt
 
 class MessagesActivityTest {
@@ -78,17 +78,17 @@ class MessagesActivityTest {
 
     @Test
     fun initMessagesList() {
+        underTest.recyclerView = mock()
+        val captor = argumentCaptor<MessagesAdapter>()
         val expectedItemCount = 1234
         whenever(mockMessages.size).thenReturn(expectedItemCount)
-        val captor = ArgumentCaptor.forClass<MessagesAdapter, MessagesAdapter>(MessagesAdapter::class.java)
-        underTest.recyclerView = mock()
 
         underTest.initMessagesList(mockMessages)
 
         verify(underTest.recyclerView).setHasFixedSize(true)
-        verify(underTest.recyclerView).layoutManager = any()
+        verify(underTest.recyclerView).layoutManager = any<LinearLayoutManager>()
         verify(underTest.recyclerView).adapter = captor.capture()
-        captor.value.itemCount shouldEqual expectedItemCount
+        captor.firstValue.itemCount shouldEqual expectedItemCount
     }
 
     @Test
