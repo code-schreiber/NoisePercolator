@@ -28,8 +28,8 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
 
     @CheckResult
     fun getMessages(): Observable<List<Message>> {
-        val realm = realmWrapper.getDefaultInstance()
         migrateOldDatabaseIfNeeded()
+        val realm = realmWrapper.getDefaultInstance()
         return realm.where(Message::class.java).findAllAsync()
                 .asFlowable()
                 .toObservable()
