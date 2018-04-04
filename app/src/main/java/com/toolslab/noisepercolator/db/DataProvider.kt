@@ -42,7 +42,7 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
                 }
                 .doOnError {
                     // TODO ASK Close database?
-                    Timber.e("Error in DataProvider.getMessages()", it)
+                    Timber.e(it, "Error in DataProvider.getMessages()")
                 }
     }
 
@@ -89,7 +89,7 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
     private fun migrateOldDatabaseIfNeeded() {
         if (getPreferences().contains(MESSAGES_KEY)) {
             val messages = getMessagesFromSharedPreferences()
-            Timber.d("Database with {} items will be migrated", messages.size)
+            Timber.d("Database with %d items will be migrated", messages.size)
             saveMessages(messages)
             clearSharedPreferences()
             Timber.d("Database was migrated")
