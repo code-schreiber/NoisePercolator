@@ -58,9 +58,9 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
             // Using executeTransaction with a lambda reduces code size
             // and makes it impossible to forget to commit the transaction.
             it.copyToRealm(message)
-            // Close database after saving
-            it.close()
         }
+        // Close database after saving
+        realm.close()
     }
 
     @Deprecated("$SHARED_PREFERENCES_DEPRECATED_MESSAGE Use DataProvider.getMessages().",
