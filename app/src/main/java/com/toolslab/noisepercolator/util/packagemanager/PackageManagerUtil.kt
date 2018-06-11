@@ -102,11 +102,11 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         packages
                 .map { it.packageName }
                 .filterTo(packageNames) {
-                    it.contains(PACKAGE_NAME_SMS) && it != PACKAGE_NAME_SMS_PUSH ||
-                            it.contains(PACKAGE_NAME_MMS) ||
-                            it.contains(PACKAGE_NAME_MESSAGE) ||
-                            it.contains(PACKAGE_NAME_MESSAGING) ||
-                            it.contains(PACKAGE_NAME_MEDIA) && it != PACKAGE_NAME_MEDIA_PROVIDER && it != PACKAGE_NAME_MEDIA_SERVER
+                    isSmsApp(it) ||
+                            isMmsApp(it) ||
+                            isMessageApp(it) ||
+                            isMessagingApp(it) ||
+                            isMediaApp(it)
                 }
 
         return when {
@@ -118,10 +118,10 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
             else -> {
-                val messagingFilter = packageNames.filter { it.contains(PACKAGE_NAME_MESSAGING) }
+                val messagingFilter = packageNames.filter { isMessagingApp(it) }
                 if (messagingFilter.size > 1) {
                     val googleFilter = messagingFilter.filter {
-                        it.contains(PACKAGE_NAME_GOOGLE)
+                        isGoogleApp(it)
                     }
                     if (googleFilter.isNotEmpty()) {
                         return googleFilter[0]
@@ -132,6 +132,18 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
             }
         }
     }
+
+    private fun isSmsApp(packageName: String) = packageName.contains(PACKAGE_NAME_SMS) && packageName != PACKAGE_NAME_SMS_PUSH
+
+    private fun isMmsApp(packageName: String) = packageName.contains(PACKAGE_NAME_MMS)
+
+    private fun isMessageApp(packageName: String) = packageName.contains(PACKAGE_NAME_MESSAGE)
+
+    private fun isMessagingApp(packageName: String) = packageName.contains(PACKAGE_NAME_MESSAGING)
+
+    private fun isMediaApp(packageName: String) = packageName.contains(PACKAGE_NAME_MEDIA) && packageName != PACKAGE_NAME_MEDIA_PROVIDER && packageName != PACKAGE_NAME_MEDIA_SERVER
+
+    private fun isGoogleApp(it: String) = it.contains(PACKAGE_NAME_GOOGLE)
 
     @VisibleForTesting
     fun createDefaultSmsAppFallbackIntent(intent: Intent): Intent {
