@@ -93,13 +93,11 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     override fun shouldShowRequestPermission(): Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(this, READ_SMS_PERMISSION)
 
-    override fun showPermissionExplanation() {
-        showSimpleError(R.string.please_allow_sms_permission, { requestPermission() })
-    }
+    override fun showPermissionExplanation() =
+            showSimpleError(R.string.please_allow_sms_permission, { requestPermission() })
 
-    override fun requestPermission() {
-        ActivityCompat.requestPermissions(this, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
-    }
+    override fun requestPermission() =
+            ActivityCompat.requestPermissions(this, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
 
     private fun initViews() {
         defaultSmsAppButton = activity_messages_button
