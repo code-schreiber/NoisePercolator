@@ -3,8 +3,8 @@ package com.toolslab.noisepercolator.receiver
 import android.content.Intent
 import android.support.test.runner.AndroidJUnit4
 import android.telephony.SmsMessage
-import org.hamcrest.CoreMatchers.*
-import org.hamcrest.MatcherAssert.assertThat
+import org.amshove.kluent.shouldEqual
+import org.amshove.kluent.shouldNotEqual
 import org.junit.Before
 import org.junit.Ignore
 import org.junit.Test
@@ -45,13 +45,13 @@ class SmsMessagesConverterInstrumentedTest {
     }
 
     private fun assertMessageIsCorrect(result: List<SmsMessage>) {
-        assertThat(result.size, `is`(EXPECTED_PDUS_LIST_SIZE))
-        assertThat(result[0], `is`(not(nullValue())))
+        result.size shouldEqual EXPECTED_PDUS_LIST_SIZE
+        result[0] shouldNotEqual null
         result[0].apply {
-            assertThat(messageBody, `is`(EXPECTED_MESSAGE))
-            assertThat(displayMessageBody, `is`(EXPECTED_MESSAGE))
-            assertThat(originatingAddress, `is`(EXPECTED_ADDRESS))
-            assertThat(displayOriginatingAddress, `is`(EXPECTED_ADDRESS))
+            messageBody shouldEqual EXPECTED_MESSAGE
+            displayMessageBody shouldEqual EXPECTED_MESSAGE
+            originatingAddress shouldEqual EXPECTED_ADDRESS
+            displayOriginatingAddress shouldEqual EXPECTED_ADDRESS
         }
     }
 

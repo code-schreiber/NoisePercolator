@@ -5,14 +5,11 @@ import android.support.test.rule.ActivityTestRule
 import android.support.test.rule.GrantPermissionRule
 import android.support.test.runner.AndroidJUnit4
 import com.toolslab.noisepercolator.R
-import com.toolslab.noisepercolator.util.PermissionsUtil
-import org.hamcrest.CoreMatchers.`is`
-import org.hamcrest.MatcherAssert.assertThat
+import org.amshove.kluent.shouldEqual
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
-
 
 @RunWith(AndroidJUnit4::class)
 class MessagesActivityInstrumentedTest {
@@ -23,7 +20,7 @@ class MessagesActivityInstrumentedTest {
 
     @Rule
     @JvmField
-    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(PermissionsUtil.READ_SMS_PERMISSION)
+    var permissionRule: GrantPermissionRule = GrantPermissionRule.grant(MessagesActivity.READ_SMS_PERMISSION)
 
     private lateinit var underTest: MessagesActivity
 
@@ -40,7 +37,7 @@ class MessagesActivityInstrumentedTest {
 
         underTest.setDefaultSmsAppButtonText(defaultSmsAppName)
 
-        assertThat(underTest.defaultSmsAppButton.text.toString(), `is`(expected))
+        underTest.defaultSmsAppButton.text.toString() shouldEqual expected
     }
 
     @UiThreadTest
@@ -51,7 +48,7 @@ class MessagesActivityInstrumentedTest {
 
         underTest.setInfoText(numberOfSpamMessages)
 
-        assertThat(underTest.infoText.text.toString(), `is`(expected))
+        underTest.infoText.text.toString() shouldEqual expected
     }
 
     @UiThreadTest
@@ -62,7 +59,7 @@ class MessagesActivityInstrumentedTest {
 
         underTest.setInfoText(numberOfSpamMessages)
 
-        assertThat(underTest.infoText.text.toString(), `is`(expected))
+        underTest.infoText.text.toString() shouldEqual expected
     }
 
     @UiThreadTest
@@ -73,7 +70,25 @@ class MessagesActivityInstrumentedTest {
 
         underTest.setInfoText(numberOfSpamMessages)
 
-        assertThat(underTest.infoText.text.toString(), `is`(expected))
+        underTest.infoText.text.toString() shouldEqual expected
+    }
+
+    @Test
+    fun hasSmsPermission() {
+        val expected = true
+
+        val result = underTest.hasSmsPermission()
+
+        result shouldEqual expected
+    }
+
+    @Test
+    fun shouldShowRequestPermission() {
+        val expected = false
+
+        val result = underTest.shouldShowRequestPermission()
+
+        result shouldEqual expected
     }
 
 }

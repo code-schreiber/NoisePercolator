@@ -17,6 +17,10 @@ class PackageManagerUtilTest {
 
     companion object {
         private const val SMS_PACKAGE = "an.sms.package"
+
+        private const val SMS_APP_GOOGLE_MESSAGING = "com.google.android.apps.messaging"
+        private const val SMS_APP_ANDROID_MESSAGING = "com.android.messaging"
+        private const val SMS_APP_MMS = "com.android.mms"
     }
 
     private val mockContext: Context = mock()
@@ -32,7 +36,7 @@ class PackageManagerUtilTest {
         whenever(mockContext.packageManager)
                 .thenReturn(mockPackageManager)
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA))
-                .thenReturn(listOf(dummyApplicationInfo(SMS_PACKAGE)))
+                .thenReturn(listOf(applicationInfo(SMS_PACKAGE)))
     }
 
     @Test
@@ -89,40 +93,52 @@ class PackageManagerUtilTest {
 
     @Test
     fun getDefaultSmsPackageLegacyForAndroidAppsMessaging() {
-        val packages = listOf(dummyApplicationInfo("com.google.android.apps.messaging"))
+        val packages = listOf(applicationInfo(SMS_APP_GOOGLE_MESSAGING))
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
 
         val result = underTest.getDefaultSmsPackage()
 
-        result shouldEqual "com.google.android.apps.messaging"
+        result shouldEqual SMS_APP_GOOGLE_MESSAGING
     }
 
     @Test
     fun getDefaultSmsPackageLegacyForAndroidMessaging() {
-        val packages = listOf(dummyApplicationInfo("com.android.messaging"))
+        val packages = listOf(applicationInfo(SMS_APP_ANDROID_MESSAGING))
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
 
         val result = underTest.getDefaultSmsPackage()
 
-        result shouldEqual "com.android.messaging"
+        result shouldEqual SMS_APP_ANDROID_MESSAGING
     }
 
     @Test
     fun getDefaultSmsPackageLegacyForAndroidMms() {
-        val packages = listOf(dummyApplicationInfo("com.android.mms"))
+        val packages = listOf(applicationInfo(SMS_APP_MMS))
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
 
         val result = underTest.getDefaultSmsPackage()
 
-        result shouldEqual "com.android.mms"
+        result shouldEqual SMS_APP_MMS
+    }
+
+    @Test
+    fun getDefaultSmsPackageLegacyPrefersNewerApp() {
+        val packages = listOf(applicationInfo(SMS_APP_MMS),
+                applicationInfo(SMS_APP_ANDROID_MESSAGING),
+                applicationInfo(SMS_APP_GOOGLE_MESSAGING))
+        whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
+
+        val result = underTest.getDefaultSmsPackage()
+
+        result shouldEqual SMS_APP_GOOGLE_MESSAGING
     }
 
     @Test
     fun getDefaultSmsPackageForInvalidMessagingApps() {
-        val packages = listOf(dummyApplicationInfo("com.android.providers.media"),
-                dummyApplicationInfo("com.android.smspush"),
-                dummyApplicationInfo("com.sec.android.nearby.mediaserver"),
-                dummyApplicationInfo("com.example.another.app"))
+        val packages = listOf(applicationInfo("com.android.providers.media"),
+                applicationInfo("com.android.smspush"),
+                applicationInfo("com.sec.android.nearby.mediaserver"),
+                applicationInfo("com.example.another.app"))
 
         whenever(mockPackageManager.getInstalledApplications(PackageManager.GET_META_DATA)).thenReturn(packages)
 
@@ -131,7 +147,7 @@ class PackageManagerUtilTest {
         result shouldEqual ""
     }
 
-    private fun dummyApplicationInfo(packageName: String): ApplicationInfo {
+    private fun applicationInfo(packageName: String): ApplicationInfo {
         val applicationInfo = ApplicationInfo()
         applicationInfo.packageName = packageName
         return applicationInfo

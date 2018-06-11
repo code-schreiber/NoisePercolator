@@ -1,6 +1,6 @@
 package com.toolslab.noisepercolator.mvp
 
-interface MvpPresenter<V : MvpView> {
+interface MvpPresenter<in V : MvpView> {
 
     fun bind(view: V)
 
@@ -9,7 +9,5 @@ interface MvpPresenter<V : MvpView> {
     fun unbind(view: V)
 
     fun onUnbound(view: V)
-
-    fun getView(): V
 
 }

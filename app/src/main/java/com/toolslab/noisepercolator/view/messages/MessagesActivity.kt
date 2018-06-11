@@ -1,21 +1,33 @@
 package com.toolslab.noisepercolator.view.messages
 
+import android.Manifest
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.support.annotation.VisibleForTesting
+import android.support.v4.app.ActivityCompat
+import android.support.v4.content.ContextCompat
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.widget.Button
 import android.widget.TextView
 import com.toolslab.noisepercolator.R
 import com.toolslab.noisepercolator.model.Message
-import com.toolslab.noisepercolator.util.PermissionsUtil
 import com.toolslab.noisepercolator.view.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_messages.*
+import timber.log.Timber
 
 
-class MessagesActivity(private val presenter: MessagesContract.Presenter = MessagesPresenter(),
-                       private val permissionsUtil: PermissionsUtil = PermissionsUtil())
+class MessagesActivity(private val presenter: MessagesContract.Presenter = MessagesPresenter())
     : BaseActivity(), MessagesContract.View {
+
+    companion object {
+
+        @VisibleForTesting
+        const val READ_SMS_PERMISSIONS_REQUEST = 100
+
+        @VisibleForTesting
+        const val READ_SMS_PERMISSION = Manifest.permission.READ_SMS
+    }
 
     @VisibleForTesting
     lateinit var defaultSmsAppButton: Button
@@ -39,19 +51,18 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        if (permissionsUtil.isOnRequestPermissionsResultGranted(this, requestCode, permissions, grantResults)) {
-            presenter.smsPermissionsGranted()
+        if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
+            // If request is cancelled, the result arrays are empty.
+            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
+                presenter.smsPermissionsGranted()
+            } else {
+                presenter.onNoPermission()
+            }
         } else {
-            maybeShowPermissionExplanation()
+            Timber.e("Unknown requestCode: $requestCode")
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            presenter.onNoPermission()
         }
-    }
-
-    override fun hasSmsPermission(): Boolean {
-        return permissionsUtil.hasSmsPermission(this)
-    }
-
-    override fun maybeShowPermissionExplanation() {
-        permissionsUtil.maybeShowPermissionExplanation(this)
     }
 
     override fun setDefaultSmsAppButtonText(defaultSmsAppName: String) {
@@ -75,6 +86,18 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
         recyclerView.layoutManager = LinearLayoutManager(this)
         recyclerView.adapter = MessagesAdapter(messages)
     }
+
+    override fun hasSmsPermission(): Boolean =
+            ContextCompat.checkSelfPermission(this, READ_SMS_PERMISSION) == PERMISSION_GRANTED
+
+    override fun shouldShowRequestPermission(): Boolean =
+            ActivityCompat.shouldShowRequestPermissionRationale(this, READ_SMS_PERMISSION)
+
+    override fun showPermissionExplanation() =
+            showSimpleError(R.string.please_allow_sms_permission, { requestPermission() })
+
+    override fun requestPermission() =
+            ActivityCompat.requestPermissions(this, arrayOf(READ_SMS_PERMISSION), READ_SMS_PERMISSIONS_REQUEST)
 
     private fun initViews() {
         defaultSmsAppButton = activity_messages_button

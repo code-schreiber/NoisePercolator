@@ -14,6 +14,36 @@ import timber.log.Timber
 class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(),
                          private val sdkChecker: SdkChecker = SdkChecker()) {
 
+    companion object {
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_SMS = "sms"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_SMS_PUSH = "com.android.smspush"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MMS = "mms"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MESSAGE = "message"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MESSAGING = "messaging"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA = "media"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA_PROVIDER = "com.android.providers.media"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA_SERVER = "com.sec.android.nearby.mediaserver"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_GOOGLE = "google"
+    }
+
     fun launchDefaultSmsApp() {
         val intent = createLaunchDefaultSmsAppIntent()
         context.startActivity(intent)
@@ -72,11 +102,11 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         packages
                 .map { it.packageName }
                 .filterTo(packageNames) {
-                    it.contains("sms", true) && it != "com.android.smspush" ||
-                            it.contains("mms", true) || // i.e. com.android.mms
-                            it.contains("message", true) ||
-                            it.contains("messaging", true) ||
-                            it.contains("media", true) && it != "com.android.providers.media" && it != "com.sec.android.nearby.mediaserver"
+                    isSmsApp(it) ||
+                            isMmsApp(it) ||
+                            isMessageApp(it) ||
+                            isMessagingApp(it) ||
+                            isMediaApp(it)
                 }
 
         return when {
@@ -88,11 +118,33 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
             else -> {
+                val messagingFilter = packageNames.filter { isMessagingApp(it) }
+                if (messagingFilter.size > 1) {
+                    val googleFilter = messagingFilter.filter {
+                        isGoogleApp(it)
+                    }
+                    if (googleFilter.isNotEmpty()) {
+                        // Not expecting more than one result, just return first one
+                        return googleFilter[0]
+                    }
+                }
                 Timber.e("Taking first from more than one messaging app: $packageNames")
                 packageNames[0]
             }
         }
     }
+
+    private fun isSmsApp(packageName: String) = packageName.contains(PACKAGE_NAME_SMS) && packageName != PACKAGE_NAME_SMS_PUSH
+
+    private fun isMmsApp(packageName: String) = packageName.contains(PACKAGE_NAME_MMS)
+
+    private fun isMessageApp(packageName: String) = packageName.contains(PACKAGE_NAME_MESSAGE)
+
+    private fun isMessagingApp(packageName: String) = packageName.contains(PACKAGE_NAME_MESSAGING)
+
+    private fun isMediaApp(packageName: String) = packageName.contains(PACKAGE_NAME_MEDIA) && packageName != PACKAGE_NAME_MEDIA_PROVIDER && packageName != PACKAGE_NAME_MEDIA_SERVER
+
+    private fun isGoogleApp(it: String) = it.contains(PACKAGE_NAME_GOOGLE)
 
     @VisibleForTesting
     fun createDefaultSmsAppFallbackIntent(intent: Intent): Intent {

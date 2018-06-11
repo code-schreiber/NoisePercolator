@@ -3,8 +3,8 @@
 buildscript {
     ext {
         toolVersions = [
-                versionCode      : 3,
-                versionName      : "0.0.3",
+                versionCode      : 4,
+                versionName      : "0.0.4",
 
                 minSdkVersion    : 16,
                 targetSdkVersion : 26,
@@ -12,7 +12,6 @@ buildscript {
         ]
 
         versions = [
-                gradle          : "3.0.1",
                 kotlin          : "1.2.30",
 
                 googleSupport   : "27.1.0",
@@ -23,9 +22,12 @@ buildscript {
 
                 timber          : "4.6.1",
 
+                rxkotlin        : "2.2.0",
+                rxandroid       : "2.0.2",
+
                 // Tests
                 mockitoKotlin   : "1.5.0",
-                kluent          : "1.14",
+                kluent          : "1.35",
                 testRunner      : "1.0.1"
         ]
     }
@@ -36,8 +38,9 @@ buildscript {
     }
 
     dependencies {
-        classpath "com.android.tools.build:gradle:$versions.gradle"
+        classpath 'com.android.tools.build:gradle:3.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versions.kotlin"
+        classpath "io.realm:realm-gradle-plugin:5.0.0"
     }
 }
 
