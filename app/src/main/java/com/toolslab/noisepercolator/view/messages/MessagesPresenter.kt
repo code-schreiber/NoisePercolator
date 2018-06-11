@@ -23,7 +23,7 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
     }
 
     override fun smsPermissionsGranted() {
-        initView(getView())
+        initView(view)
     }
 
     override fun onDefaultSmsAppButtonClicked() {
@@ -31,11 +31,11 @@ class MessagesPresenter(private val packageManagerUtil: PackageManagerUtil = Pac
     }
 
     override fun onNoPermission() {
-        if (getView().shouldShowRequestPermission()) {
-            getView().showPermissionExplanation()
+        if (view.shouldShowRequestPermission()) {
+            view.showPermissionExplanation()
         } else {
             // No explanation needed, we can request the permission.
-            getView().requestPermission()
+            view.requestPermission()
         }
     }
 
