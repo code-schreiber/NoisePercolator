@@ -29,21 +29,22 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
     @CheckResult
     fun getMessages(): Observable<List<Message>> {
         migrateOldDatabaseIfNeeded()
-        val realm = realmWrapper.getDefaultInstance()
-        return realm.where(Message::class.java).findAllAsync()
-                .asFlowable()
-                .toObservable()
-                .map {
-                    realm.copyFromRealm(it)
-                }
-                .doOnDispose {
-                    // Close database when observable is not needed anymore
-                    realm.close()
-                }
-                .doOnError {
-                    // TODO ASK Close database?
-                    Timber.e(it, "Error in DataProvider.getMessages()")
-                }
+        return realmWrapper.getDefaultInstance().run {
+            this.where(Message::class.java).findAllAsync()
+                    .asFlowable()
+                    .toObservable()
+                    .map {
+                        this.copyFromRealm(it)
+                    }
+                    .doOnDispose {
+                        // Close database when observable is not needed anymore
+                        this.close()
+                    }
+                    .doOnError {
+                        // TODO ASK Close database?
+                        Timber.e(it, "Error in DataProvider.getMessages()")
+                    }
+        }
     }
 
     fun saveMessages(messages: List<Message>) {
@@ -51,16 +52,16 @@ class DataProvider(private val context: Context = NoisePercolator.applicationCon
     }
 
     fun saveMessage(message: Message) {
-        // Get a Realm instance for this thread
-        val realm = realmWrapper.getDefaultInstance()
-        // Persist your data in a transaction
-        realm.executeTransaction {
-            // Using executeTransaction with a lambda reduces code size
-            // and makes it impossible to forget to commit the transaction.
-            it.copyToRealm(message)
+        realmWrapper.getDefaultInstance().run {
+            // Persist your data in a transaction
+            this.executeTransaction {
+                // Using executeTransaction with a lambda reduces code size
+                // and makes it impossible to forget to commit the transaction.
+                it.copyToRealm(message)
+            }
+            // Close database after saving
+            this.close()
         }
-        // Close database after saving
-        realm.close()
     }
 
     @Deprecated("$SHARED_PREFERENCES_DEPRECATED_MESSAGE Use DataProvider.getMessages().",
