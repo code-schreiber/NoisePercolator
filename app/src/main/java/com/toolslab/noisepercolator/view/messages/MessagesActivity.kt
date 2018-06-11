@@ -1,7 +1,7 @@
 package com.toolslab.noisepercolator.view.messages
 
 import android.Manifest
-import android.content.pm.PackageManager
+import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.os.Bundle
 import android.support.annotation.VisibleForTesting
 import android.support.v4.app.ActivityCompat
@@ -53,7 +53,7 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         if (requestCode == READ_SMS_PERMISSIONS_REQUEST) {
             // If request is cancelled, the result arrays are empty.
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 presenter.smsPermissionsGranted()
                 return
             }
@@ -87,7 +87,7 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
     }
 
     override fun hasSmsPermission(): Boolean =
-            ContextCompat.checkSelfPermission(this, READ_SMS_PERMISSION) == PackageManager.PERMISSION_GRANTED
+            ContextCompat.checkSelfPermission(this, READ_SMS_PERMISSION) == PERMISSION_GRANTED
 
     override fun shouldShowRequestPermission(): Boolean =
             ActivityCompat.shouldShowRequestPermissionRationale(this, READ_SMS_PERMISSION)
