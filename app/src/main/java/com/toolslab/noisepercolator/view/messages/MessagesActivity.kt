@@ -55,13 +55,14 @@ class MessagesActivity(private val presenter: MessagesContract.Presenter = Messa
             // If request is cancelled, the result arrays are empty.
             if (grantResults.isNotEmpty() && grantResults[0] == PERMISSION_GRANTED) {
                 presenter.smsPermissionsGranted()
-                return
+            } else {
+                presenter.onNoPermission()
             }
         } else {
             Timber.e("Unknown requestCode: $requestCode")
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+            presenter.onNoPermission()
         }
-        presenter.onNoPermission()
     }
 
     override fun setDefaultSmsAppButtonText(defaultSmsAppName: String) {
