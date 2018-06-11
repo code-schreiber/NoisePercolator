@@ -14,6 +14,36 @@ import timber.log.Timber
 class PackageManagerUtil(private val context: Context = NoisePercolator.applicationContext(),
                          private val sdkChecker: SdkChecker = SdkChecker()) {
 
+    companion object {
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_SMS = "sms"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_SMS_PUSH = "com.android.smspush"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MMS = "mms"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MESSAGE = "message"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MESSAGING = "messaging"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA = "media"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA_PROVIDER = "com.android.providers.media"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_MEDIA_SERVER = "com.sec.android.nearby.mediaserver"
+
+        @VisibleForTesting
+        const val PACKAGE_NAME_GOOGLE = "google"
+    }
+
     fun launchDefaultSmsApp() {
         val intent = createLaunchDefaultSmsAppIntent()
         context.startActivity(intent)
@@ -72,11 +102,11 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
         packages
                 .map { it.packageName }
                 .filterTo(packageNames) {
-                    it.contains("sms") && it != "com.android.smspush" ||
-                            it.contains("mms") ||
-                            it.contains("message") ||
-                            it.contains("messaging") ||
-                            it.contains("media") && it != "com.android.providers.media" && it != "com.sec.android.nearby.mediaserver"
+                    it.contains(PACKAGE_NAME_SMS) && it != PACKAGE_NAME_SMS_PUSH ||
+                            it.contains(PACKAGE_NAME_MMS) ||
+                            it.contains(PACKAGE_NAME_MESSAGE) ||
+                            it.contains(PACKAGE_NAME_MESSAGING) ||
+                            it.contains(PACKAGE_NAME_MEDIA) && it != PACKAGE_NAME_MEDIA_PROVIDER && it != PACKAGE_NAME_MEDIA_SERVER
                 }
 
         return when {
@@ -88,9 +118,11 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
             else -> {
-                val messagingFilter = packageNames.filter { it.contains("messaging") }
+                val messagingFilter = packageNames.filter { it.contains(PACKAGE_NAME_MESSAGING) }
                 if (messagingFilter.size > 1) {
-                    val googleFilter = messagingFilter.filter { it.contains("google") }
+                    val googleFilter = messagingFilter.filter {
+                        it.contains(PACKAGE_NAME_GOOGLE)
+                    }
                     if (googleFilter.isNotEmpty()) {
                         return googleFilter[0]
                     }
