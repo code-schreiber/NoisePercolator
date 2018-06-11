@@ -124,6 +124,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                         isGoogleApp(it)
                     }
                     if (googleFilter.isNotEmpty()) {
+                        // Not expecting more than one result, just return first one
                         return googleFilter[0]
                     }
                 }
