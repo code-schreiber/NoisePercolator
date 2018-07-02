@@ -16,9 +16,7 @@ buildscript {
 
                 googleSupport   : "27.1.1",
                 constraintLayout: "1.1.2",
-                ktx             : "0.2",
-
-                gson            : "2.8.2",
+                ktx             : "0.3",
 
                 timber          : "4.7.0",
 
