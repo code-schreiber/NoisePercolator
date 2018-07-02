@@ -97,11 +97,9 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
     }
 
     private fun getDefaultSmsPackageLegacy(): String {
-        val packageNames = mutableListOf<String>()
-        val packages = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
-        packages
+        val packageNames = context.packageManager.getInstalledApplications(PackageManager.GET_META_DATA)
                 .map { it.packageName }
-                .filterTo(packageNames) {
+                .filter {
                     isSmsApp(it) ||
                             isMmsApp(it) ||
                             isMessageApp(it) ||
@@ -110,7 +108,7 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 }
 
         return when {
-            packageNames.size < 1 -> {
+            packageNames.isEmpty() -> {
                 Timber.e("No messaging apps found")
                 ""
             }
@@ -118,20 +116,24 @@ class PackageManagerUtil(private val context: Context = NoisePercolator.applicat
                 packageNames[0]
             }
             else -> {
-                val messagingFilter = packageNames.filter { isMessagingApp(it) }
-                if (messagingFilter.size > 1) {
-                    val googleFilter = messagingFilter.filter {
-                        isGoogleApp(it)
-                    }
-                    if (googleFilter.isNotEmpty()) {
-                        // Not expecting more than one result, just return first one
-                        return googleFilter[0]
-                    }
-                }
-                Timber.e("Taking first from more than one messaging app: $packageNames")
-                packageNames[0]
+                getPreferredPackageName(packageNames)
             }
         }
+    }
+
+    private fun getPreferredPackageName(packageNames: List<String>): String {
+        val messagingApps = packageNames.filter { isMessagingApp(it) }
+        if (messagingApps.size == 1) {
+            return messagingApps[0]
+        } else if (messagingApps.size > 1) {
+            val googleApps = messagingApps.filter { isGoogleApp(it) }
+            if (googleApps.isNotEmpty()) {
+                // Not expecting more than one result, just return first one
+                return googleApps[0]
+            }
+        }
+        Timber.e("Taking first from more than one messaging app: $packageNames")
+        return packageNames[0]
     }
 
     private fun isSmsApp(packageName: String) = packageName.contains(PACKAGE_NAME_SMS) && packageName != PACKAGE_NAME_SMS_PUSH
