@@ -81,7 +81,7 @@ class DataProviderTest {
         error shouldEqual throwableToReturn
     }
 
-    @Ignore("Real method gets called: https://stackoverflow.com/questions/49667400/actual-close-method-is-called-although-realm-is-mocked")
+    @Ignore("Ignore test until this is fixed: Real method gets called https://stackoverflow.com/questions/49667400/actual-close-method-is-called-although-realm-is-mocked")
     @Test
     fun saveMessage() {
         val captor = argumentCaptor<Realm.Transaction>()
