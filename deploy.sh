@@ -18,10 +18,6 @@ echo "deploy.sh: Running gradle connectedAndroidTest"
 ./gradlew connectedAndroidTest
 echo "deploy.sh: app/build/outputs/apk/release now contains:"
 ls -l app/build/outputs/apk/release
-#echo "deploy.sh: Running gradle printStatsFromThisVersion"
-#./gradlew printStatsFromThisVersion
-#echo "deploy.sh: Running gradle printVersion"
-#./gradlew printVersion
 
 if [ "$TRAVIS_REPO_SLUG" != "$EXPECTED_TRAVIS_REPO_SLUG" ]; then
   echo "deploy.sh: Skipping deployment: wrong repository. Expected '$EXPECTED_TRAVIS_REPO_SLUG' but was '$TRAVIS_REPO_SLUG'."
@@ -31,9 +27,6 @@ elif [ "$TRAVIS_BRANCH" != "$EXPECTED_TRAVIS_BRANCH" ]; then
   echo "deploy.sh: Skipping deployment: wrong branch. Expected '$EXPECTED_TRAVIS_BRANCH' but was '$TRAVIS_BRANCH'."
 else
   echo "deploy.sh: Deploying to Google Play"
-#  echo "deploy.sh: Running gradle firebaseUploadReleaseProguardMapping"
-#  ./gradlew firebaseUploadReleaseProguardMapping
-#  cd ..
   echo "deploy.sh: Running fastlane supply"
   fastlane supply --version
   fastlane supply run --json_key dev-console-api-private-key.json --package_name com.toolslab.noisepercolator --apk app/build/outputs/apk/release/app-release.apk --track alpha
