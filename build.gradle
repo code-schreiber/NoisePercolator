@@ -14,7 +14,7 @@ buildscript {
         versions = [
                 gradle          : "3.1.3",
                 realm           : "5.3.1",
-                kotlin          : "1.2.30",
+                kotlin          : "1.2.50",
 
                 googleSupport   : "27.1.1",
                 constraintLayout: "1.1.2",
@@ -26,7 +26,7 @@ buildscript {
                 rxandroid       : "2.0.2",
 
                 // Tests
-                mockitoKotlin   : "1.5.0",
+                mockitoKotlin   : "2.0.0-RC1",
                 kluent          : "1.35",
                 testRunner      : "1.0.1",
                 testRules       : "1.0.2"
