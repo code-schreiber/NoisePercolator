@@ -14,9 +14,6 @@ android:
     - platform-tools
     - tools # duplicated on purpose as it’s required to get the newest Android SDK tools.
 
-    # BuildTools version used by project
-    - build-tools-26.0.2
-
     # SDK version to compile project
     - android-26
 
