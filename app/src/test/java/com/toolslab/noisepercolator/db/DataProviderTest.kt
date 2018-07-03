@@ -10,16 +10,15 @@ import io.realm.RealmQuery
 import io.realm.RealmResults
 import org.amshove.kluent.shouldEqual
 import org.junit.Before
-import org.junit.Ignore
 import org.junit.Test
 
 
 class DataProviderTest {
 
     companion object {
-        private val MESSAGE = Message("an address", 0L, "a body")
-        private val ANOTHER_MESSAGE = Message("another address", 1L, "another body")
-        private val MESSAGES = mutableListOf(MESSAGE, ANOTHER_MESSAGE)
+        val MESSAGE = Message("an address", 0L, "a body")
+        val ANOTHER_MESSAGE = Message("another address", 1L, "another body")
+        val MESSAGES = mutableListOf(MESSAGE, ANOTHER_MESSAGE)
     }
 
     private val mockRealmWrapper: RealmWrapper = mock()
@@ -62,9 +61,9 @@ class DataProviderTest {
         verify(mockRealm).copyFromRealm(mockRealmResults)
         verifyNoMoreInteractions(mockRealm)
 
-//        testObserver.dispose()
+        testObserver.dispose()
 
-//        verify(mockRealm).close() TODO Real method gets called
+        verify(mockRealm).close()
         verifyNoMoreInteractions(mockRealm)
     }
 
@@ -81,7 +80,6 @@ class DataProviderTest {
         error shouldEqual throwableToReturn
     }
 
-    @Ignore("Ignore test until this is fixed: Real method gets called https://stackoverflow.com/questions/49667400/actual-close-method-is-called-although-realm-is-mocked")
     @Test
     fun saveMessage() {
         val captor = argumentCaptor<Realm.Transaction>()
@@ -90,11 +88,13 @@ class DataProviderTest {
 
         inOrder(mockRealm).apply {
             verify(mockRealm).executeTransaction(captor.capture())
+            verify(mockRealm).close()
 
+            // Now make sure the lambda passed to executeTransaction() does the right thing
             captor.firstValue.execute(mockRealm)
 
             verify(mockRealm).copyToRealm(MESSAGE)
-            verify(mockRealm).close()
+            verifyNoMoreInteractions(mockRealm)
         }
     }
 
